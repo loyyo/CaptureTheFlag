@@ -86,7 +86,7 @@ const Header = () => {
 								}}
 							>
 								<Typography className={classes.href} variant='subtitle2'>
-									Capture The WDIctory
+									Capture The Flag
 								</Typography>
 							</Button>
 						</div>

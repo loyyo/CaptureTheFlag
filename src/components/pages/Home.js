@@ -43,14 +43,14 @@ export default function Home() {
 						<Paper variant='outlined' elevation={3}>
 							<Box m={3}>
 								<Typography variant='h4' className='leaderboard-header'>
-									Welcome to CTWDIctory!
+									Welcome to Capture The Flag!
 								</Typography>
 								<Typography variant='h5' className='description'>
-									CaptureTheWDIctory is a platform that enables people to learn, practice, and
-									compete in the field of WDI curriculum.
+									CaptureTheFlag is a platform that enables people to learn, practice, and compete
+									in the field of geography, specifically world's flags.
 								</Typography>
 								<Typography variant='h5' className='leaderboard-header-dark'>
-									JOIN THE WDICREW!
+									JOIN AND CATCH'EM ALL!
 								</Typography>
 							</Box>
 							<Divider variant='middle' />

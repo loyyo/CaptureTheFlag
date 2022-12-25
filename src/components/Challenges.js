@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function Challenges({ difficulty, allChallengesData, currentUserData }) {
+export default function Challenges({ category, allChallengesData, currentUserData }) {
 	const classes = useStyles();
 	const navigate = useNavigate();
 
@@ -23,6 +23,7 @@ export default function Challenges({ difficulty, allChallengesData, currentUserD
 		let e = challenge.ratings;
 		let v = 0;
 		let i = 0;
+		if (Object.keys(e).length === 0) return 5;
 		for (let k in e) {
 			if (e.hasOwnProperty(k)) {
 				v = v + e[k];
@@ -36,7 +37,7 @@ export default function Challenges({ difficulty, allChallengesData, currentUserD
 		<>
 			<Grid container>
 				{allChallengesData.map((e) => {
-					if (difficulty === e.difficulty || difficulty === 'all') {
+					if (category === e.category || category === 'all') {
 						return (
 							<Grid item xs={12} sm={6} md={4} key={e.url}>
 								<Box m={1}>
@@ -73,7 +74,7 @@ export default function Challenges({ difficulty, allChallengesData, currentUserD
 												</Grid>
 												<Grid item xs={12} md={6}>
 													<Typography variant='body1' className='leaderboard-light-right'>
-														Difficulty: {e.difficulty}
+														Category: {e.category}
 													</Typography>
 												</Grid>
 											</Grid>

@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ChatMessage from '../ChatMessage';
@@ -59,7 +59,6 @@ export default function GlobalChat() {
 				setLoading(true);
 				await sendMessage(messageRef.current.value, currentUserData.userID);
 				messageRef.current.value = '';
-				dummy.current.scrollIntoView({ behavior: 'smooth' });
 			} catch {
 				console.error('Something went wrong :(');
 			}
@@ -85,6 +84,12 @@ export default function GlobalChat() {
 			getProfile();
 		}
 	});
+
+	useEffect(() => {
+		if (currentUserData && allUsersData.length > 0) {
+			dummy.current.scrollIntoView({ behavior: 'smooth' });
+		}
+	}, [globalMessages, currentUserData, allUsersData]);
 
 	useEffect(() => {
 		if (error) {
@@ -178,13 +183,6 @@ export default function GlobalChat() {
 					)}
 				</Grid>
 			</div>
-			{/* <button
-				onClick={() => {
-					console.log(globalMessages);
-				}}
-			>
-				DEBUG
-			</button> */}
 		</Container>
 	);
 }

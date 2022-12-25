@@ -274,17 +274,18 @@ export function AuthProvider({ children }) {
 			});
 	}, []);
 
-	// function addChallenges() {
-	// 	return db.collection('challenges').doc('latex').set({
-	// 		description: 'Jaką komendą stworzymy podsekcję w podsekcji w LaTeXie?',
-	// 		difficulty: 'hard',
-	// 		key: '\\subsubsection',
-	// 		points: 400,
-	// 		title: 'LaTeX',
-	// 		url: 'latex',
+	// const addChallenges = useCallback(async () => {
+	// 	await db.collection('challenges').doc('america3').set({
+	// 		flag:
+	// 			'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2Famerica3.png?alt=media',
+	// 		category: 'America',
+	// 		key: 'argentyna',
+	// 		points: 100,
+	// 		title: 'America-3',
+	// 		url: 'america3',
 	// 		ratings: {},
 	// 	});
-	// }
+	// }, []);
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -304,7 +305,6 @@ export function AuthProvider({ children }) {
 			singleChallengeData,
 			darkMode,
 			globalMessages,
-			// getGlobalMessages,
 			sendMessage,
 			getUserProfile,
 			login,
@@ -335,7 +335,6 @@ export function AuthProvider({ children }) {
 			singleChallengeData,
 			darkMode,
 			globalMessages,
-			// getGlobalMessages,
 			sendMessage,
 			getUserProfile,
 			login,

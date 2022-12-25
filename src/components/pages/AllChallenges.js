@@ -41,8 +41,8 @@ function TabPanel(props) {
 		<div
 			role='tabpanel'
 			hidden={value !== index}
-			id={`difficulty-tabpanel-${index}`}
-			aria-labelledby={`difficulty-tab-${index}`}
+			id={`category-tabpanel-${index}`}
+			aria-labelledby={`category-tab-${index}`}
 			{...other}
 		>
 			{value === index && <Box m={1}>{children}</Box>}
@@ -58,8 +58,8 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
 	return {
-		id: `difficulty-tab-${index}`,
-		'aria-controls': `difficulty-tabpanel-${index}`,
+		id: `category-tab-${index}`,
+		'aria-controls': `category-tabpanel-${index}`,
 	};
 }
 
@@ -112,45 +112,45 @@ export default function AllChallenges() {
 					<Grid item xs={12}>
 						<div className={classes.tabs}>
 							<AppBar position='static' className={classes.appbar}>
-								<Tabs value={value} onChange={handleChange} centered aria-label='difficulty'>
+								<Tabs value={value} onChange={handleChange} centered aria-label='category'>
 									<Tab label='All' {...a11yProps(0)} />
-									<Tab label='Easy' {...a11yProps(1)} />
-									<Tab label='Medium' {...a11yProps(2)} />
-									<Tab label='Hard' {...a11yProps(3)} />
-									<Tab hidden={matches} label='Special' {...a11yProps(4)} />
+									<Tab label='Europe' {...a11yProps(1)} />
+									<Tab label='Asia' {...a11yProps(2)} />
+									<Tab label='Africa' {...a11yProps(3)} />
+									<Tab hidden={matches} label='America' {...a11yProps(4)} />
 								</Tabs>
 							</AppBar>
 							<TabPanel value={value} index={0}>
 								<Challenges
-									difficulty={'all'}
+									category={'all'}
 									allChallengesData={allChallengesData}
 									currentUserData={currentUserData}
 								/>
 							</TabPanel>
 							<TabPanel value={value} index={1}>
 								<Challenges
-									difficulty={'easy'}
+									category={'Europe'}
 									allChallengesData={allChallengesData}
 									currentUserData={currentUserData}
 								/>
 							</TabPanel>
 							<TabPanel value={value} index={2}>
 								<Challenges
-									difficulty={'medium'}
+									category={'Asia'}
 									allChallengesData={allChallengesData}
 									currentUserData={currentUserData}
 								/>
 							</TabPanel>
 							<TabPanel value={value} index={3}>
 								<Challenges
-									difficulty={'hard'}
+									category={'Africa'}
 									allChallengesData={allChallengesData}
 									currentUserData={currentUserData}
 								/>
 							</TabPanel>
 							<TabPanel value={value} index={4}>
 								<Challenges
-									difficulty={'special'}
+									category={'America'}
 									allChallengesData={allChallengesData}
 									currentUserData={currentUserData}
 								/>

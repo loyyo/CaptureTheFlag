@@ -32,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const debug = () => {
-	console.log('A jednak coś tu było: WDIctory_404_founded!');
-};
-
 export default function Error() {
 	const classes = useStyles();
 	const navigate = useNavigate();
@@ -51,8 +47,7 @@ export default function Error() {
 						<Paper variant='outlined' elevation={3}>
 							<Box mb={3} mt={3} mr={5} ml={5}>
 								<Typography variant='h5' gutterBottom>
-									Ups, sorki memorki, ale tu prawdopodobnie nie znajdziesz żadnego klucza CTF...
-									Prawdopodobnie... :-)
+									Flaga dla zadania europe1 to polska, ale ciii, nikomu nie mów
 								</Typography>
 							</Box>
 							{!currentUser && (
@@ -96,9 +91,6 @@ export default function Error() {
 					</Grid>
 				</Grid>
 			</div>
-			<Button size='small' onClick={debug}>
-				ok
-			</Button>
 		</Container>
 	);
 }

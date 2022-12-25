@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -56,6 +56,7 @@ export default function Profile() {
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const { getProfile, currentUserData, allChallengesData, getAllChallengesData } = useAuth();
+	const [catchedThemAll, setCatchedThemAll] = useState(true);
 
 	const theme = useTheme();
 	const lg = useMediaQuery(theme.breakpoints.up('md'));
@@ -82,6 +83,14 @@ export default function Profile() {
 			getAllChallengesData();
 		}
 	});
+
+	useEffect(() => {
+		if (allChallengesData.length > 0 && currentUserData) {
+			allChallengesData.forEach((e) => {
+				if (!currentUserData.challenges[e.url]) setCatchedThemAll(false);
+			});
+		}
+	}, [currentUserData, allChallengesData]);
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
@@ -163,11 +172,11 @@ export default function Profile() {
 						<Grid item xs={12} lg={9}>
 							<Box m={2} mb={2} ml={3}>
 								<Paper variant='outlined' elevation={3}>
-									{currentUserData.points === 10704 && (
+									{catchedThemAll && (
 										<>
 											<Box mb={1} mt={1}>
 												<Typography align='center' display='block' variant='h5'>
-													YOU WON CTWDICTORY!
+													YOU'VE CATCHED THEM ALL!
 												</Typography>
 											</Box>
 											<Divider />

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -99,7 +99,7 @@ export default function EditProfile() {
 				promises.push(updateBio(emailRef.current.value, bioRef.current.value));
 			}
 			if (file.length !== 0) {
-				var transfer = file[0];
+				let transfer = file[0];
 				promises.push(updateAvatar(emailRef.current.value, transfer));
 			}
 		}

@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,7 +15,6 @@ import Container from '@material-ui/core/Container';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useAuth } from '../../contexts/AuthContext';
 import Box from '@material-ui/core/Box';
-import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

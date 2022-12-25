@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../contexts/AuthContext';
@@ -15,6 +16,8 @@ import { green } from '@material-ui/core/colors';
 const useStyles = makeStyles((theme) => ({
 	info: {
 		background: theme.palette.primary.main,
+		width: '100%',
+		display: 'grid',
 	},
 	button: {
 		background: theme.palette.primary.light,
@@ -80,6 +83,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 		let e = challenge.ratings;
 		let v = 0;
 		let i = 0;
+		if (Object.keys(e).length === 0) return 5;
 		for (let k in e) {
 			if (e.hasOwnProperty(k)) {
 				v = v + e[k];
@@ -123,63 +127,69 @@ export default function ChallengePage({ challenge, currentUser }) {
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<Typography variant='h6' className='leaderboard-light-right'>
-						Difficulty: {challenge[0].difficulty}
+						Category: {challenge[0].category}
 					</Typography>
 				</Grid>
 			</Grid>
 
 			{!currentUser.challenges[challenge[0].url] && (
-				<Grid item xs={12}>
-					<Box className='ratings'>
-						<Typography variant='h6' style={{ color: 'white' }}>
-							Community Ranking:
-						</Typography>
-						<Box ml={2} />
-						<Rating
-							emptySymbol='fa fa-star-o fa-2x'
-							fullSymbol='fa fa-star fa-2x'
-							fractions={100}
-							initialRating={getInitialRating(challenge[0])}
-							readonly
-						/>
-					</Box>
+				<Grid container item xs={12} className='ratings'>
+					<Typography
+						variant='h6'
+						style={{ color: 'white', marginRight: '0.5rem', marginLeft: '0.5rem' }}
+					>
+						Community Ranking:
+					</Typography>
+					<Rating
+						emptySymbol='fa fa-star-o fa-2x'
+						fullSymbol='fa fa-star fa-2x'
+						fractions={100}
+						initialRating={getInitialRating(challenge[0])}
+						readonly
+					/>
 				</Grid>
 			)}
 
 			{currentUser.challenges[challenge[0].url] && (
-				<Grid item xs={12}>
-					<Box className='ratings'>
-						<Typography variant='h6' style={{ color: 'white' }}>
-							Rate This Challenge:
-						</Typography>
-						<Box ml={2} />
-						<Rating
-							emptySymbol='fa fa-star-o fa-2x'
-							fullSymbol='fa fa-star fa-2x'
-							fractions={2}
-							initialRating={
-								challenge[0].ratings[currentUser.email]
-									? challenge[0].ratings[currentUser.email]
-									: 5
-							}
-							onClick={handleRating}
-						/>
-					</Box>
+				<Grid container item xs={12} className='ratings'>
+					<Typography
+						variant='h6'
+						style={{ color: 'white', marginRight: '0.5rem', marginLeft: '0.5rem' }}
+					>
+						Rate This Challenge:
+					</Typography>
+					<Rating
+						emptySymbol='fa fa-star-o fa-2x'
+						fullSymbol='fa fa-star fa-2x'
+						fractions={2}
+						initialRating={
+							challenge[0].ratings[currentUser.email] ? challenge[0].ratings[currentUser.email] : 5
+						}
+						onClick={handleRating}
+					/>
 				</Grid>
 			)}
 
 			<Box className={classes.info}>
 				<Grid item container xs={12}>
 					<Grid item xs={12}>
-						<div className={classes.info}>
-							<Box>
-								<Paper className={classes.info}>
-									<Typography className='leaderboard-header' variant='body1'>
-										{challenge[0].description}
-									</Typography>
-								</Paper>
-							</Box>
-						</div>
+						<Paper className={classes.info}>
+							<Box
+								style={{
+									marginLeft: 'auto',
+									marginRight: 'auto',
+									marginTop: '0.5rem',
+									marginBottom: '0.5rem',
+								}}
+								component='img'
+								sx={{
+									height: 'auto',
+									width: 300,
+								}}
+								alt={`flag-${challenge[0].url}`}
+								src={challenge[0].flag}
+							/>
+						</Paper>
 					</Grid>
 					<Grid item xs={12}>
 						{currentUser.challenges[challenge[0].url] && (
@@ -206,10 +216,10 @@ export default function ChallengePage({ challenge, currentUser }) {
 										<TextField
 											error={error}
 											helperText={
-												error ? 'Unfortunately, that is not the correct flag. Try again!' : ''
+												error ? 'Unfortunately, that is not the correct country. Try again!' : ''
 											}
 											inputRef={keyRef}
-											placeholder='Enter the flag here'
+											placeholder='Enter the country here'
 											variant='outlined'
 											fullWidth
 											InputProps={{ classes: { input: classes.input } }}
