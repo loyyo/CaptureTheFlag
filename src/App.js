@@ -1,4 +1,4 @@
-import './App.scss';
+import './App.css';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import AllChallenges from './components/pages/AllChallenges';
@@ -8,11 +8,9 @@ import Register from './components/pages/Register';
 import Profile from './components/pages/Profile';
 import Leaderboard from './components/pages/Leaderboard';
 import EditProfile from './components/pages/EditProfile';
-import ForgotPassword from './components/pages/ForgotPassword';
 import Error from './components/pages/Error';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
-import { useAuth } from './contexts/AuthContext';
 import PrivateRoute from './contexts/PrivateRoute';
 import PrivateSubRoutes from './contexts/PrivateSubRoutes';
 import LoggedInRoute from './contexts/LoggedInRoute';
@@ -24,23 +22,17 @@ import UserProfile from './components/pages/UserProfile';
 import GlobalChat from './components/pages/GlobalChat';
 
 function App() {
-	const { darkMode } = useAuth();
-
-	const prefersDarkMode = useMediaQuery(
-		darkMode === 'true' ? '(prefers-color-scheme: dark)' : '(prefers-color-scheme: light)'
-	);
-
 	const sm = useMediaQuery('(max-width:600px)');
 
 	const theme = useMemo(
 		() =>
 			createTheme({
 				palette: {
-					type: prefersDarkMode ? 'dark' : 'light',
+					type: 'light',
 					primary: {
-						light: prefersDarkMode ? '#3f4fa3' : '#7986cb',
-						main: prefersDarkMode ? '#2c387e' : '#3f51b5',
-						dark: prefersDarkMode ? '#212c6f' : '#303f9f',
+						light: '#7986cb',
+						main: '#3f51b5',
+						dark: '#303f9f',
 					},
 				},
 				overrides: {
@@ -69,31 +61,28 @@ function App() {
 								borderRadius: '2.5rem',
 							},
 							'.Mui-selected .MuiBottomNavigationAction-wrapper .MuiSvgIcon-root': {
-								color: prefersDarkMode ? '#111111' : '#3f51b5',
+								color: '#3f51b5',
 							},
 							'.Mui-selected .MuiBottomNavigationAction-wrapper .Mui-selected': {
-								color: prefersDarkMode ? '#111111' : '#3f51b5',
-							},
-							'.headerDarkMode:after': {
-								content: prefersDarkMode ? `'Light Mode'` : `'Dark Mode'`,
+								color: '#3f51b5',
 							},
 							'.App-leaderboard': {
 								overflowX: 'hidden',
 							},
 							'.leaderboard-header': {
-								backgroundColor: prefersDarkMode ? '#2c387e' : '#3f51b5',
+								backgroundColor: '#3f51b5',
 								color: 'white',
 								padding: '1rem',
 								textAlign: 'center',
 							},
 							'.leaderboard-header-dark': {
-								backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
+								backgroundColor: '#303f9f',
 								color: 'white',
 								padding: '1rem',
 								textAlign: 'center',
 							},
 							'.leaderboard-light': {
-								backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+								backgroundColor: '#7986cb',
 								color: 'white',
 								border: 'solid',
 								borderLeft: 'none',
@@ -106,7 +95,7 @@ function App() {
 								textAlign: 'center',
 							},
 							'.leaderboard-light-right': {
-								backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+								backgroundColor: '#7986cb',
 								color: 'white',
 								border: 'solid',
 								borderLeft: 'none',
@@ -117,24 +106,8 @@ function App() {
 								padding: '1rem',
 								textAlign: 'center',
 							},
-							'.ratings': {
-								backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
-								color: 'gold',
-								border: 'solid',
-								borderTop: 'none',
-								borderLeft: 'none',
-								borderRight: 'none',
-								borderWidth: '0.01rem',
-								height: '100%',
-								borderColor: 'white',
-								padding: '1rem',
-								textAlign: 'center',
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-							},
 							'.description': {
-								backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+								backgroundColor: '#7986cb',
 								color: 'white',
 								border: 'none',
 								borderLeft: 'none',
@@ -148,7 +121,7 @@ function App() {
 					},
 				},
 			}),
-		[prefersDarkMode, sm]
+		[sm]
 	);
 
 	const location = useLocation();
@@ -239,15 +212,6 @@ function App() {
 						element={
 							<LoggedInRoute>
 								<Register />
-							</LoggedInRoute>
-						}
-					/>
-					<Route
-						exact
-						path='/reset-password'
-						element={
-							<LoggedInRoute>
-								<ForgotPassword />
 							</LoggedInRoute>
 						}
 					/>

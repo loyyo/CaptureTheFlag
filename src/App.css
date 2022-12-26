@@ -4,7 +4,6 @@
 	box-sizing: border-box;
 }
 
-// + media
 .messagesBox {
 	height: 50vh;
 	overflow-y: scroll;

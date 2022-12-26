@@ -10,7 +10,6 @@ import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../contexts/AuthContext';
-import Rating from 'react-rating';
 import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const theme = createTheme({
+const successTheme = createTheme({
 	palette: {
 		error: green,
 	},
@@ -45,10 +44,15 @@ export default function ChallengePage({ challenge, currentUser }) {
 	const keyRef = useRef();
 	const classes = useStyles();
 	const navigate = useNavigate();
-	const { doChallenge, rateChallenge } = useAuth();
+	const { doChallenge } = useAuth();
 
 	async function checkKey() {
-		if (keyRef.current.value.toLowerCase() !== challenge[0].key.toLowerCase() && !loading) {
+		if (loading) {
+			return;
+		} else if (
+			keyRef.current.value.toLowerCase() !== challenge[0].key.toLowerCase() &&
+			keyRef.current.value.toLowerCase() !== challenge[0].key2.toLowerCase()
+		) {
 			setError(true);
 		} else {
 			try {
@@ -79,30 +83,6 @@ export default function ChallengePage({ challenge, currentUser }) {
 		}
 	};
 
-	const getInitialRating = (challenge) => {
-		let e = challenge.ratings;
-		let v = 0;
-		let i = 0;
-		if (Object.keys(e).length === 0) return 5;
-		for (let k in e) {
-			if (e.hasOwnProperty(k)) {
-				v = v + e[k];
-				i = i + 1;
-			}
-		}
-		return v / i;
-	};
-
-	async function handleRating(value) {
-		try {
-			await rateChallenge(value, challenge[0].url, currentUser.userID);
-			navigate('/challenges');
-			navigate(0);
-		} catch {
-			console.error('Something bad happened :(');
-		}
-	}
-
 	useEffect(() => {
 		if (error) {
 			setTimeout(() => {
@@ -132,44 +112,6 @@ export default function ChallengePage({ challenge, currentUser }) {
 				</Grid>
 			</Grid>
 
-			{!currentUser.challenges[challenge[0].url] && (
-				<Grid container item xs={12} className='ratings'>
-					<Typography
-						variant='h6'
-						style={{ color: 'white', marginRight: '0.5rem', marginLeft: '0.5rem' }}
-					>
-						Community Ranking:
-					</Typography>
-					<Rating
-						emptySymbol='fa fa-star-o fa-2x'
-						fullSymbol='fa fa-star fa-2x'
-						fractions={100}
-						initialRating={getInitialRating(challenge[0])}
-						readonly
-					/>
-				</Grid>
-			)}
-
-			{currentUser.challenges[challenge[0].url] && (
-				<Grid container item xs={12} className='ratings'>
-					<Typography
-						variant='h6'
-						style={{ color: 'white', marginRight: '0.5rem', marginLeft: '0.5rem' }}
-					>
-						Rate This Challenge:
-					</Typography>
-					<Rating
-						emptySymbol='fa fa-star-o fa-2x'
-						fullSymbol='fa fa-star fa-2x'
-						fractions={2}
-						initialRating={
-							challenge[0].ratings[currentUser.email] ? challenge[0].ratings[currentUser.email] : 5
-						}
-						onClick={handleRating}
-					/>
-				</Grid>
-			)}
-
 			<Box className={classes.info}>
 				<Grid item container xs={12}>
 					<Grid item xs={12}>
@@ -184,7 +126,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 								component='img'
 								sx={{
 									height: 'auto',
-									width: 300,
+									width: { xs: 250, sm: 350, md: 500 },
 								}}
 								alt={`flag-${challenge[0].url}`}
 								src={challenge[0].flag}
@@ -194,17 +136,9 @@ export default function ChallengePage({ challenge, currentUser }) {
 					<Grid item xs={12}>
 						{currentUser.challenges[challenge[0].url] && (
 							<>
-								{challenge[0].ratings[currentUser.userID] && (
-									<Typography variant='h5' className='leaderboard-header-dark'>
-										You've already done & rated this challenge! You can change your vote anytime
-										(◕‿◕✿)
-									</Typography>
-								)}
-								{!challenge[0].ratings[currentUser.userID] && (
-									<Typography variant='h5' className='leaderboard-header-dark'>
-										GG WP! You've successfully completed this challenge. You can now rate it :-) ☝
-									</Typography>
-								)}
+								<Typography variant='h5' className='leaderboard-header-dark'>
+									You've successfully completed this challenge.
+								</Typography>
 							</>
 						)}
 					</Grid>
@@ -222,18 +156,20 @@ export default function ChallengePage({ challenge, currentUser }) {
 											placeholder='Enter the country here'
 											variant='outlined'
 											fullWidth
+											className={classes.input}
 											InputProps={{ classes: { input: classes.input } }}
 											onKeyPress={kliknietyEnter}
 										/>
 									)}
 									{success && (
-										<ThemeProvider theme={theme}>
+										<ThemeProvider theme={successTheme}>
 											<TextField
 												error={success}
 												helperText={success ? 'Your page will refresh in a few seconds...' : ''}
 												value='Congratulations! You have captured the flag!'
 												variant='outlined'
 												fullWidth
+												className={classes.input}
 												InputProps={{ classes: { input: classes.input } }}
 											/>
 										</ThemeProvider>

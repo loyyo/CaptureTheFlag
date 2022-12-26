@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.primary.main,
 	},
 	form: {
-		width: '100%', // Fix IE 11 issue.
+		width: '100%',
 		marginTop: theme.spacing(1),
 	},
 	submit: {
@@ -114,10 +114,7 @@ export default function SignIn() {
 					>
 						Sign In
 					</Button>
-					<Grid container>
-						<Grid item xs>
-							<Link to='/reset-password'>Forgot password?</Link>
-						</Grid>
+					<Grid container justifyContent='flex-end'>
 						<Grid item>
 							<Link to='/register'>{"Don't have an account? Sign Up"}</Link>
 						</Grid>

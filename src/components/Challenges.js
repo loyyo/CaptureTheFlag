@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useNavigate } from 'react-router-dom';
-import Rating from 'react-rating';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,20 +17,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Challenges({ category, allChallengesData, currentUserData }) {
 	const classes = useStyles();
 	const navigate = useNavigate();
-
-	const getInitialRating = (challenge) => {
-		let e = challenge.ratings;
-		let v = 0;
-		let i = 0;
-		if (Object.keys(e).length === 0) return 5;
-		for (let k in e) {
-			if (e.hasOwnProperty(k)) {
-				v = v + e[k];
-				i = i + 1;
-			}
-		}
-		return v / i;
-	};
 
 	return (
 		<>
@@ -77,17 +62,6 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 														Category: {e.category}
 													</Typography>
 												</Grid>
-											</Grid>
-											<Grid item xs={12}>
-												<Box className='ratings'>
-													<Rating
-														emptySymbol='fa fa-star-o fa-2x'
-														fullSymbol='fa fa-star fa-2x'
-														fractions={100}
-														initialRating={getInitialRating(e)}
-														readonly
-													/>
-												</Box>
 											</Grid>
 											<Grid item xs={12}>
 												<Button

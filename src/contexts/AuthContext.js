@@ -11,7 +11,6 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-	const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode'));
 	const [thisUserData, setThisUserData] = useState();
 	const [currentUser, setCurrentUser] = useState();
 	const [loading, setLoading] = useState(true);
@@ -25,27 +24,12 @@ export function AuthProvider({ children }) {
 	const messageQuery = messagesRef.orderBy('createdAt').limit(100);
 	const [globalMessages] = useCollectionData(messageQuery, { idField: 'id' });
 
-	const switchDarkMode = useCallback(() => {
-		let XD = localStorage.getItem('darkMode');
-		if (!XD || XD === '' || XD === 'false') {
-			localStorage.setItem('darkMode', 'true');
-			setDarkMode('true');
-		} else if (XD === 'true') {
-			localStorage.setItem('darkMode', 'false');
-			setDarkMode('false');
-		}
-	}, []);
-
 	const login = useCallback(async (email, password) => {
 		await auth.signInWithEmailAndPassword(email, password);
 	}, []);
 
 	const logout = useCallback(async () => {
 		await auth.signOut();
-	}, []);
-
-	const resetPassword = useCallback(async (email) => {
-		await auth.sendPasswordResetEmail(email);
 	}, []);
 
 	const updateEmail = useCallback(
@@ -68,7 +52,7 @@ export function AuthProvider({ children }) {
 		try {
 			await db.collection('users').doc(`${email}`).set({
 				avatar:
-					'https://firebasestorage.googleapis.com/v0/b/capturethewdictory.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media',
+					'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media',
 				bio: 'There is nothing to see here unfortunately :(',
 				challenges: {},
 				createdAt: new Date(),
@@ -198,7 +182,7 @@ export function AuthProvider({ children }) {
 
 		storageRef.child('avatars/' + fullfilename).put(file, metadata);
 
-		let avatar = `https://firebasestorage.googleapis.com/v0/b/capturethewdictory.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
+		let avatar = `https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
 
 		await db
 			.collection('users')
@@ -220,18 +204,6 @@ export function AuthProvider({ children }) {
 			.update({
 				points: points,
 				[`challenges.${url}`]: true,
-			})
-			.catch((error) => {
-				console.error('Error updating document: ', error);
-			});
-	}, []);
-
-	const rateChallenge = useCallback(async (value, challenge, user) => {
-		await db
-			.collection('challenges')
-			.doc(challenge)
-			.update({
-				[`ratings.${user}`]: value,
 			})
 			.catch((error) => {
 				console.error('Error updating document: ', error);
@@ -274,19 +246,6 @@ export function AuthProvider({ children }) {
 			});
 	}, []);
 
-	// const addChallenges = useCallback(async () => {
-	// 	await db.collection('challenges').doc('america3').set({
-	// 		flag:
-	// 			'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2Famerica3.png?alt=media',
-	// 		category: 'America',
-	// 		key: 'argentyna',
-	// 		points: 100,
-	// 		title: 'America-3',
-	// 		url: 'america3',
-	// 		ratings: {},
-	// 	});
-	// }, []);
-
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
@@ -303,14 +262,12 @@ export function AuthProvider({ children }) {
 			allUsersData,
 			allChallengesData,
 			singleChallengeData,
-			darkMode,
 			globalMessages,
 			sendMessage,
 			getUserProfile,
 			login,
 			logout,
 			signup,
-			resetPassword,
 			updatePassword,
 			updateEmail,
 			getProfile,
@@ -322,9 +279,6 @@ export function AuthProvider({ children }) {
 			getAllChallengesData,
 			getSingleChallengeData,
 			doChallenge,
-			rateChallenge,
-			switchDarkMode,
-			// addChallenges,
 		}),
 		[
 			currentUser,
@@ -333,14 +287,12 @@ export function AuthProvider({ children }) {
 			allUsersData,
 			allChallengesData,
 			singleChallengeData,
-			darkMode,
 			globalMessages,
 			sendMessage,
 			getUserProfile,
 			login,
 			logout,
 			signup,
-			resetPassword,
 			updatePassword,
 			updateEmail,
 			getProfile,
@@ -352,9 +304,6 @@ export function AuthProvider({ children }) {
 			getAllChallengesData,
 			getSingleChallengeData,
 			doChallenge,
-			rateChallenge,
-			switchDarkMode,
-			// addChallenges,
 		]
 	);
 
