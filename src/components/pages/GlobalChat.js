@@ -152,6 +152,7 @@ export default function GlobalChat() {
 											placeholder='Type your message here'
 											variant='outlined'
 											fullWidth
+											className={classes.input}
 											InputProps={{ classes: { input: classes.input } }}
 											onKeyPress={kliknietyEnter}
 										/>
