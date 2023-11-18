@@ -1,18 +1,19 @@
-import React, { useRef, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import {
+	TextField,
+	CssBaseline,
+	Button,
+	Avatar,
+	Grid,
+	Typography,
+	Container,
+	Box,
+} from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
+import { Alert, AlertTitle } from '@mui/lab';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

@@ -1,8 +1,7 @@
-import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext.jsx';
 
-const PrivateSubRoutes = (props) => {
+const PrivateSubRoutes = () => {
 	const { currentUser } = useAuth();
 
 	return currentUser ? <Outlet /> : <Navigate to='/login' />;

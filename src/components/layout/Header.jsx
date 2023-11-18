@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import IconButton from '@material-ui/core/IconButton';
-import { useAuth } from '../../contexts/AuthContext';
-import FlagIcon from '@material-ui/icons/Flag';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
+import { useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu } from '@mui/material';
+import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

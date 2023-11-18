@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import ImageList from '@material-ui/core/ImageList';
-import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-// import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Button from '@material-ui/core/Button';
+import { useEffect, useState } from 'react';
+import {
+	CssBaseline,
+	Paper,
+	Container,
+	Divider,
+	Grid,
+	ImageList,
+	Box,
+	Avatar,
+	Typography,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Checkbox,
+	LinearProgress,
+	Button,
+	useMediaQuery,
+} from '@mui/material';
+import { makeStyles, useTheme } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	list: {
@@ -176,7 +177,7 @@ export default function Profile() {
 										<>
 											<Box mb={1} mt={1}>
 												<Typography align='center' display='block' variant='h5'>
-													YOU'VE CATCHED THEM ALL!
+													YOU&apos;VE CATCHED THEM ALL!
 												</Typography>
 											</Box>
 											<Divider />

@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { CssBaseline, Container, Grid, Box, Typography, LinearProgress } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-import Table from '../Table';
-import YourRank from '../YourRank';
+import Table from '../Table.jsx';
+import YourRank from '../YourRank.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

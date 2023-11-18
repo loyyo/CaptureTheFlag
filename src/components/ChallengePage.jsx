@@ -1,16 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { useState, useRef, useEffect } from 'react';
+import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import TextField from '@mui/material/TextField';
+import { Grid, Box, Typography, Button, TextField, Paper, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import { useAuth } from '../contexts/AuthContext';
-import { green } from '@material-ui/core/colors';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { green } from '@mui/material/colors';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
 	info: {
@@ -135,11 +130,9 @@ export default function ChallengePage({ challenge, currentUser }) {
 					</Grid>
 					<Grid item xs={12}>
 						{currentUser.challenges[challenge[0].url] && (
-							<>
-								<Typography variant='h5' className='leaderboard-header-dark'>
-									You've successfully completed this challenge.
-								</Typography>
-							</>
+							<Typography variant='h5' className='leaderboard-header-dark'>
+								You&apos;ve successfully completed this challenge.
+							</Typography>
 						)}
 					</Grid>
 					{!currentUser.challenges[challenge[0].url] && (
@@ -184,7 +177,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 										variant='contained'
 										color='primary'
 										size='large'
-										disabled={loading ? loading : success}
+										disabled={loading || success}
 										className={classes.button}
 										onClick={checkKey}
 									>
@@ -199,3 +192,8 @@ export default function ChallengePage({ challenge, currentUser }) {
 		</Grid>
 	);
 }
+
+ChallengePage.propTypes = {
+	challenge: PropTypes.object.isRequired,
+	currentUser: PropTypes.object.isRequired,
+};

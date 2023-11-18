@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import ChallengePage from '../ChallengePage';
-import { useAuth } from '../../contexts/AuthContext';
+import { CssBaseline, Container, Box, LinearProgress } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import ChallengePage from '../ChallengePage.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

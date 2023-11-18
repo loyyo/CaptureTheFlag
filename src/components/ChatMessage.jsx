@@ -1,11 +1,8 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Box, Typography, Avatar } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	avatar: {
 		width: '40px',
 		height: '40px',
@@ -64,3 +61,9 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 		</>
 	);
 }
+
+ChatMessage.propTypes = {
+	message: PropTypes.object.isRequired,
+	allUsersData: PropTypes.array.isRequired,
+	currentUserData: PropTypes.object.isRequired,
+};

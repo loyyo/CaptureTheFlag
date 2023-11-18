@@ -1,19 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { useAuth } from '../../contexts/AuthContext';
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { useRef, useState, useEffect } from 'react';
+import { makeStyles } from '@mui/styles';
+import {
+	CssBaseline,
+	Container,
+	Grid,
+	Box,
+	Typography,
+	Button,
+	TextField,
+	LinearProgress,
+	Collapse,
+	IconButton,
+} from '@mui/material';
+import { Alert, AlertTitle } from '@mui/lab';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { Close as CloseIcon } from '@mui/icons-material';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

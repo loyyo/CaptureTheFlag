@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect, useMemo, useCallback } from 'react';
-import { auth, db, storageRef } from '../firebase';
+import { auth, db, storageRef } from '../firebase.js';
 import cryptoRandomString from 'crypto-random-string';
 import { useNavigate } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import PropTypes from 'prop-types';
 
 const AuthContext = React.createContext();
 
@@ -309,3 +310,7 @@ export function AuthProvider({ children }) {
 
 	return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
+
+AuthProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};

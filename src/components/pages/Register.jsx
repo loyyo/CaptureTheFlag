@@ -1,20 +1,21 @@
-import React, { useRef, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@material-ui/core/Grid';
+import { useRef, useState } from 'react';
+import {
+	TextField,
+	Grid,
+	CssBaseline,
+	Button,
+	Avatar,
+	Collapse,
+	Container,
+	Typography,
+	IconButton,
+	Box,
+} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { useAuth } from '../../contexts/AuthContext';
-import Box from '@material-ui/core/Box';
+import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
+import { Alert, AlertTitle } from '@mui/lab';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

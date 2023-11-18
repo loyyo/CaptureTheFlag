@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@mui/styles';
+import {
+	CssBaseline,
+	Container,
+	Grid,
+	Box,
+	Typography,
+	LinearProgress,
+	AppBar,
+	Tabs,
+	Tab,
+	Divider,
+	useMediaQuery,
+} from '@mui/material';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
-import { useAuth } from '../../contexts/AuthContext';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-import Challenges from '../Challenges';
+import Challenges from '../Challenges.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -49,12 +50,6 @@ function TabPanel(props) {
 		</div>
 	);
 }
-
-TabPanel.propTypes = {
-	children: PropTypes.node,
-	index: PropTypes.any.isRequired,
-	value: PropTypes.any.isRequired,
-};
 
 function a11yProps(index) {
 	return {
@@ -162,3 +157,9 @@ export default function AllChallenges() {
 		</Container>
 	);
 }
+
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.any.isRequired,
+	value: PropTypes.any.isRequired,
+};

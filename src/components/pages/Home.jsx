@@ -1,13 +1,14 @@
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@mui/styles';
+import {
+	CssBaseline,
+	Container,
+	Grid,
+	Box,
+	Typography,
+	Divider,
+	Paper,
+	Button,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,10 +48,10 @@ export default function Home() {
 								</Typography>
 								<Typography variant='h5' className='description'>
 									CaptureTheFlag is a platform that enables people to learn, practice, and compete
-									in the field of geography, specifically world's flags.
+									in the field of geography, specifically world&apos;s flags.
 								</Typography>
 								<Typography variant='h5' className='leaderboard-header-dark'>
-									JOIN AND CATCH'EM ALL!
+									JOIN AND CATCH&apos;EM ALL!
 								</Typography>
 							</Box>
 							<Divider variant='middle' />

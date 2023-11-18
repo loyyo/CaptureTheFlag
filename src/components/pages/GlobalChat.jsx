@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@mui/material/TextField';
-import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import ChatMessage from '../ChatMessage';
+import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { makeStyles } from '@mui/styles';
+import {
+	CssBaseline,
+	Container,
+	Grid,
+	Box,
+	Typography,
+	Paper,
+	Button,
+	TextField,
+	LinearProgress,
+} from '@mui/material';
+import ChatMessage from '../ChatMessage.jsx';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {

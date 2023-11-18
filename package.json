@@ -1,64 +1,61 @@
 {
 	"name": "capturetheflag",
-	"version": "0.1.0",
-	"private": true,
+	"type": "module",
+	"version": "1.0.0",
+	"scripts": {
+		"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
 	"dependencies": {
-		"@emotion/react": "^11.10.5",
-		"@emotion/styled": "^11.10.5",
-		"@material-ui/core": "^4.12.4",
-		"@material-ui/data-grid": "^4.0.0-alpha.37",
-		"@material-ui/icons": "^4.11.3",
-		"@material-ui/lab": "^4.0.0-alpha.61",
-		"@mui/material": "^5.11.1",
-		"@mui/styled-engine-sc": "^5.11.0",
-		"@mui/styles": "^5.11.1",
-		"@testing-library/jest-dom": "^5.14.1",
-		"@testing-library/react": "^13.0.0",
-		"@testing-library/user-event": "^13.2.1",
-		"bootstrap": "^5.2.3",
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
+		"@mui/icons-material": "^5.14.18",
+		"@mui/lab": "^5.0.0-alpha.153",
+		"@mui/material": "^5.14.18",
+		"@mui/styled-engine-sc": "^6.0.0-alpha.6",
+		"@mui/styles": "^5.14.18",
+		"@mui/system": "^5.14.18",
+		"bootstrap": "^5.3.2",
 		"clear-module": "^4.1.2",
-		"clsx": "^1.2.1",
+		"clsx": "^2.0.0",
 		"crypto-random-string": "^5.0.0",
-		"dotenv": "^16.0.3",
+		"dotenv": "^16.3.1",
 		"email-regex": "^5.0.0",
-		"firebase": "^9.15.0",
+		"firebase": "^10.6.0",
 		"font-awesome": "^4.7.0",
-		"material-ui-dropzone": "^3.5.0",
-		"node-sass": "^8.0.0",
+		"node-sass": "^9.0.0",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
-		"react-bootstrap": "^2.7.0",
+		"react-bootstrap": "^2.9.1",
 		"react-dom": "^18.2.0",
 		"react-firebase-hooks": "^5.1.1",
-		"react-icons": "^4.7.1",
-		"react-router-dom": "^6.6.1",
-		"react-scripts": "5.0.1",
-		"react-virtualized": "^9.22.3",
-		"styled-components": "^5.3.6",
-		"web-vitals": "^2.1.0"
+		"react-icons": "^4.12.0",
+		"react-mui-dropzone": "^4.0.7",
+		"react-router-dom": "^6.19.0",
+		"react-virtualized": "^9.22.5",
+		"styled-components": "^6.1.1",
+		"web-vitals": "^3.5.0"
 	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+	"devDependencies": {
+		"@types/react": "^18.2.37",
+		"@types/react-dom": "^18.2.15",
+		"@vitejs/plugin-react": "^4.2.0",
+		"eslint": "^8.54.0",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.4",
+		"vite": "^5.0.0"
 	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/loyyo/CaptureTheFlag.git"
 	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+	"author": "loyyo",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/loyyo/CaptureTheFlag/issues"
+	},
+	"homepage": "https://github.com/loyyo/CaptureTheFlag#readme"
 }
