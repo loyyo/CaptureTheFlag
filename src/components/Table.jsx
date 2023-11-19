@@ -1,7 +1,6 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { useTheme } from '@mui/styles';
 import {
 	Paper,
 	Table,
@@ -22,29 +21,6 @@ import {
 	LastPage as LastPageIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-const PREFIX = 'Table';
-
-const classes = {
-	root: `${PREFIX}-root`,
-	container: `${PREFIX}-container`,
-	avatar: `${PREFIX}-avatar`,
-};
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-	[`&.${classes.root}`]: {
-		width: '100%',
-	},
-
-	[`& .${classes.container}`]: {
-		maxHeight: 500,
-	},
-
-	[`& .${classes.avatar}`]: {
-		width: theme.spacing(7.5),
-		height: theme.spacing(7.5),
-	},
-}));
 
 function TablePaginationActions(props) {
 	const theme = useTheme();
@@ -109,6 +85,7 @@ TablePaginationActions.propTypes = {
 };
 
 export default function StickyHeadTable({ allUsersData }) {
+	const theme = useTheme();
 	const navigate = useNavigate();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -144,9 +121,9 @@ export default function StickyHeadTable({ allUsersData }) {
 	};
 
 	return (
-		<StyledPaper className={classes.root}>
-			<TableContainer className={classes.container}>
-				<Table stickyHeader aria-label='sticky table' className={classes.table}>
+		<Paper sx={{ width: '100%' }}>
+			<TableContainer sx={{ maxHeight: 500 }}>
+				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow>
 							{columns.map((column) => (
@@ -189,7 +166,7 @@ export default function StickyHeadTable({ allUsersData }) {
 														alt='default_avatar'
 														src={value}
 														sizes='150px 150px'
-														className={classes.avatar}
+														sx={{ width: theme.spacing(7.5), height: theme.spacing(7.5) }}
 														style={{ padding: '0.5rem' }}
 													/>
 												</TableCell>
@@ -225,7 +202,7 @@ export default function StickyHeadTable({ allUsersData }) {
 				}}
 				ActionsComponent={TablePaginationActions}
 			/>
-		</StyledPaper>
+		</Paper>
 	);
 }
 

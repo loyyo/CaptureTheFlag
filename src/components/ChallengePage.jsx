@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled, useTheme } from '@mui/material/styles';
 import { Grid, Box, Typography, Button, TextField, Paper, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -7,24 +7,10 @@ import { green } from '@mui/material/colors';
 import PropTypes from 'prop-types';
 
 const PREFIX = 'ChallengePage';
-
 const classes = {
-	info: `${PREFIX}-info`,
-	button: `${PREFIX}-button`,
 	input: `${PREFIX}-input`,
 };
-
 const StyledGrid = styled(Grid)(({ theme }) => ({
-	[`& .${classes.info}`]: {
-		background: theme.palette.primary.main,
-		width: '100%',
-		display: 'grid',
-	},
-
-	[`& .${classes.button}`]: {
-		background: theme.palette.primary.light,
-	},
-
 	[`& .${classes.input}`]: {
 		'&::placeholder': {
 			color: 'white',
@@ -46,6 +32,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const keyRef = useRef();
+	const theme = useTheme();
 
 	const navigate = useNavigate();
 	const { doChallenge } = useAuth();
@@ -116,10 +103,10 @@ export default function ChallengePage({ challenge, currentUser }) {
 				</Grid>
 			</Grid>
 
-			<Box className={classes.info}>
+			<Box sx={{ background: theme.palette.primary.main, width: '100%', display: 'grid' }}>
 				<Grid item container xs={12}>
 					<Grid item xs={12}>
-						<Paper className={classes.info}>
+						<Paper sx={{ background: theme.palette.primary.main, width: '100%', display: 'grid' }}>
 							<Box
 								style={{
 									marginLeft: 'auto',
@@ -187,7 +174,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 										color='primary'
 										size='large'
 										disabled={loading || success}
-										className={classes.button}
+										sx={{ background: theme.palette.primary.light }}
 										onClick={checkKey}
 									>
 										Submit Flag

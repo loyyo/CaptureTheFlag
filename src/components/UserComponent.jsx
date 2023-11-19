@@ -1,6 +1,4 @@
-import { useTheme } from '@mui/styles';
-
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 import {
 	Paper,
@@ -18,47 +16,6 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-const PREFIX = 'UserComponent';
-
-const classes = {
-	list: `${PREFIX}-list`,
-	button: `${PREFIX}-button`,
-	avatar: `${PREFIX}-avatar`,
-	avatarbox: `${PREFIX}-avatarbox`,
-	listitem: `${PREFIX}-listitem`,
-	checkbox: `${PREFIX}-checkbox`,
-};
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-	[`& .${classes.list}`]: {
-		width: '100%',
-		backgroundColor: theme.palette.background.paper,
-		// display: 'flex',
-		flexDirection: 'row',
-		// padding: 0,
-	},
-
-	[`& .${classes.button}`]: {
-		margin: theme.spacing(0.5, 0, 0.5),
-	},
-
-	[`& .${classes.avatar}`]: {
-		width: '200px',
-		height: '200px',
-		margin: 'auto',
-	},
-
-	[`& .${classes.avatarbox}`]: {},
-
-	[`& .${classes.listitem}`]: {
-		cursor: 'default',
-	},
-
-	[`& .${classes.checkbox}`]: {
-		cursor: 'default',
-	},
-}));
 
 export default function UserProfile({ currentUserData, allChallengesData }) {
 	const navigate = useNavigate();
@@ -81,7 +38,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 	};
 
 	return (
-		<StyledPaper variant='elevation' elevation={6}>
+		<Paper variant='elevation' elevation={6}>
 			<Grid container>
 				<Grid item xs={12}>
 					<Typography variant='h4' className='header-text'>
@@ -97,7 +54,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 										variant='rounded'
 										alt='default_avatar'
 										src={currentUserData.avatar}
-										className={classes.avatar}
+										sx={{ width: '200px', height: '200px', margin: 'auto' }}
 										style={{ padding: '0.5rem' }}
 									/>
 									<Divider variant='middle' />
@@ -139,11 +96,22 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 								<Box mt={1}>
 									<Divider />
 									<Divider />
-									<ImageList rowHeight='auto' gap={0} cols={screenSize()} className={classes.list}>
+									<ImageList
+										rowHeight='auto'
+										gap={0}
+										cols={screenSize()}
+										sx={{
+											width: '100%',
+											backgroundColor: theme.palette.background.paper,
+											// display: 'flex',
+											flexDirection: 'row',
+											// padding: 0,
+										}}
+									>
 										{allChallengesData.map((e) => {
 											return (
 												<ListItem
-													className={classes.listitem}
+													sx={{ cursor: 'default' }}
 													divider
 													button
 													onClick={() => {
@@ -154,7 +122,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 													<Divider orientation='vertical' />
 													<ListItemIcon>
 														<Checkbox
-															className={classes.checkbox}
+															sx={{ cursor: 'default' }}
 															edge='end'
 															checked={currentUserData.challenges[e.url]}
 															disableRipple
@@ -174,7 +142,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 					</Box>
 				</Grid>
 			</Grid>
-		</StyledPaper>
+		</Paper>
 	);
 }
 

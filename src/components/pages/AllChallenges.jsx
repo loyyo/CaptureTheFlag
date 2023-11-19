@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { useTheme } from '@mui/styles';
 import {
 	CssBaseline,
 	Container,
@@ -18,35 +17,6 @@ import {
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 import Challenges from '../Challenges.jsx';
-
-const PREFIX = 'AllChallenges';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	tabs: `${PREFIX}-tabs`,
-	appbar: `${PREFIX}-appbar`,
-	loading: `${PREFIX}-loading`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(5),
-		marginBottom: theme.spacing(5),
-	},
-
-	[`& .${classes.tabs}`]: {
-		flexGrow: 1,
-		backgroundColor: theme.palette.background.paper,
-	},
-
-	[`& .${classes.appbar}`]: {
-		background: theme.palette.primary.dark,
-	},
-
-	[`& .${classes.loading}`]: {
-		width: '100%',
-	},
-}));
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -93,21 +63,21 @@ export default function AllChallenges() {
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
-			<StyledContainer component='main' maxWidth='lg'>
+			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<div className={classes.loading}>
+				<Box sx={{ width: '100%' }}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
-				</div>
-			</StyledContainer>
+				</Box>
+			</Container>
 		);
 	}
 
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<div className={classes.paper}>
+			<Box mt={5} mb={5}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
 						<Typography variant='h4' className='header-text'>
@@ -116,8 +86,8 @@ export default function AllChallenges() {
 						<Divider />
 					</Grid>
 					<Grid item xs={12}>
-						<div className={classes.tabs}>
-							<AppBar position='static' className={classes.appbar}>
+						<Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.paper }}>
+							<AppBar position='static' sx={{ background: theme.palette.primary.dark }}>
 								<Tabs value={value} onChange={handleChange} centered aria-label='category'>
 									<Tab label='All' {...a11yProps(0)} />
 									<Tab label='Europe' {...a11yProps(1)} />
@@ -161,10 +131,10 @@ export default function AllChallenges() {
 									currentUserData={currentUserData}
 								/>
 							</TabPanel>
-						</div>
+						</Box>
 					</Grid>
 				</Grid>
-			</div>
+			</Box>
 		</Container>
 	);
 }

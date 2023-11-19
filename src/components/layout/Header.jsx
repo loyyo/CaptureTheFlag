@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	Typography,
 	Button,
@@ -14,52 +14,9 @@ import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mu
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
-const PREFIX = 'Header';
-
-const classes = {
-	root: `${PREFIX}-root`,
-	colorInherit: `${PREFIX}-colorInherit`,
-	menuButton: `${PREFIX}-menuButton`,
-	title: `${PREFIX}-title`,
-	icon: `${PREFIX}-icon`,
-	href: `${PREFIX}-href`,
-};
-
-const StyledBox = styled(Box)(({ theme }) => ({
-	[`& .${classes.root}`]: {
-		flexGrow: 1,
-	},
-
-	[`& .${classes.colorInherit}`]: {
-		color: '#000000',
-		backgroundColor: '#000000',
-	},
-
-	[`& .${classes.menuButton}`]: {
-		marginLeft: theme.spacing(-0.5),
-		marginRight: theme.spacing(0.5),
-	},
-
-	[`& .${classes.title}`]: {
-		flexGrow: 1,
-	},
-
-	[`& .${classes.icon}`]: {
-		color: 'white',
-	},
-
-	[`& .${classes.href}`]: {
-		color: 'white',
-		textDecoration: 'none',
-		'&:hover': {
-			color: 'white',
-			textDecoration: 'none',
-		},
-	},
-}));
-
 const Header = () => {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [error, setError] = useState('error');
@@ -87,20 +44,30 @@ const Header = () => {
 	};
 
 	return (
-		<StyledBox className={classes.root}>
+		<Box sx={{ flexGrow: 1 }}>
 			<AppBar color='primary' position='static'>
 				<Toolbar>
-					<div className={classes.title}>
+					<Box sx={{ flexGrow: 1 }}>
 						<Button
 							onClick={() => {
 								navigate('/');
 							}}
 						>
-							<Typography className={classes.href} variant='subtitle2'>
+							<Typography
+								sx={{
+									color: 'white',
+									textDecoration: 'none',
+									'&:hover': {
+										color: 'white',
+										textDecoration: 'none',
+									},
+								}}
+								variant='subtitle2'
+							>
 								Capture The Flag
 							</Typography>
 						</Button>
-					</div>
+					</Box>
 
 					{currentUser !== null && (
 						<>
@@ -109,15 +76,18 @@ const Header = () => {
 									navigate('/challenges');
 								}}
 							>
-								<FlagIcon className={classes.icon} />
+								<FlagIcon sx={{ color: 'white' }} />
 							</Button>
 							<Button
 								onClick={() => {
 									navigate('/leaderboard');
 								}}
-								className={classes.menuButton}
+								sx={{
+									marginLeft: theme.spacing(-0.5),
+									marginRight: theme.spacing(0.5),
+								}}
 							>
-								<EqualizerIcon className={classes.icon} />
+								<EqualizerIcon sx={{ color: 'white' }} />
 							</Button>
 						</>
 					)}
@@ -130,7 +100,7 @@ const Header = () => {
 							onClick={handleMenu}
 							color='inherit'
 						>
-							<AccountCircle className={classes.icon} />
+							<AccountCircle sx={{ color: 'white' }} />
 						</IconButton>
 						<Menu
 							id='menu-appbar'
@@ -210,7 +180,7 @@ const Header = () => {
 					</div>
 				</Toolbar>
 			</AppBar>
-		</StyledBox>
+		</Box>
 	);
 };
 

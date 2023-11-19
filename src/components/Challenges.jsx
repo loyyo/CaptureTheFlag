@@ -1,25 +1,14 @@
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { Grid, Box, Typography, Button, Paper, Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const PREFIX = 'Challenges';
-
-const classes = {
-	button: `${PREFIX}-button`,
-};
-
-const StyledGrid = styled(Grid)(({ theme }) => ({
-	[`& .${classes.button}`]: {
-		background: theme.palette.primary.dark,
-	},
-}));
-
 export default function Challenges({ category, allChallengesData, currentUserData }) {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	return (
-		<StyledGrid container>
+		<Grid container>
 			{allChallengesData.map((e) => {
 				if (category === e.category || category === 'all') {
 					return (
@@ -66,7 +55,7 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 												fullWidth
 												variant='contained'
 												color='primary'
-												className={classes.button}
+												sx={{ background: theme.palette.primary.dark }}
 												onClick={() => {
 													navigate(`/challenges/${e.url}`);
 												}}
@@ -83,7 +72,7 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 					return null;
 				}
 			})}
-		</StyledGrid>
+		</Grid>
 	);
 }
 

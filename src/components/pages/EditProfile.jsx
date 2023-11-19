@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -11,6 +11,7 @@ import {
 	LinearProgress,
 	Collapse,
 	IconButton,
+	FormControl,
 } from '@mui/material';
 import { Alert, AlertTitle } from '@mui/lab';
 import { useAuth } from '../../contexts/AuthContext.jsx';
@@ -18,45 +19,9 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useNavigate } from 'react-router-dom';
 
-const PREFIX = 'EditProfile';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	avatar: `${PREFIX}-avatar`,
-	form: `${PREFIX}-form`,
-	submit: `${PREFIX}-submit`,
-	loading: `${PREFIX}-loading`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(5),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-
-	[`& .${classes.avatar}`]: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.primary.main,
-	},
-
-	[`& .${classes.form}`]: {
-		width: '100%',
-		marginTop: theme.spacing(3),
-	},
-
-	[`& .${classes.submit}`]: {
-		margin: theme.spacing(3, 0, 2),
-	},
-
-	[`& .${classes.loading}`]: {
-		width: '100%',
-	},
-}));
-
 export default function EditProfile() {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const emailRef = useRef();
 	const bioRef = useRef();
@@ -151,21 +116,28 @@ export default function EditProfile() {
 
 	if (!currentUserData) {
 		return (
-			<StyledContainer component='main' maxWidth='lg'>
+			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<div className={classes.loading}>
+				<Box sx={{ width: '100%' }}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
-				</div>
-			</StyledContainer>
+				</Box>
+			</Container>
 		);
 	}
 
 	return (
 		<Container component='main' maxWidth='lg'>
 			<CssBaseline />
-			<div className={classes.paper}>
+			<Box
+				mt={5}
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
 				<Grid container>
 					<Grid item xs={12}>
 						<Typography variant='h4' className='header-text'>
@@ -173,7 +145,7 @@ export default function EditProfile() {
 						</Typography>
 					</Grid>
 				</Grid>
-				<form onSubmit={handleSubmit} className={classes.form}>
+				<FormControl onSubmit={handleSubmit} sx={{ width: '100%', marginTop: theme.spacing(3) }}>
 					{error && (
 						<Box mt={-1} mb={2}>
 							<Alert variant='outlined' severity='error'>
@@ -303,7 +275,7 @@ export default function EditProfile() {
 						variant='contained'
 						color='primary'
 						size='large'
-						className={classes.submit}
+						sx={{ margin: theme.spacing(3, 0, 2) }}
 						disabled={loading}
 					>
 						Save
@@ -320,8 +292,8 @@ export default function EditProfile() {
 							</Button>
 						</Grid>
 					</Grid>
-				</form>
-			</div>
+				</FormControl>
+			</Box>
 		</Container>
 	);
 }

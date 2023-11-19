@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -12,52 +12,32 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const PREFIX = 'Error';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	button: `${PREFIX}-button`,
-	darkModeButton: `${PREFIX}-darkModeButton`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(15),
-		marginBottom: theme.spacing(5),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-
-	[`& .${classes.button}`]: {
-		margin: theme.spacing(2.5, 0, 2.5),
-	},
-
-	[`& .${classes.darkModeButton}`]: {
-		margin: theme.spacing(2.5, 0, 2.5),
-		backgroundColor: theme.palette.primary.light,
-		color: 'white',
-		'&:hover': {
-			backgroundColor: theme.palette.primary.dark,
-		},
-	},
-}));
+//TODO: Custom error page
 
 export default function ErrorPage() {
+	const theme = useTheme();
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 
 	return (
-		<StyledContainer maxWidth='lg'>
+		<Container maxWidth='lg'>
 			<CssBaseline />
-			<div className={classes.paper}>
+			<Box
+				mt={15}
+				mb={5}
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
 				<Grid container>
 					<Grid item xs={1} />
 					<Grid item xs={10}>
 						<Paper variant='outlined'>
 							<Box mb={3} mt={3} mr={5} ml={5}>
 								<Typography variant='h5' gutterBottom>
-									Flaga dla zadania europe1 to polska, ale ciii, nikomu nie mów
+									Error
 								</Typography>
 							</Box>
 							{!currentUser && (
@@ -71,7 +51,7 @@ export default function ErrorPage() {
 												variant='contained'
 												color='primary'
 												size='large'
-												className={classes.button}
+												sx={{ margin: theme.spacing(2.5, 0, 2.5) }}
 												onClick={() => {
 													navigate('/register');
 												}}
@@ -85,7 +65,14 @@ export default function ErrorPage() {
 												fullWidth
 												variant='contained'
 												size='large'
-												className={classes.darkModeButton}
+												sx={{
+													margin: theme.spacing(2.5, 0, 2.5),
+													backgroundColor: theme.palette.primary.light,
+													color: 'white',
+													'&:hover': {
+														backgroundColor: theme.palette.primary.dark,
+													},
+												}}
 												onClick={() => {
 													navigate('/login');
 												}}
@@ -100,7 +87,7 @@ export default function ErrorPage() {
 						</Paper>
 					</Grid>
 				</Grid>
-			</div>
-		</StyledContainer>
+			</Box>
+		</Container>
 	);
 }

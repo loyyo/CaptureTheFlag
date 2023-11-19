@@ -1,20 +1,5 @@
 import { Grid, Box, Typography, Avatar } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-
-const PREFIX = 'ChatMessage';
-
-const classes = {
-	avatar: `${PREFIX}-avatar`,
-};
-
-const StyledBox = styled(Box)(() => ({
-	[`& .${classes.avatar}`]: {
-		width: '40px',
-		height: '40px',
-		margin: '2px 5px',
-	},
-}));
 
 export default function ChatMessage({ message, currentUserData, allUsersData }) {
 	const messageClass = currentUserData.userID === message.userID ? 'sent' : 'received';
@@ -39,7 +24,7 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 	};
 
 	return (
-		<StyledBox p={1}>
+		<Box p={1}>
 			<Box className={`messages ${messageClass}`}>
 				{messageClass === 'received' && (
 					<Grid container direction='column'>
@@ -50,8 +35,7 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 							<Avatar
 								alt='chat_avatar'
 								src={avatarSrc()}
-								className={classes.avatar}
-								style={{ padding: '0.25rem' }}
+								sx={{ width: '40px', height: '40px', margin: '2px 5px', padding: '0.25rem' }}
 								// imgProps={{ title: `${username()}` }}
 							/>
 							<Typography className='message'>{message.text}</Typography>
@@ -60,7 +44,7 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 				)}
 				{messageClass === 'sent' && <Typography className='message'>{message.text}</Typography>}
 			</Box>
-		</StyledBox>
+		</Box>
 	);
 }
 

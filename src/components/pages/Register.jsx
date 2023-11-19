@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	TextField,
 	Grid,
@@ -11,46 +11,16 @@ import {
 	Typography,
 	IconButton,
 	Box,
+	FormControl,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Alert, AlertTitle } from '@mui/lab';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const PREFIX = 'Register';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	avatar: `${PREFIX}-avatar`,
-	form: `${PREFIX}-form`,
-	submit: `${PREFIX}-submit`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-
-	[`& .${classes.avatar}`]: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.primary.main,
-	},
-
-	[`& .${classes.form}`]: {
-		width: '100%',
-		marginTop: theme.spacing(3),
-	},
-
-	[`& .${classes.submit}`]: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
-
 export default function SignUp() {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const usernameRef = useRef();
 	const emailRef = useRef();
@@ -93,16 +63,16 @@ export default function SignUp() {
 	}
 
 	return (
-		<StyledContainer component='main' maxWidth='xs'>
+		<Container component='main' maxWidth='xs'>
 			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>
+			<Box mt={8} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				<Avatar sx={{ margin: theme.spacing(1), backgroundColor: theme.palette.primary.main }}>
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
 					Sign up
 				</Typography>
-				<form onSubmit={handleSubmit} className={classes.form}>
+				<FormControl onSubmit={handleSubmit} sx={{ width: '100%', marginTop: theme.spacing(3) }}>
 					{error && (
 						<Box mt={-1} mb={2}>
 							<Alert variant='outlined' severity='error'>
@@ -201,7 +171,7 @@ export default function SignUp() {
 						fullWidth
 						variant='contained'
 						color='primary'
-						className={classes.submit}
+						sx={{ margin: theme.spacing(3, 0, 2) }}
 						disabled={loading}
 					>
 						Sign Up
@@ -211,8 +181,8 @@ export default function SignUp() {
 							<Link to='/login'>Already have an account? Sign in</Link>
 						</Grid>
 					</Grid>
-				</form>
-			</div>
-		</StyledContainer>
+				</FormControl>
+			</Box>
+		</Container>
 	);
 }

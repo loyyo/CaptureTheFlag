@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -11,45 +11,23 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const PREFIX = 'Home';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	button: `${PREFIX}-button`,
-	darkModeButton: `${PREFIX}-darkModeButton`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(5),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-
-	[`& .${classes.button}`]: {
-		margin: theme.spacing(2.5, 0, 2.5),
-	},
-
-	[`& .${classes.darkModeButton}`]: {
-		margin: theme.spacing(2.5, 0, 2.5),
-		backgroundColor: theme.palette.primary.light,
-		color: 'white',
-		'&:hover': {
-			backgroundColor: theme.palette.primary.dark,
-		},
-	},
-}));
-
 export default function Home() {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	return (
-		<StyledContainer maxWidth='md'>
+		<Container maxWidth='md'>
 			<CssBaseline />
 			<Grid container spacing={5}>
 				<Grid item xs={12}>
-					<div className={classes.paper}>
+					<Box
+						mt={5}
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+						}}
+					>
 						<Paper variant='outlined'>
 							<Box m={3}>
 								<Typography variant='h4' className='header-text'>
@@ -72,7 +50,7 @@ export default function Home() {
 										variant='contained'
 										color='primary'
 										size='large'
-										className={classes.button}
+										sx={{ margin: theme.spacing(2.5, 0, 2.5) }}
 										onClick={() => {
 											navigate('/register');
 										}}
@@ -86,7 +64,14 @@ export default function Home() {
 										fullWidth
 										variant='contained'
 										size='large'
-										className={classes.darkModeButton}
+										sx={{
+											margin: theme.spacing(2.5, 0, 2.5),
+											backgroundColor: theme.palette.primary.light,
+											color: 'white',
+											'&:hover': {
+												backgroundColor: theme.palette.primary.dark,
+											},
+										}}
 										onClick={() => {
 											navigate('/login');
 										}}
@@ -96,9 +81,9 @@ export default function Home() {
 								</Grid>
 							</Grid>
 						</Paper>
-					</div>
+					</Box>
 				</Grid>
 			</Grid>
-		</StyledContainer>
+		</Container>
 	);
 }

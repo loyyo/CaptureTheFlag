@@ -1,28 +1,9 @@
 import { useEffect } from 'react';
-import { styled } from '@mui/material/styles';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { CssBaseline, Container, Grid, Box, Typography, LinearProgress } from '@mui/material';
 
 import Table from '../Table.jsx';
 import YourRank from '../YourRank.jsx';
-
-const PREFIX = 'Leaderboard';
-
-const classes = {
-	paper: `${PREFIX}-paper`,
-	loading: `${PREFIX}-loading`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(5),
-		marginBottom: theme.spacing(5),
-	},
-
-	[`& .${classes.loading}`]: {
-		width: '100%',
-	},
-}));
 
 export default function Leaderboard() {
 	const { getAllUsersData, allUsersData, currentUserData, getProfile } = useAuth();
@@ -38,21 +19,21 @@ export default function Leaderboard() {
 
 	if (!currentUserData || allUsersData.length === 0) {
 		return (
-			<StyledContainer component='main' maxWidth='lg'>
+			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<div className={classes.loading}>
+				<Box sx={{ width: '100%' }}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
-				</div>
-			</StyledContainer>
+				</Box>
+			</Container>
 		);
 	}
 
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<div className={classes.paper}>
+			<Box mt={5} mb={5}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
 						<Typography variant='h4' className='header-text'>
@@ -68,7 +49,7 @@ export default function Leaderboard() {
 						<Table allUsersData={allUsersData} />
 					</Grid>
 				</Grid>
-			</div>
+			</Box>
 		</Container>
 	);
 }

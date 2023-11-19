@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Paper,
@@ -10,7 +10,7 @@ import {
 	Box,
 	Avatar,
 	Typography,
-	ListItem,
+	ListItemButton,
 	ListItemIcon,
 	ListItemText,
 	Checkbox,
@@ -18,61 +18,8 @@ import {
 	Button,
 	useMediaQuery,
 } from '@mui/material';
-import { useTheme } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-
-const PREFIX = 'Profile';
-
-const classes = {
-	list: `${PREFIX}-list`,
-	paper: `${PREFIX}-paper`,
-	button: `${PREFIX}-button`,
-	avatar: `${PREFIX}-avatar`,
-	avatarbox: `${PREFIX}-avatarbox`,
-	loading: `${PREFIX}-loading`,
-	listitem: `${PREFIX}-listitem`,
-	checkbox: `${PREFIX}-checkbox`,
-};
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	[`& .${classes.list}`]: {
-		width: '100%',
-		backgroundColor: theme.palette.background.paper,
-		// display: 'flex',
-		flexDirection: 'row',
-		// padding: 0,
-	},
-
-	[`& .${classes.paper}`]: {
-		marginTop: theme.spacing(5),
-		marginBottom: theme.spacing(5),
-	},
-
-	[`& .${classes.button}`]: {
-		margin: theme.spacing(0.5, 0, 0.5),
-	},
-
-	[`& .${classes.avatar}`]: {
-		width: '200px',
-		height: '200px',
-		margin: 'auto',
-	},
-
-	[`& .${classes.avatarbox}`]: {},
-
-	[`& .${classes.loading}`]: {
-		width: '100%',
-	},
-
-	[`& .${classes.listitem}`]: {
-		cursor: 'default',
-	},
-
-	[`& .${classes.checkbox}`]: {
-		cursor: 'default',
-	},
-}));
 
 export default function Profile() {
 	const navigate = useNavigate();
@@ -115,21 +62,21 @@ export default function Profile() {
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
-			<StyledContainer component='main' maxWidth='lg'>
+			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<div className={classes.loading}>
+				<Box sx={{ width: '100%' }}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
-				</div>
-			</StyledContainer>
+				</Box>
+			</Container>
 		);
 	}
 
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<div className={classes.paper}>
+			<Box mt={5} mb={5}>
 				<Paper variant='elevation' elevation={6}>
 					<Grid container>
 						<Grid item xs={12}>
@@ -146,7 +93,7 @@ export default function Profile() {
 												variant='rounded'
 												alt='default_avatar'
 												src={currentUserData.avatar}
-												className={classes.avatar}
+												sx={{ width: '200px', height: '200px', margin: 'auto' }}
 												style={{ padding: '0.5rem' }}
 											/>
 											<Divider variant='middle' />
@@ -179,7 +126,7 @@ export default function Profile() {
 											fullWidth
 											variant='contained'
 											color='primary'
-											className={classes.button}
+											sx={{ margin: theme.spacing(0.5, 0, 0.5) }}
 											onClick={() => {
 												navigate('/profile/settings');
 											}}
@@ -220,14 +167,19 @@ export default function Profile() {
 												rowHeight='auto'
 												gap={0}
 												cols={screenSize()}
-												className={classes.list}
+												sx={{
+													width: '100%',
+													backgroundColor: theme.palette.background.paper,
+													// display: 'flex',
+													flexDirection: 'row',
+													// padding: 0,
+												}}
 											>
 												{allChallengesData.map((e) => {
 													return (
-														<ListItem
-															className={classes.listitem}
+														<ListItemButton
+															sx={{ cursor: 'default' }}
 															divider
-															button
 															onClick={() => {
 																navigate(`/challenges/${e.url}`);
 															}}
@@ -236,7 +188,7 @@ export default function Profile() {
 															<Divider orientation='vertical' />
 															<ListItemIcon>
 																<Checkbox
-																	className={classes.checkbox}
+																	sx={{ cursor: 'default' }}
 																	edge='end'
 																	checked={currentUserData.challenges[e.url]}
 																	disableRipple
@@ -246,7 +198,7 @@ export default function Profile() {
 															</ListItemIcon>
 															<ListItemText id='challenge1' primary={e.title} />
 															<Divider orientation='vertical' />
-														</ListItem>
+														</ListItemButton>
 													);
 												})}
 											</ImageList>
@@ -257,7 +209,7 @@ export default function Profile() {
 						</Grid>
 					</Grid>
 				</Paper>
-			</div>
+			</Box>
 		</Container>
 	);
 }

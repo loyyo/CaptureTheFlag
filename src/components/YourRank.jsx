@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
 	Grid,
 	Typography,
@@ -15,39 +15,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const PREFIX = 'YourRank';
-
-const classes = {
-	root: `${PREFIX}-root`,
-	container: `${PREFIX}-container`,
-	avatar: `${PREFIX}-avatar`,
-	button: `${PREFIX}-button`,
-};
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-	[`&.${classes.root}`]: {
-		width: '100%',
-	},
-
-	[`& .${classes.container}`]: {
-		maxHeight: 440,
-	},
-
-	[`& .${classes.avatar}`]: {
-		width: theme.spacing(5),
-		height: theme.spacing(5),
-	},
-
-	[`& .${classes.button}`]: {
-		width: '100%',
-		height: theme.spacing(6),
-		fontSize: theme.spacing(2),
-		background: theme.palette.primary.light,
-	},
-}));
-
 export default function YourRank({ allUsersData, currentUserData }) {
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const columns = [
 		{
@@ -69,9 +39,9 @@ export default function YourRank({ allUsersData, currentUserData }) {
 	];
 
 	return (
-		<StyledPaper className={classes.root}>
+		<Paper sx={{ width: '100%' }}>
 			<Grid container direction='column' alignItems='center'>
-				<TableContainer className={classes.container}>
+				<TableContainer sx={{ maxHeight: 440 }}>
 					<Table stickyHeader aria-label='sticky table'>
 						<TableHead>
 							<TableRow>
@@ -116,7 +86,7 @@ export default function YourRank({ allUsersData, currentUserData }) {
 																alt='default_avatar'
 																src={value}
 																sizes='150px 150px'
-																className={classes.avatar}
+																sx={{ width: theme.spacing(5), height: theme.spacing(5) }}
 																style={{ padding: '0.5rem' }}
 															/>
 														</TableCell>
@@ -155,13 +125,18 @@ export default function YourRank({ allUsersData, currentUserData }) {
 						}}
 						color='primary'
 						variant='contained'
-						className={classes.button}
+						sx={{
+							width: '100%',
+							height: theme.spacing(6),
+							fontSize: theme.spacing(2),
+							background: theme.palette.primary.light,
+						}}
 					>
 						GET MORE POINTS!
 					</Button>
 				</Grid>
 			</Grid>
-		</StyledPaper>
+		</Paper>
 	);
 }
 
