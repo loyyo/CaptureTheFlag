@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import {
 	TextField,
 	CssBaseline,
@@ -11,32 +12,42 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
-import { makeStyles } from '@mui/styles';
 import { Alert, AlertTitle } from '@mui/lab';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'Login';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	avatar: `${PREFIX}-avatar`,
+	form: `${PREFIX}-form`,
+	submit: `${PREFIX}-submit`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(8),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		margin: theme.spacing(1),
 		backgroundColor: theme.palette.primary.main,
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: '100%',
 		marginTop: theme.spacing(1),
 	},
-	submit: {
+
+	[`& .${classes.submit}`]: {
 		margin: theme.spacing(3, 0, 2),
 	},
 }));
 
 export default function SignIn() {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const emailRef = useRef();
@@ -63,7 +74,7 @@ export default function SignIn() {
 	}
 
 	return (
-		<Container component='main' maxWidth='xs'>
+		<StyledContainer component='main' maxWidth='xs'>
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -122,6 +133,6 @@ export default function SignIn() {
 					</Grid>
 				</form>
 			</div>
-		</Container>
+		</StyledContainer>
 	);
 }

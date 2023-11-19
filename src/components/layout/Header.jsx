@@ -1,29 +1,54 @@
 import { useState } from 'react';
-import { makeStyles } from '@mui/styles';
-import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+	Typography,
+	Button,
+	IconButton,
+	AppBar,
+	Toolbar,
+	MenuItem,
+	Menu,
+	Box,
+} from '@mui/material';
 import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = 'Header';
+
+const classes = {
+	root: `${PREFIX}-root`,
+	colorInherit: `${PREFIX}-colorInherit`,
+	menuButton: `${PREFIX}-menuButton`,
+	title: `${PREFIX}-title`,
+	icon: `${PREFIX}-icon`,
+	href: `${PREFIX}-href`,
+};
+
+const StyledBox = styled(Box)(({ theme }) => ({
+	[`& .${classes.root}`]: {
 		flexGrow: 1,
 	},
-	colorInherit: {
+
+	[`& .${classes.colorInherit}`]: {
 		color: '#000000',
 		backgroundColor: '#000000',
 	},
-	menuButton: {
+
+	[`& .${classes.menuButton}`]: {
 		marginLeft: theme.spacing(-0.5),
 		marginRight: theme.spacing(0.5),
 	},
-	title: {
+
+	[`& .${classes.title}`]: {
 		flexGrow: 1,
 	},
-	icon: {
+
+	[`& .${classes.icon}`]: {
 		color: 'white',
 	},
-	href: {
+
+	[`& .${classes.href}`]: {
 		color: 'white',
 		textDecoration: 'none',
 		'&:hover': {
@@ -34,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = () => {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -63,132 +87,130 @@ const Header = () => {
 	};
 
 	return (
-		<>
-			<div className={classes.root}>
-				<AppBar color='primary' position='static'>
-					<Toolbar>
-						<div className={classes.title}>
+		<StyledBox className={classes.root}>
+			<AppBar color='primary' position='static'>
+				<Toolbar>
+					<div className={classes.title}>
+						<Button
+							onClick={() => {
+								navigate('/');
+							}}
+						>
+							<Typography className={classes.href} variant='subtitle2'>
+								Capture The Flag
+							</Typography>
+						</Button>
+					</div>
+
+					{currentUser !== null && (
+						<>
 							<Button
 								onClick={() => {
-									navigate('/');
+									navigate('/challenges');
 								}}
 							>
-								<Typography className={classes.href} variant='subtitle2'>
-									Capture The Flag
-								</Typography>
+								<FlagIcon className={classes.icon} />
 							</Button>
-						</div>
+							<Button
+								onClick={() => {
+									navigate('/leaderboard');
+								}}
+								className={classes.menuButton}
+							>
+								<EqualizerIcon className={classes.icon} />
+							</Button>
+						</>
+					)}
 
-						{currentUser !== null && (
-							<>
-								<Button
+					<div className=''>
+						<IconButton
+							aria-label='account of current user'
+							aria-controls='menu-appbar'
+							aria-haspopup='true'
+							onClick={handleMenu}
+							color='inherit'
+						>
+							<AccountCircle className={classes.icon} />
+						</IconButton>
+						<Menu
+							id='menu-appbar'
+							anchorEl={anchorEl}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+							open={open}
+							onClose={handleClose}
+						>
+							{currentUser === null && [
+								<MenuItem
+									key='login'
 									onClick={() => {
-										navigate('/challenges');
+										handleClose();
+										navigate('/login');
 									}}
 								>
-									<FlagIcon className={classes.icon} />
-								</Button>
-								<Button
+									Login
+								</MenuItem>,
+								<MenuItem
+									key='register'
 									onClick={() => {
-										navigate('/leaderboard');
+										handleClose();
+										navigate('/register');
 									}}
-									className={classes.menuButton}
 								>
-									<EqualizerIcon className={classes.icon} />
-								</Button>
-							</>
-						)}
-
-						<div className=''>
-							<IconButton
-								aria-label='account of current user'
-								aria-controls='menu-appbar'
-								aria-haspopup='true'
-								onClick={handleMenu}
-								color='inherit'
-							>
-								<AccountCircle className={classes.icon} />
-							</IconButton>
-							<Menu
-								id='menu-appbar'
-								anchorEl={anchorEl}
-								anchorOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								open={open}
-								onClose={handleClose}
-							>
-								{currentUser === null && [
-									<MenuItem
-										key='login'
-										onClick={() => {
-											handleClose();
-											navigate('/login');
-										}}
-									>
-										Login
-									</MenuItem>,
-									<MenuItem
-										key='register'
-										onClick={() => {
-											handleClose();
-											navigate('/register');
-										}}
-									>
-										Sign Up
-									</MenuItem>,
-								]}
-								{currentUser !== null && [
-									<MenuItem
-										key='profile'
-										onClick={() => {
-											handleClose();
-											navigate('/profile');
-										}}
-									>
-										Profile
-									</MenuItem>,
-									<MenuItem
-										key='settings'
-										onClick={() => {
-											handleClose();
-											navigate('/profile/settings');
-										}}
-									>
-										Settings
-									</MenuItem>,
-									<MenuItem
-										key='home'
-										onClick={() => {
-											handleClose();
-											handleLogout();
-											navigate('/');
-										}}
-									>
-										Logout
-									</MenuItem>,
-									<MenuItem
-										key='chat'
-										onClick={() => {
-											handleClose();
-											navigate('/chat');
-										}}
-									>
-										Chat
-									</MenuItem>,
-								]}
-							</Menu>
-						</div>
-					</Toolbar>
-				</AppBar>
-			</div>
-		</>
+									Sign Up
+								</MenuItem>,
+							]}
+							{currentUser !== null && [
+								<MenuItem
+									key='profile'
+									onClick={() => {
+										handleClose();
+										navigate('/profile');
+									}}
+								>
+									Profile
+								</MenuItem>,
+								<MenuItem
+									key='settings'
+									onClick={() => {
+										handleClose();
+										navigate('/profile/settings');
+									}}
+								>
+									Settings
+								</MenuItem>,
+								<MenuItem
+									key='home'
+									onClick={() => {
+										handleClose();
+										handleLogout();
+										navigate('/');
+									}}
+								>
+									Logout
+								</MenuItem>,
+								<MenuItem
+									key='chat'
+									onClick={() => {
+										handleClose();
+										navigate('/chat');
+									}}
+								>
+									Chat
+								</MenuItem>,
+							]}
+						</Menu>
+					</div>
+				</Toolbar>
+			</AppBar>
+		</StyledBox>
 	);
 };
 

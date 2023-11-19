@@ -3,8 +3,6 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 
-console.log(import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY);
-
 const app = firebase.initializeApp({
 	apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
 	authDomain: import.meta.env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN,

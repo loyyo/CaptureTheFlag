@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import {
 	Grid,
 	Typography,
@@ -15,18 +15,30 @@ import {
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = 'YourRank';
+
+const classes = {
+	root: `${PREFIX}-root`,
+	container: `${PREFIX}-container`,
+	avatar: `${PREFIX}-avatar`,
+	button: `${PREFIX}-button`,
+};
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+	[`&.${classes.root}`]: {
 		width: '100%',
 	},
-	container: {
+
+	[`& .${classes.container}`]: {
 		maxHeight: 440,
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		width: theme.spacing(5),
 		height: theme.spacing(5),
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		width: '100%',
 		height: theme.spacing(6),
 		fontSize: theme.spacing(2),
@@ -35,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function YourRank({ allUsersData, currentUserData }) {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const columns = [
@@ -58,7 +69,7 @@ export default function YourRank({ allUsersData, currentUserData }) {
 	];
 
 	return (
-		<Paper className={classes.root}>
+		<StyledPaper className={classes.root}>
 			<Grid container direction='column' alignItems='center'>
 				<TableContainer className={classes.container}>
 					<Table stickyHeader aria-label='sticky table'>
@@ -81,7 +92,7 @@ export default function YourRank({ allUsersData, currentUserData }) {
 									return (
 										<TableRow
 											hover
-											role='checkbox'
+											type='checkbox'
 											onClick={() => {
 												navigate('/profile');
 											}}
@@ -131,7 +142,7 @@ export default function YourRank({ allUsersData, currentUserData }) {
 				</TableContainer>
 				{currentUserData.points === 0 && (
 					<div style={{ width: '100%' }}>
-						<Typography variant='h5' className='leaderboard-header-dark' gutterBottom>
+						<Typography variant='h5' className='header-text-dark' gutterBottom>
 							You need to complete your first challenge!
 						</Typography>
 					</div>
@@ -150,7 +161,7 @@ export default function YourRank({ allUsersData, currentUserData }) {
 					</Button>
 				</Grid>
 			</Grid>
-		</Paper>
+		</StyledPaper>
 	);
 }
 

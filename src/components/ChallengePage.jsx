@@ -1,22 +1,31 @@
 import { useState, useRef, useEffect } from 'react';
-import { makeStyles } from '@mui/styles';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { Grid, Box, Typography, Button, TextField, Paper, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { green } from '@mui/material/colors';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-	info: {
+const PREFIX = 'ChallengePage';
+
+const classes = {
+	info: `${PREFIX}-info`,
+	button: `${PREFIX}-button`,
+	input: `${PREFIX}-input`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+	[`& .${classes.info}`]: {
 		background: theme.palette.primary.main,
 		width: '100%',
 		display: 'grid',
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		background: theme.palette.primary.light,
 	},
-	input: {
+
+	[`& .${classes.input}`]: {
 		'&::placeholder': {
 			color: 'white',
 			textAlign: 'center',
@@ -37,7 +46,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const keyRef = useRef();
-	const classes = useStyles();
+
 	const navigate = useNavigate();
 	const { doChallenge } = useAuth();
 
@@ -87,21 +96,21 @@ export default function ChallengePage({ challenge, currentUser }) {
 	}, [error]);
 
 	return (
-		<Grid container direction='column'>
+		<StyledGrid container direction='column'>
 			<Grid item xs={12}>
-				<Typography variant='h4' className='leaderboard-header-dark'>
+				<Typography variant='h4' className='header-text-dark'>
 					{challenge[0].title}
 				</Typography>
 				<Divider />
 			</Grid>
 			<Grid container item xs={12}>
 				<Grid item xs={12} sm={6}>
-					<Typography variant='h6' className='leaderboard-light'>
+					<Typography variant='h6' className='header-text-light'>
 						{challenge[0].points} Points
 					</Typography>
 				</Grid>
 				<Grid item xs={12} sm={6}>
-					<Typography variant='h6' className='leaderboard-light-right'>
+					<Typography variant='h6' className='header-text-light-right'>
 						Category: {challenge[0].category}
 					</Typography>
 				</Grid>
@@ -130,7 +139,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 					</Grid>
 					<Grid item xs={12}>
 						{currentUser.challenges[challenge[0].url] && (
-							<Typography variant='h5' className='leaderboard-header-dark'>
+							<Typography variant='h5' className='header-text-dark'>
 								You&apos;ve successfully completed this challenge.
 							</Typography>
 						)}
@@ -189,7 +198,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 					)}
 				</Grid>
 			</Box>
-		</Grid>
+		</StyledGrid>
 	);
 }
 

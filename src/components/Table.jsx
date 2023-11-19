@@ -1,6 +1,7 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@mui/styles';
+import { useTheme } from '@mui/styles';
 import {
 	Paper,
 	Table,
@@ -12,6 +13,7 @@ import {
 	TableRow,
 	Avatar,
 	IconButton,
+	Box,
 } from '@mui/material';
 import {
 	FirstPage as FirstPageIcon,
@@ -21,28 +23,30 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = 'Table';
+
+const classes = {
+	root: `${PREFIX}-root`,
+	container: `${PREFIX}-container`,
+	avatar: `${PREFIX}-avatar`,
+};
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+	[`&.${classes.root}`]: {
 		width: '100%',
 	},
-	container: {
+
+	[`& .${classes.container}`]: {
 		maxHeight: 500,
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		width: theme.spacing(7.5),
 		height: theme.spacing(7.5),
 	},
 }));
 
-const useStyles1 = makeStyles((theme) => ({
-	root: {
-		flexShrink: 0,
-		marginLeft: theme.spacing(2.5),
-	},
-}));
-
 function TablePaginationActions(props) {
-	const classes = useStyles1();
 	const theme = useTheme();
 	const { count, page, rowsPerPage, onPageChange } = props;
 
@@ -63,7 +67,12 @@ function TablePaginationActions(props) {
 	};
 
 	return (
-		<div className={classes.root}>
+		<Box
+			sx={{
+				flexShrink: 0,
+				marginLeft: theme.spacing(2.5),
+			}}
+		>
 			<IconButton
 				onClick={handleFirstPageButtonClick}
 				disabled={page === 0}
@@ -88,7 +97,7 @@ function TablePaginationActions(props) {
 			>
 				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
 			</IconButton>
-		</div>
+		</Box>
 	);
 }
 
@@ -100,7 +109,6 @@ TablePaginationActions.propTypes = {
 };
 
 export default function StickyHeadTable({ allUsersData }) {
-	const classes = useStyles();
 	const navigate = useNavigate();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -136,7 +144,7 @@ export default function StickyHeadTable({ allUsersData }) {
 	};
 
 	return (
-		<Paper className={classes.root}>
+		<StyledPaper className={classes.root}>
 			<TableContainer className={classes.container}>
 				<Table stickyHeader aria-label='sticky table' className={classes.table}>
 					<TableHead>
@@ -157,7 +165,7 @@ export default function StickyHeadTable({ allUsersData }) {
 							return (
 								<TableRow
 									hover
-									role='checkbox'
+									type='checkbox'
 									onClick={() => {
 										navigate(`/profiles/${row.userID}`);
 									}}
@@ -217,7 +225,7 @@ export default function StickyHeadTable({ allUsersData }) {
 				}}
 				ActionsComponent={TablePaginationActions}
 			/>
-		</Paper>
+		</StyledPaper>
 	);
 }
 

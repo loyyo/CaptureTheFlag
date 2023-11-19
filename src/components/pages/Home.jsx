@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -11,17 +11,27 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'Home';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	button: `${PREFIX}-button`,
+	darkModeButton: `${PREFIX}-darkModeButton`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		margin: theme.spacing(2.5, 0, 2.5),
 	},
-	darkModeButton: {
+
+	[`& .${classes.darkModeButton}`]: {
 		margin: theme.spacing(2.5, 0, 2.5),
 		backgroundColor: theme.palette.primary.light,
 		color: 'white',
@@ -32,25 +42,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	return (
-		<Container maxWidth='md'>
+		<StyledContainer maxWidth='md'>
 			<CssBaseline />
 			<Grid container spacing={5}>
 				<Grid item xs={12}>
 					<div className={classes.paper}>
-						<Paper variant='outlined' elevation={3}>
+						<Paper variant='outlined'>
 							<Box m={3}>
-								<Typography variant='h4' className='leaderboard-header'>
+								<Typography variant='h4' className='header-text'>
 									Welcome to Capture The Flag!
 								</Typography>
 								<Typography variant='h5' className='description'>
 									CaptureTheFlag is a platform that enables people to learn, practice, and compete
 									in the field of geography, specifically world&apos;s flags.
 								</Typography>
-								<Typography variant='h5' className='leaderboard-header-dark'>
+								<Typography variant='h5' className='header-text-dark'>
 									JOIN AND CATCH&apos;EM ALL!
 								</Typography>
 							</Box>
@@ -90,6 +99,6 @@ export default function Home() {
 					</div>
 				</Grid>
 			</Grid>
-		</Container>
+		</StyledContainer>
 	);
 }

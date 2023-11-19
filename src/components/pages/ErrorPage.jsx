@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -12,18 +12,28 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'Error';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	button: `${PREFIX}-button`,
+	darkModeButton: `${PREFIX}-darkModeButton`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(15),
 		marginBottom: theme.spacing(5),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		margin: theme.spacing(2.5, 0, 2.5),
 	},
-	darkModeButton: {
+
+	[`& .${classes.darkModeButton}`]: {
 		margin: theme.spacing(2.5, 0, 2.5),
 		backgroundColor: theme.palette.primary.light,
 		color: 'white',
@@ -33,19 +43,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function Error() {
-	const classes = useStyles();
+export default function ErrorPage() {
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 
 	return (
-		<Container maxWidth='lg'>
+		<StyledContainer maxWidth='lg'>
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Grid container>
 					<Grid item xs={1} />
 					<Grid item xs={10}>
-						<Paper variant='outlined' elevation={3}>
+						<Paper variant='outlined'>
 							<Box mb={3} mt={3} mr={5} ml={5}>
 								<Typography variant='h5' gutterBottom>
 									Flaga dla zadania europe1 to polska, ale ciii, nikomu nie mów
@@ -92,6 +101,6 @@ export default function Error() {
 					</Grid>
 				</Grid>
 			</div>
-		</Container>
+		</StyledContainer>
 	);
 }

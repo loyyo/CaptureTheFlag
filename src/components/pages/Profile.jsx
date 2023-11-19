@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Paper,
@@ -17,44 +18,63 @@ import {
 	Button,
 	useMediaQuery,
 } from '@mui/material';
-import { makeStyles, useTheme } from '@mui/styles';
+import { useTheme } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	list: {
+const PREFIX = 'Profile';
+
+const classes = {
+	list: `${PREFIX}-list`,
+	paper: `${PREFIX}-paper`,
+	button: `${PREFIX}-button`,
+	avatar: `${PREFIX}-avatar`,
+	avatarbox: `${PREFIX}-avatarbox`,
+	loading: `${PREFIX}-loading`,
+	listitem: `${PREFIX}-listitem`,
+	checkbox: `${PREFIX}-checkbox`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.list}`]: {
 		width: '100%',
 		backgroundColor: theme.palette.background.paper,
 		// display: 'flex',
 		flexDirection: 'row',
 		// padding: 0,
 	},
-	paper: {
+
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		marginBottom: theme.spacing(5),
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		margin: theme.spacing(0.5, 0, 0.5),
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		width: '200px',
 		height: '200px',
 		margin: 'auto',
 	},
-	avatarbox: {},
-	loading: {
+
+	[`& .${classes.avatarbox}`]: {},
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
-	listitem: {
+
+	[`& .${classes.listitem}`]: {
 		cursor: 'default',
 	},
-	checkbox: {
+
+	[`& .${classes.checkbox}`]: {
 		cursor: 'default',
 	},
 }));
 
 export default function Profile() {
-	const classes = useStyles();
 	const navigate = useNavigate();
 	const { getProfile, currentUserData, allChallengesData, getAllChallengesData } = useAuth();
 	const [catchedThemAll, setCatchedThemAll] = useState(true);
@@ -95,14 +115,14 @@ export default function Profile() {
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	}
 
@@ -113,15 +133,15 @@ export default function Profile() {
 				<Paper variant='elevation' elevation={6}>
 					<Grid container>
 						<Grid item xs={12}>
-							<Typography variant='h4' className='leaderboard-header'>
+							<Typography variant='h4' className='header-text'>
 								Your Profile
 							</Typography>
 						</Grid>
 						<Grid item xs={12} lg={3}>
 							<Box m={2} mb={2}>
-								<Paper variant='outlined' elevation={3}>
+								<Paper variant='outlined'>
 									<Box m={2} mb={1} ml={3} pr={2} mr={1}>
-										<Paper variant='outlined' elevation={3}>
+										<Paper variant='outlined'>
 											<Avatar
 												variant='rounded'
 												alt='default_avatar'
@@ -138,7 +158,7 @@ export default function Profile() {
 										</Paper>
 									</Box>
 									<Box p={1} ml={1} pl={2} pr={4} mb={1} mr={-1}>
-										<Paper variant='outlined' elevation={3}>
+										<Paper variant='outlined'>
 											<Box m={2} mb={2}>
 												<Typography display='block' variant='h6'>
 													Bio
@@ -172,7 +192,7 @@ export default function Profile() {
 						</Grid>
 						<Grid item xs={12} lg={9}>
 							<Box m={2} mb={2} ml={3}>
-								<Paper variant='outlined' elevation={3}>
+								<Paper variant='outlined'>
 									{catchedThemAll && (
 										<>
 											<Box mb={1} mt={1}>

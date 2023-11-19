@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { makeStyles } from '@mui/styles';
 import {
 	CssBaseline,
 	Container,
@@ -14,21 +14,35 @@ import {
 } from '@mui/material';
 import ChatMessage from '../ChatMessage.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'GlobalChat';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	loading: `${PREFIX}-loading`,
+	info: `${PREFIX}-info`,
+	button: `${PREFIX}-button`,
+	input: `${PREFIX}-input`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		marginBottom: theme.spacing(5),
 	},
-	loading: {
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
-	info: {
+
+	[`& .${classes.info}`]: {
 		background: theme.palette.primary.main,
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		background: theme.palette.primary.light,
 	},
-	input: {
+
+	[`& .${classes.input}`]: {
 		'&::placeholder': {
 			color: 'white',
 			textAlign: 'center',
@@ -39,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GlobalChat() {
-	const classes = useStyles();
 	const messageRef = useRef();
 	const dummy = useRef();
 	const [loading, setLoading] = useState(false);
@@ -102,14 +115,14 @@ export default function GlobalChat() {
 
 	if (!currentUserData || allUsersData.length === 0) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	}
 
@@ -119,24 +132,23 @@ export default function GlobalChat() {
 			<div className={classes.paper}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
-						<Typography variant='h4' className='leaderboard-header'>
+						<Typography variant='h4' className='header-text'>
 							Global Chat
 						</Typography>
 					</Grid>
 					<Grid item xs={12}>
 						<Paper square elevation={0}>
 							<Box p={1} className='messagesBox'>
-								{globalMessages &&
-									globalMessages.map((msg) => {
-										return (
-											<ChatMessage
-												key={msg.createdAt.seconds}
-												message={msg}
-												currentUserData={currentUserData}
-												allUsersData={allUsersData}
-											/>
-										);
-									})}
+								{globalMessages?.globalMessages.map((msg) => {
+									return (
+										<ChatMessage
+											key={msg.createdAt.seconds}
+											message={msg}
+											currentUserData={currentUserData}
+											allUsersData={allUsersData}
+										/>
+									);
+								})}
 								<div ref={dummy}></div>
 							</Box>
 						</Paper>
@@ -179,7 +191,7 @@ export default function GlobalChat() {
 						</Box>
 					)}
 					{currentUserData.points === 0 && (
-						<Typography variant='h5' className='leaderboard-header-dark'>
+						<Typography variant='h5' className='header-text-dark'>
 							Chat will be available after capturing your first flag (｡◕‿◕｡)
 						</Typography>
 					)}

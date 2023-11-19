@@ -1,20 +1,25 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { Grid, Box, Typography, Button, Paper, Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-	button: {
+const PREFIX = 'Challenges';
+
+const classes = {
+	button: `${PREFIX}-button`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+	[`& .${classes.button}`]: {
 		background: theme.palette.primary.dark,
 	},
 }));
 
 export default function Challenges({ category, allChallengesData, currentUserData }) {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	return (
-		<Grid container>
+		<StyledGrid container>
 			{allChallengesData.map((e) => {
 				if (category === e.category || category === 'all') {
 					return (
@@ -24,7 +29,7 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 									<Grid container direction='column'>
 										<Grid item>
 											{currentUserData.challenges[e.url] && (
-												<Typography variant='h5' className='leaderboard-header'>
+												<Typography variant='h5' className='header-text'>
 													{e.title}
 													<div style={{ display: 'inline-block' }} title='Challenge passed'>
 														<Checkbox
@@ -38,19 +43,19 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 												</Typography>
 											)}
 											{!currentUserData.challenges[e.url] && (
-												<Typography variant='h5' className='leaderboard-header'>
+												<Typography variant='h5' className='header-text'>
 													{e.title}
 												</Typography>
 											)}
 										</Grid>
 										<Grid container item>
 											<Grid item xs={12} md={6}>
-												<Typography variant='body1' className='leaderboard-light'>
+												<Typography variant='body1' className='header-text-light'>
 													{e.points} Points
 												</Typography>
 											</Grid>
 											<Grid item xs={12} md={6}>
-												<Typography variant='body1' className='leaderboard-light-right'>
+												<Typography variant='body1' className='header-text-light-right'>
 													Category: {e.category}
 												</Typography>
 											</Grid>
@@ -78,7 +83,7 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 					return null;
 				}
 			})}
-		</Grid>
+		</StyledGrid>
 	);
 }
 

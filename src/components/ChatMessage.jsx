@@ -1,9 +1,15 @@
 import { Grid, Box, Typography, Avatar } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(() => ({
-	avatar: {
+const PREFIX = 'ChatMessage';
+
+const classes = {
+	avatar: `${PREFIX}-avatar`,
+};
+
+const StyledBox = styled(Box)(() => ({
+	[`& .${classes.avatar}`]: {
 		width: '40px',
 		height: '40px',
 		margin: '2px 5px',
@@ -11,8 +17,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ChatMessage({ message, currentUserData, allUsersData }) {
-	const classes = useStyles();
-
 	const messageClass = currentUserData.userID === message.userID ? 'sent' : 'received';
 
 	const avatarSrc = () => {
@@ -35,30 +39,28 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 	};
 
 	return (
-		<>
-			<Box p={1}>
-				<Box className={`messages ${messageClass}`}>
-					{messageClass === 'received' && (
-						<Grid container direction='column'>
-							<Grid item xs={12}>
-								<Typography variant='caption'>{username()}</Typography>
-							</Grid>
-							<Grid container item xs={12}>
-								<Avatar
-									alt='chat_avatar'
-									src={avatarSrc()}
-									className={classes.avatar}
-									style={{ padding: '0.25rem' }}
-									// imgProps={{ title: `${username()}` }}
-								/>
-								<Typography className='message'>{message.text}</Typography>
-							</Grid>
+		<StyledBox p={1}>
+			<Box className={`messages ${messageClass}`}>
+				{messageClass === 'received' && (
+					<Grid container direction='column'>
+						<Grid item xs={12}>
+							<Typography variant='caption'>{username()}</Typography>
 						</Grid>
-					)}
-					{messageClass === 'sent' && <Typography className='message'>{message.text}</Typography>}
-				</Box>
+						<Grid container item xs={12}>
+							<Avatar
+								alt='chat_avatar'
+								src={avatarSrc()}
+								className={classes.avatar}
+								style={{ padding: '0.25rem' }}
+								// imgProps={{ title: `${username()}` }}
+							/>
+							<Typography className='message'>{message.text}</Typography>
+						</Grid>
+					</Grid>
+				)}
+				{messageClass === 'sent' && <Typography className='message'>{message.text}</Typography>}
 			</Box>
-		</>
+		</StyledBox>
 	);
 }
 

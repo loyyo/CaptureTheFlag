@@ -8,3 +8,95 @@
 	height: 50vh;
 	overflow-y: scroll;
 }
+
+.messages {
+	display: flex;
+	align-items: center;
+	overflow-wrap: break-word;
+}
+
+.sent {
+	flex-direction: row-reverse;
+}
+
+.sent .message {
+	color: white;
+	background: #0b93f6;
+	align-self: flex-end;
+}
+
+.received .message {
+	background: #e5e5ea;
+	color: black;
+}
+
+.message {
+	max-width: 64vw;
+	padding: 10px 20px;
+	border-radius: 2.5rem;
+}
+
+.Mui-selected .MuiBottomNavigationAction-wrapper .MuiSvgIcon-root {
+	color: #3f51b5;
+}
+
+.Mui-selected .MuiBottomNavigationAction-wrapper .Mui-selected {
+	color: #3f51b5;
+}
+
+.App-leaderboard {
+	overflow-x: hidden;
+}
+
+.header-text,
+.header-text-dark,
+.header-text-light,
+.header-text-light-right,
+.description {
+	color: white;
+	padding: 1rem;
+	text-align: center;
+}
+
+.header-text {
+	background-color: #3f51b5;
+}
+
+.header-text-dark {
+	background-color: #303f9f;
+}
+
+.header-text-light {
+	background-color: #7986cb;
+	border: solid;
+	border-left: none;
+	border-width: 0.01rem;
+	height: 100%;
+	border-color: white;
+}
+
+.header-text-light-right {
+	background-color: #7986cb;
+	border: solid;
+	border-left: none;
+	border-right: none;
+	border-width: 0.01rem;
+	height: 100%;
+	border-color: white;
+}
+
+.description {
+	background-color: #7986cb;
+	border: none;
+	border-left: none;
+	border-width: 0.01rem;
+	height: 100%;
+	border-color: white;
+}
+
+@media (max-width: 600px) {
+	.header-text-light {
+		border-right: none;
+		border-bottom: none;
+	}
+}

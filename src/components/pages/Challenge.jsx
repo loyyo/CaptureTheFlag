@@ -1,23 +1,31 @@
 import { useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { CssBaseline, Container, Box, LinearProgress } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import ChallengePage from '../ChallengePage.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'Challenge';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	loading: `${PREFIX}-loading`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		marginBottom: theme.spacing(5),
 	},
-	loading: {
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
 }));
 
 export default function Challenge() {
 	const { challengeID } = useParams();
-	const classes = useStyles();
+
 	const { getSingleChallengeData, singleChallengeData, getProfile, currentUserData } = useAuth();
 
 	useEffect(() => {
@@ -37,14 +45,14 @@ export default function Challenge() {
 		singleChallengeData[0].url !== challengeID
 	) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	} else {
 		return (

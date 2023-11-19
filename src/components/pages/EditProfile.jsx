@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Container,
@@ -18,31 +18,44 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'EditProfile';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	avatar: `${PREFIX}-avatar`,
+	form: `${PREFIX}-form`,
+	submit: `${PREFIX}-submit`,
+	loading: `${PREFIX}-loading`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		margin: theme.spacing(1),
 		backgroundColor: theme.palette.primary.main,
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: '100%',
 		marginTop: theme.spacing(3),
 	},
-	submit: {
+
+	[`& .${classes.submit}`]: {
 		margin: theme.spacing(3, 0, 2),
 	},
-	loading: {
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
 }));
 
 export default function EditProfile() {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const emailRef = useRef();
@@ -138,14 +151,14 @@ export default function EditProfile() {
 
 	if (!currentUserData) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	}
 
@@ -155,7 +168,7 @@ export default function EditProfile() {
 			<div className={classes.paper}>
 				<Grid container>
 					<Grid item xs={12}>
-						<Typography variant='h4' className='leaderboard-header'>
+						<Typography variant='h4' className='header-text'>
 							Settings
 						</Typography>
 					</Grid>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@mui/styles';
+import { useTheme } from '@mui/styles';
 import {
 	CssBaseline,
 	Container,
@@ -18,19 +19,31 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 
 import Challenges from '../Challenges.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'AllChallenges';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	tabs: `${PREFIX}-tabs`,
+	appbar: `${PREFIX}-appbar`,
+	loading: `${PREFIX}-loading`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		marginBottom: theme.spacing(5),
 	},
-	tabs: {
+
+	[`& .${classes.tabs}`]: {
 		flexGrow: 1,
 		backgroundColor: theme.palette.background.paper,
 	},
-	appbar: {
+
+	[`& .${classes.appbar}`]: {
 		background: theme.palette.primary.dark,
 	},
-	loading: {
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
 }));
@@ -59,8 +72,6 @@ function a11yProps(index) {
 }
 
 export default function AllChallenges() {
-	const classes = useStyles();
-
 	const [value, setValue] = useState(0);
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -82,14 +93,14 @@ export default function AllChallenges() {
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	}
 
@@ -99,7 +110,7 @@ export default function AllChallenges() {
 			<div className={classes.paper}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
-						<Typography variant='h4' className='leaderboard-header'>
+						<Typography variant='h4' className='header-text'>
 							Available Challenges
 						</Typography>
 						<Divider />

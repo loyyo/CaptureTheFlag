@@ -1,23 +1,31 @@
 import { useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
 import UserComponent from '../UserComponent.jsx';
 import { LinearProgress, Box, Container, CssBaseline } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
+const PREFIX = 'UserProfile';
+
+const classes = {
+	paper: `${PREFIX}-paper`,
+	loading: `${PREFIX}-loading`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(5),
 		marginBottom: theme.spacing(5),
 	},
-	loading: {
+
+	[`& .${classes.loading}`]: {
 		width: '100%',
 	},
 }));
 
 export default function UserProfile() {
 	const { userID } = useParams();
-	const classes = useStyles();
+
 	const { getUserProfile, thisUserData, allChallengesData, getAllChallengesData } = useAuth();
 
 	useEffect(() => {
@@ -31,14 +39,14 @@ export default function UserProfile() {
 
 	if (!thisUserData || allChallengesData.length === 0 || thisUserData.userID !== userID) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<StyledContainer component='main' maxWidth='lg'>
 				<CssBaseline />
 				<div className={classes.loading}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
 				</div>
-			</Container>
+			</StyledContainer>
 		);
 	}
 

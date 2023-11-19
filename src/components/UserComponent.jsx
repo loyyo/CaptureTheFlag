@@ -1,4 +1,6 @@
-import { makeStyles, useTheme } from '@mui/styles';
+import { useTheme } from '@mui/styles';
+
+import { styled } from '@mui/material/styles';
 
 import {
 	Paper,
@@ -17,33 +19,48 @@ import {
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
-	list: {
+const PREFIX = 'UserComponent';
+
+const classes = {
+	list: `${PREFIX}-list`,
+	button: `${PREFIX}-button`,
+	avatar: `${PREFIX}-avatar`,
+	avatarbox: `${PREFIX}-avatarbox`,
+	listitem: `${PREFIX}-listitem`,
+	checkbox: `${PREFIX}-checkbox`,
+};
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+	[`& .${classes.list}`]: {
 		width: '100%',
 		backgroundColor: theme.palette.background.paper,
 		// display: 'flex',
 		flexDirection: 'row',
 		// padding: 0,
 	},
-	button: {
+
+	[`& .${classes.button}`]: {
 		margin: theme.spacing(0.5, 0, 0.5),
 	},
-	avatar: {
+
+	[`& .${classes.avatar}`]: {
 		width: '200px',
 		height: '200px',
 		margin: 'auto',
 	},
-	avatarbox: {},
-	listitem: {
+
+	[`& .${classes.avatarbox}`]: {},
+
+	[`& .${classes.listitem}`]: {
 		cursor: 'default',
 	},
-	checkbox: {
+
+	[`& .${classes.checkbox}`]: {
 		cursor: 'default',
 	},
 }));
 
 export default function UserProfile({ currentUserData, allChallengesData }) {
-	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const theme = useTheme();
@@ -64,18 +81,18 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 	};
 
 	return (
-		<Paper variant='elevation' elevation={6}>
+		<StyledPaper variant='elevation' elevation={6}>
 			<Grid container>
 				<Grid item xs={12}>
-					<Typography variant='h4' className='leaderboard-header'>
+					<Typography variant='h4' className='header-text'>
 						{currentUserData.username}
 					</Typography>
 				</Grid>
 				<Grid item xs={12} lg={3}>
 					<Box m={2} mb={2}>
-						<Paper variant='outlined' elevation={3}>
+						<Paper variant='outlined'>
 							<Box m={2} mb={1} ml={3} pr={2} mr={1}>
-								<Paper variant='outlined' elevation={3}>
+								<Paper variant='outlined'>
 									<Avatar
 										variant='rounded'
 										alt='default_avatar'
@@ -92,7 +109,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 								</Paper>
 							</Box>
 							<Box p={1} ml={1} pl={2} pr={4} mb={1} mr={-1}>
-								<Paper variant='outlined' elevation={3}>
+								<Paper variant='outlined'>
 									<Box m={2} mb={2}>
 										<Typography display='block' variant='h6'>
 											Bio
@@ -108,7 +125,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 				</Grid>
 				<Grid item xs={12} lg={9}>
 					<Box m={2} mb={2} ml={3}>
-						<Paper variant='outlined' elevation={3}>
+						<Paper variant='outlined'>
 							<Box mb={1} mt={1}>
 								<Typography align='center' display='block' variant='h5'>
 									Points: {currentUserData.points}
@@ -157,7 +174,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 					</Box>
 				</Grid>
 			</Grid>
-		</Paper>
+		</StyledPaper>
 	);
 }
 
