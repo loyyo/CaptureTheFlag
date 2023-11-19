@@ -14,21 +14,55 @@ import Header from './components/layout/Header.jsx';
 import PrivateRoute from './contexts/PrivateRoute.jsx';
 import PrivateSubRoutes from './contexts/PrivateSubRoutes.jsx';
 import LoggedInRoute from './contexts/LoggedInRoute.jsx';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, useMediaQuery, createTheme, ThemeProvider } from '@mui/material';
 import Challenge from './components/pages/Challenge.jsx';
 import UserProfile from './components/pages/UserProfile.jsx';
 import GlobalChat from './components/pages/GlobalChat.jsx';
 import ForgotPassword from './components/pages/ForgotPassword.jsx';
+import { useAuth } from './contexts/AuthContext.jsx';
 
 function App() {
+	const { darkMode } = useAuth();
+	const prefersDarkMode = useMediaQuery(
+		darkMode === 'true' ? '(prefers-color-scheme: dark)' : '(prefers-color-scheme: light)'
+	);
 	const theme = createTheme({
 		palette: {
-			type: 'light',
+			mode: prefersDarkMode ? 'dark' : 'light',
 			primary: {
-				light: '#7986cb',
-				main: '#3f51b5',
-				dark: '#303f9f',
+				light: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+				main: prefersDarkMode ? '#2c387e' : '#3f51b5',
+				dark: prefersDarkMode ? '#212c6f' : '#303f9f',
+			},
+		},
+		components: {
+			MuiCssBaseline: {
+				styleOverrides: {
+					'.Mui-selected .MuiBottomNavigationAction-wrapper .MuiSvgIcon-root': {
+						color: prefersDarkMode ? '#111111' : '#3f51b5',
+					},
+					'.Mui-selected .MuiBottomNavigationAction-wrapper .Mui-selected': {
+						color: prefersDarkMode ? '#111111' : '#3f51b5',
+					},
+					'.header-text': {
+						backgroundColor: prefersDarkMode ? '#2c387e' : '#3f51b5',
+					},
+					'.header-text-dark': {
+						backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
+					},
+					'.header-text-light': {
+						backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+					},
+					'.header-text-light-right': {
+						backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+					},
+					'.ratings': {
+						backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+					},
+					'.description': {
+						backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
+					},
+				},
 			},
 		},
 	});

@@ -7,11 +7,12 @@ import PropTypes from 'prop-types';
 
 const AuthContext = React.createContext();
 
-export function useAuth() {
+function useAuth() {
 	return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }) {
+function AuthProvider({ children }) {
+	const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode'));
 	const [thisUserData, setThisUserData] = useState();
 	const [currentUser, setCurrentUser] = useState();
 	const [loading, setLoading] = useState(true);
@@ -24,6 +25,17 @@ export function AuthProvider({ children }) {
 	const messagesRef = db.collection('globalchatmessages');
 	const messageQuery = messagesRef.orderBy('createdAt').limit(100);
 	const [globalMessages] = useCollectionData(messageQuery, { idField: 'id' });
+
+	const switchDarkMode = useCallback(() => {
+		let darkModeVar = localStorage.getItem('darkMode');
+		if (!darkModeVar || darkModeVar === '' || darkModeVar === 'false') {
+			localStorage.setItem('darkMode', 'true');
+			setDarkMode('true');
+		} else if (darkModeVar === 'true') {
+			localStorage.setItem('darkMode', 'false');
+			setDarkMode('false');
+		}
+	}, []);
 
 	const login = useCallback(async (email, password) => {
 		await auth.signInWithEmailAndPassword(email, password);
@@ -259,6 +271,24 @@ export function AuthProvider({ children }) {
 		return unsubscribe;
 	}, []);
 
+	useEffect(() => {
+		if (
+			window.matchMedia('(prefers-color-scheme: dark)') &&
+			localStorage.getItem('darkMode') !== 'false' &&
+			localStorage.getItem('darkMode') !== 'true'
+		) {
+			localStorage.setItem('darkMode', 'true');
+			setDarkMode('true');
+		} else if (
+			window.matchMedia('(prefers-color-scheme: light)') &&
+			localStorage.getItem('darkMode') !== 'false' &&
+			localStorage.getItem('darkMode') !== 'true'
+		) {
+			localStorage.setItem('darkMode', 'false');
+			setDarkMode('false');
+		}
+	}, []);
+
 	const value = useMemo(
 		() => ({
 			currentUser,
@@ -285,6 +315,8 @@ export function AuthProvider({ children }) {
 			getSingleChallengeData,
 			doChallenge,
 			resetPassword,
+			darkMode,
+			switchDarkMode,
 		}),
 		[
 			currentUser,
@@ -311,6 +343,8 @@ export function AuthProvider({ children }) {
 			getSingleChallengeData,
 			doChallenge,
 			resetPassword,
+			darkMode,
+			switchDarkMode,
 		]
 	);
 
@@ -320,3 +354,6 @@ export function AuthProvider({ children }) {
 AuthProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export { useAuth, AuthProvider };
