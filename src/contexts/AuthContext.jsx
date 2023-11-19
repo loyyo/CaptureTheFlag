@@ -33,6 +33,10 @@ export function AuthProvider({ children }) {
 		await auth.signOut();
 	}, []);
 
+	const resetPassword = useCallback(async (email) => {
+		await auth.sendPasswordResetEmail(email);
+	}, []);
+
 	const updateEmail = useCallback(
 		async (email) => {
 			await currentUser.updateEmail(email);
@@ -280,6 +284,7 @@ export function AuthProvider({ children }) {
 			getAllChallengesData,
 			getSingleChallengeData,
 			doChallenge,
+			resetPassword,
 		}),
 		[
 			currentUser,
@@ -305,6 +310,7 @@ export function AuthProvider({ children }) {
 			getAllChallengesData,
 			getSingleChallengeData,
 			doChallenge,
+			resetPassword,
 		]
 	);
 

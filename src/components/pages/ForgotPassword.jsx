@@ -1,45 +1,48 @@
 import { useRef, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import {
-	TextField,
-	CssBaseline,
-	Button,
 	Avatar,
+	Button,
+	Box,
+	Container,
+	CssBaseline,
+	TextField,
+	Link,
 	Grid,
 	Typography,
-	Container,
-	Box,
-	Link,
+	Collapse,
+	IconButton,
 	Alert,
 	AlertTitle,
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '@mui/material/styles';
 
-export default function SignIn() {
-	const navigate = useNavigate();
+export default function ForgotPassword() {
 	const theme = useTheme();
+	const navigate = useNavigate();
 
 	const emailRef = useRef();
-	const passwordRef = useRef();
 
-	const { login } = useAuth();
+	const { resetPassword } = useAuth();
 
 	const [error, setError] = useState('');
+	const [success, setSuccess] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-
 		try {
-			setLoading(true);
 			setError('');
-			await login(emailRef.current.value, passwordRef.current.value);
-			navigate('/profile');
+			setLoading(true);
+			await resetPassword(emailRef.current.value);
+			setSuccess(true);
+			setTimeout(() => {
+				navigate('/login');
+			}, 10000);
 		} catch {
-			passwordRef.current.value = '';
-			setError('Failed to sign in');
+			setError('Failed to reset password');
 		}
 		setLoading(false);
 	}
@@ -52,7 +55,7 @@ export default function SignIn() {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
-					Sign in
+					Password Reset
 				</Typography>
 				<Box mt={1} sx={{ width: '100%' }}>
 					<form onSubmit={handleSubmit}>
@@ -62,6 +65,31 @@ export default function SignIn() {
 									<AlertTitle>An error occured:</AlertTitle>
 									{error}
 								</Alert>
+							</Box>
+						)}
+						{success && (
+							<Box mb={1}>
+								<Collapse in={success}>
+									<Alert
+										variant='outlined'
+										severity='success'
+										action={
+											<IconButton
+												aria-label='close'
+												color='inherit'
+												size='small'
+												onClick={() => {
+													setSuccess(false);
+												}}
+											>
+												<CloseIcon fontSize='inherit' />
+											</IconButton>
+										}
+									>
+										<AlertTitle>Success!</AlertTitle>
+										Check your inbox for further instructions.
+									</Alert>
+								</Collapse>
 							</Box>
 						)}
 						<TextField
@@ -76,18 +104,6 @@ export default function SignIn() {
 							autoFocus
 							inputRef={emailRef}
 						/>
-						<TextField
-							variant='outlined'
-							margin='normal'
-							required
-							fullWidth
-							name='password'
-							label='Password'
-							type='password'
-							id='password'
-							autoComplete='current-password'
-							inputRef={passwordRef}
-						/>
 						<Button
 							type='submit'
 							fullWidth
@@ -96,12 +112,12 @@ export default function SignIn() {
 							sx={{ margin: theme.spacing(3, 0, 2) }}
 							disabled={loading}
 						>
-							Sign In
+							Reset Password
 						</Button>
-						<Grid container justifyContent='flex-end'>
+						<Grid container>
 							<Grid item xs>
-								<Link underline='hover' component={RouterLink} to='/reset-password'>
-									Forgot password?
+								<Link underline='hover' component={RouterLink} to='/login'>
+									Sign In
 								</Link>
 							</Grid>
 							<Grid item>

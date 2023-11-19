@@ -11,11 +11,12 @@ import {
 	Typography,
 	IconButton,
 	Box,
-	FormControl,
+	Link,
+	Alert,
+	AlertTitle,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
-import { Alert, AlertTitle } from '@mui/lab';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 export default function SignUp() {
@@ -33,10 +34,8 @@ export default function SignUp() {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 
-	const regex = '^[0-9A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż_-]{5,15}$';
-	const regexpw =
-		// eslint-disable-next-line no-useless-escape
-		'^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\dĄĆĘŁŃÓŚŹŻąćęłńóśźż~!@#$%^&*()[{};:|,.<>/?_=+\\]-]{6,}$';
+	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/v;
+	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/v;
 
 	async function handleSubmit(e) {
 		e.preventDefault();
@@ -50,7 +49,7 @@ export default function SignUp() {
 		try {
 			setError('');
 			setLoading(true);
-			usernameRef.current.value.slice(0, 15);
+			usernameRef.current.value = usernameRef.current.value.slice(0, 15);
 			await signup(emailRef.current.value, passwordRef.current.value, usernameRef.current.value);
 			setSuccess(true);
 			navigate('/profile');
@@ -72,116 +71,120 @@ export default function SignUp() {
 				<Typography component='h1' variant='h5'>
 					Sign up
 				</Typography>
-				<FormControl onSubmit={handleSubmit} sx={{ width: '100%', marginTop: theme.spacing(3) }}>
-					{error && (
-						<Box mt={-1} mb={2}>
-							<Alert variant='outlined' severity='error'>
-								<AlertTitle>An error occured:</AlertTitle>
-								{error}
-							</Alert>
-						</Box>
-					)}
-					{success && (
-						<Box mt={-1} mb={2}>
-							<Collapse in={success}>
-								<Alert
-									variant='outlined'
-									severity='success'
-									action={
-										<IconButton
-											aria-label='close'
-											color='inherit'
-											size='small'
-											onClick={() => {
-												setSuccess(false);
-											}}
-										>
-											<CloseIcon fontSize='inherit' />
-										</IconButton>
-									}
-								>
-									<AlertTitle>Success!</AlertTitle>
-									You have created your profile. Redirecting...
+				<Box mt={3} sx={{ width: '100%' }}>
+					<form onSubmit={handleSubmit}>
+						{error && (
+							<Box mt={-1} mb={2}>
+								<Alert variant='outlined' severity='error'>
+									<AlertTitle>An error occured:</AlertTitle>
+									{error}
 								</Alert>
-							</Collapse>
-						</Box>
-					)}
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant='outlined'
-								required
-								fullWidth
-								id='username'
-								label='Username'
-								name='username'
-								autoComplete='username'
-								inputRef={usernameRef}
-								inputProps={{
-									pattern: regex,
-									title: `Użyj od 5 do 15 znaków. Dozwolone znaki specjalne to '-' oraz '_'`,
-								}}
-							/>
+							</Box>
+						)}
+						{success && (
+							<Box mt={-1} mb={2}>
+								<Collapse in={success}>
+									<Alert
+										variant='outlined'
+										severity='success'
+										action={
+											<IconButton
+												aria-label='close'
+												color='inherit'
+												size='small'
+												onClick={() => {
+													setSuccess(false);
+												}}
+											>
+												<CloseIcon fontSize='inherit' />
+											</IconButton>
+										}
+									>
+										<AlertTitle>Success!</AlertTitle>
+										You have created your profile. Redirecting...
+									</Alert>
+								</Collapse>
+							</Box>
+						)}
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									variant='outlined'
+									required
+									fullWidth
+									id='username'
+									label='Username'
+									name='username'
+									autoComplete='username'
+									inputRef={usernameRef}
+									inputProps={{
+										pattern: regex.source,
+										title: `Użyj od 5 do 15 znaków. Dozwolone znaki specjalne to '-' oraz '_'`,
+									}}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant='outlined'
+									required
+									fullWidth
+									id='email'
+									label='Email Address'
+									name='email'
+									autoComplete='email'
+									inputRef={emailRef}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant='outlined'
+									required
+									fullWidth
+									name='password'
+									label='Password'
+									type='password'
+									id='password'
+									autoComplete='current-password'
+									inputRef={passwordRef}
+									inputProps={{
+										pattern: regexpw.source,
+										title: 'Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.',
+									}}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant='outlined'
+									required
+									fullWidth
+									name='passwordConfirmation'
+									label='Password Confirmation'
+									type='password'
+									id='passwordConfirmation'
+									autoComplete='current-password'
+									inputRef={passwordConfirmationRef}
+								/>
+							</Grid>
 						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant='outlined'
-								required
-								fullWidth
-								id='email'
-								label='Email Address'
-								name='email'
-								autoComplete='email'
-								inputRef={emailRef}
-							/>
+						<Button
+							type='submit'
+							fullWidth
+							variant='contained'
+							color='primary'
+							sx={{ margin: theme.spacing(3, 0, 2) }}
+							disabled={loading}
+						>
+							Sign Up
+						</Button>
+						<Grid container justifyContent='flex-end'>
+							<Grid item>
+								<Link underline='hover' component={RouterLink} to='/login'>
+									Already have an account? Sign in
+								</Link>
+							</Grid>
 						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant='outlined'
-								required
-								fullWidth
-								name='password'
-								label='Password'
-								type='password'
-								id='password'
-								autoComplete='current-password'
-								inputRef={passwordRef}
-								inputProps={{
-									pattern: regexpw,
-									title: 'Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.',
-								}}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant='outlined'
-								required
-								fullWidth
-								name='passwordConfirmation'
-								label='Password Confirmation'
-								type='password'
-								id='passwordConfirmation'
-								autoComplete='current-password'
-								inputRef={passwordConfirmationRef}
-							/>
-						</Grid>
-					</Grid>
-					<Button
-						type='submit'
-						fullWidth
-						variant='contained'
-						color='primary'
-						sx={{ margin: theme.spacing(3, 0, 2) }}
-						disabled={loading}
-					>
-						Sign Up
-					</Button>
-					<Grid container justifyContent='flex-end'>
-						<Grid item>
-							<Link to='/login'>Already have an account? Sign in</Link>
-						</Grid>
-					</Grid>
-				</FormControl>
+					</form>
+				</Box>
 			</Box>
 		</Container>
 	);

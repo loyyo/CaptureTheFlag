@@ -19,6 +19,7 @@ import { CssBaseline } from '@mui/material';
 import Challenge from './components/pages/Challenge.jsx';
 import UserProfile from './components/pages/UserProfile.jsx';
 import GlobalChat from './components/pages/GlobalChat.jsx';
+import ForgotPassword from './components/pages/ForgotPassword.jsx';
 
 function App() {
 	const theme = createTheme({
@@ -120,6 +121,15 @@ function App() {
 						element={
 							<LoggedInRoute>
 								<Register />
+							</LoggedInRoute>
+						}
+					/>
+					<Route
+						exact
+						path='/reset-password'
+						element={
+							<LoggedInRoute>
+								<ForgotPassword />
 							</LoggedInRoute>
 						}
 					/>
