@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { green } from '@mui/material/colors';
 import PropTypes from 'prop-types';
+import Rating from 'react-rating';
 
 const PREFIX = 'ChallengePage';
 const classes = {
@@ -35,9 +36,9 @@ export default function ChallengePage({ challenge, currentUser }) {
 	const theme = useTheme();
 
 	const navigate = useNavigate();
-	const { doChallenge } = useAuth();
+	const { doChallenge, rateChallenge } = useAuth();
 
-	async function checkKey() {
+	const checkKey = async () => {
 		if (loading) {
 			return;
 		} else if (
@@ -66,11 +67,34 @@ export default function ChallengePage({ challenge, currentUser }) {
 			}
 			setLoading(false);
 		}
-	}
+	};
 
 	const kliknietyEnter = (e) => {
 		if (e.key === 'Enter') {
 			checkKey();
+		}
+	};
+
+	const getInitialRating = (challenge) => {
+		let e = challenge.ratings;
+		let v = 0;
+		let i = 0;
+		for (let k in e) {
+			if (Object.hasOwn(e, k)) {
+				v = v + e[k];
+				i = i + 1;
+			}
+		}
+		return v / i;
+	};
+
+	const handleRating = async (value) => {
+		try {
+			await rateChallenge(value, challenge[0].url, currentUser.userID);
+			navigate('/challenges');
+			navigate(0);
+		} catch {
+			console.error('Something bad happened :(');
 		}
 	};
 
@@ -103,6 +127,46 @@ export default function ChallengePage({ challenge, currentUser }) {
 				</Grid>
 			</Grid>
 
+			{!currentUser.challenges[challenge[0].url] && (
+				<Grid item xs={12}>
+					<Box className='ratings'>
+						<Typography variant='h6' style={{ color: 'white' }}>
+							Community Ranking:
+						</Typography>
+						<Box ml={2} />
+						<Rating
+							emptySymbol='fa fa-star-o fa-2x'
+							fullSymbol='fa fa-star fa-2x'
+							fractions={100}
+							initialRating={getInitialRating(challenge[0])}
+							readonly
+						/>
+					</Box>
+				</Grid>
+			)}
+
+			{currentUser.challenges[challenge[0].url] && (
+				<Grid item xs={12}>
+					<Box className='ratings'>
+						<Typography variant='h6' style={{ color: 'white' }}>
+							Rate This Challenge:
+						</Typography>
+						<Box ml={2} />
+						<Rating
+							emptySymbol='fa fa-star-o fa-2x'
+							fullSymbol='fa fa-star fa-2x'
+							fractions={2}
+							initialRating={
+								challenge[0].ratings[currentUser.email]
+									? challenge[0].ratings[currentUser.email]
+									: 5
+							}
+							onClick={handleRating}
+						/>
+					</Box>
+				</Grid>
+			)}
+
 			<Box sx={{ background: theme.palette.primary.main, width: '100%', display: 'grid' }}>
 				<Grid item container xs={12}>
 					<Grid item xs={12}>
@@ -124,13 +188,20 @@ export default function ChallengePage({ challenge, currentUser }) {
 							/>
 						</Paper>
 					</Grid>
-					<Grid item xs={12}>
-						{currentUser.challenges[challenge[0].url] && (
-							<Typography variant='h5' className='header-text-dark'>
-								You&apos;ve successfully completed this challenge.
-							</Typography>
-						)}
-					</Grid>
+					{currentUser.challenges[challenge[0].url] && (
+						<Grid item xs={12}>
+							{challenge[0].ratings[currentUser.userID] && (
+								<Typography variant='h5' className='header-text-dark'>
+									You&apos;ve already done & rated this challenge. You can change your vote anytime.
+								</Typography>
+							)}
+							{!challenge[0].ratings[currentUser.userID] && (
+								<Typography variant='h5' className='header-text-dark'>
+									Good Job! You&apos;ve successfully completed this challenge. You can now rate it.
+								</Typography>
+							)}
+						</Grid>
+					)}
 					{!currentUser.challenges[challenge[0].url] && (
 						<>
 							<Grid item xs={12} sm={6}>

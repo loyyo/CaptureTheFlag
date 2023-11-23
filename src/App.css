@@ -36,14 +36,6 @@
 	border-radius: 2.5rem;
 }
 
-.Mui-selected .MuiBottomNavigationAction-wrapper .MuiSvgIcon-root {
-	color: #3f51b5;
-}
-
-.Mui-selected .MuiBottomNavigationAction-wrapper .Mui-selected {
-	color: #3f51b5;
-}
-
 .App-leaderboard {
 	overflow-x: hidden;
 }
@@ -58,16 +50,7 @@
 	text-align: center;
 }
 
-.header-text {
-	background-color: #3f51b5;
-}
-
-.header-text-dark {
-	background-color: #303f9f;
-}
-
 .header-text-light {
-	background-color: #7986cb;
 	border: solid;
 	border-left: none;
 	border-width: 0.01rem;
@@ -76,7 +59,6 @@
 }
 
 .header-text-light-right {
-	background-color: #7986cb;
 	border: solid;
 	border-left: none;
 	border-right: none;
@@ -86,12 +68,27 @@
 }
 
 .description {
-	background-color: #7986cb;
 	border: none;
 	border-left: none;
 	border-width: 0.01rem;
 	height: 100%;
 	border-color: white;
+}
+
+.ratings {
+	color: gold;
+	border: solid;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-width: 0.01rem;
+	height: 100%;
+	border-color: white;
+	padding: 1rem;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (max-width: 600px) {

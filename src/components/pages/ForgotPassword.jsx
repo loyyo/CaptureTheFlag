@@ -31,7 +31,7 @@ export default function ForgotPassword() {
 	const [success, setSuccess] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	async function handleSubmit(e) {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			setError('');
@@ -45,7 +45,7 @@ export default function ForgotPassword() {
 			setError('Failed to reset password');
 		}
 		setLoading(false);
-	}
+	};
 
 	return (
 		<Container component='main' maxWidth='xs'>

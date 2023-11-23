@@ -24,7 +24,7 @@ const Header = () => {
 
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 
-	async function handleLogout() {
+	const handleLogout = async () => {
 		setError('');
 		try {
 			await logout();
@@ -33,7 +33,7 @@ const Header = () => {
 			setError('Failed to log out');
 			console.error(error);
 		}
-	}
+	};
 
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);

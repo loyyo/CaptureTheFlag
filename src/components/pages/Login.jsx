@@ -29,7 +29,7 @@ export default function SignIn() {
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	async function handleSubmit(e) {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
@@ -42,7 +42,7 @@ export default function SignIn() {
 			setError('Failed to sign in');
 		}
 		setLoading(false);
-	}
+	};
 
 	return (
 		<Container component='main' maxWidth='xs'>
