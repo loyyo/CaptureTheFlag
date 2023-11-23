@@ -218,7 +218,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 											fullWidth
 											className={classes.input}
 											InputProps={{ classes: { input: classes.input } }}
-											onKeyPress={kliknietyEnter}
+											onKeyUp={kliknietyEnter}
 										/>
 									)}
 									{success && (

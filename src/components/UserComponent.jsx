@@ -8,7 +8,7 @@ import {
 	Box,
 	Avatar,
 	Typography,
-	ListItem,
+	ListItemButton,
 	ListItemIcon,
 	ListItemText,
 	Checkbox,
@@ -110,10 +110,9 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 									>
 										{allChallengesData.map((e) => {
 											return (
-												<ListItem
+												<ListItemButton
 													sx={{ cursor: 'default' }}
 													divider
-													button
 													onClick={() => {
 														navigate(`/challenges/${e.url}`);
 													}}
@@ -132,7 +131,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 													</ListItemIcon>
 													<ListItemText id='challenge1' primary={e.title} />
 													<Divider orientation='vertical' />
-												</ListItem>
+												</ListItemButton>
 											);
 										})}
 									</ImageList>

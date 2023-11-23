@@ -275,6 +275,18 @@ function AuthProvider({ children }) {
 			});
 	}, []);
 
+	// const addChallenges = useCallback(async () => {
+	// 	return db.collection('challenges').doc('latex').set({
+	// 		description: 'Jaką komendą stworzymy podsekcję w podsekcji w LaTeXie?',
+	// 		difficulty: 'hard',
+	// 		key: '\\subsubsection',
+	// 		points: 400,
+	// 		title: 'LaTeX',
+	// 		url: 'latex',
+	// 		ratings: {},
+	// 	});
+	// }, []);
+
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
@@ -330,6 +342,7 @@ function AuthProvider({ children }) {
 			darkMode,
 			switchDarkMode,
 			rateChallenge,
+			// addChallenges
 		}),
 		[
 			currentUser,
@@ -359,6 +372,7 @@ function AuthProvider({ children }) {
 			darkMode,
 			switchDarkMode,
 			rateChallenge,
+			// addChallenges
 		]
 	);
 

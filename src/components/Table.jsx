@@ -196,9 +196,11 @@ export default function StickyHeadTable({ allUsersData }) {
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 				colSpan={3}
-				SelectProps={{
-					inputProps: { 'aria-label': 'rows per page' },
-					native: true,
+				slotProps={{
+					select: {
+						inputProps: { 'aria-label': 'rows per page' },
+						native: true,
+					},
 				}}
 				ActionsComponent={TablePaginationActions}
 			/>

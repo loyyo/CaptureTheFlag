@@ -82,7 +82,7 @@ const Footer = () => {
 								navigate('/challenges');
 							}}
 							label='Challenges'
-							icon={<FlagIcon stroke='#c6c6c6' stroke-width={1} />}
+							icon={<FlagIcon stroke='#c6c6c6' strokeWidth={1} />}
 							className='bottomIcon'
 						/>
 						<BottomNavigationAction
@@ -90,7 +90,7 @@ const Footer = () => {
 								navigate('/leaderboard');
 							}}
 							label='Leaderboard'
-							icon={<EqualizerIcon stroke='#c6c6c6' stroke-width={1} />}
+							icon={<EqualizerIcon stroke='#c6c6c6' strokeWidth={1} />}
 							className='bottomIcon'
 						/>
 						<BottomNavigationAction
@@ -98,7 +98,7 @@ const Footer = () => {
 								navigate('/profile');
 							}}
 							label='Profile'
-							icon={<PersonIcon stroke='#c6c6c6' stroke-width={1} />}
+							icon={<PersonIcon stroke='#c6c6c6' strokeWidth={1} />}
 							className='bottomIcon'
 						/>
 					</BottomNavigation>
@@ -114,15 +114,6 @@ const Footer = () => {
 					</Typography>
 				</Box>
 			</Box>
-			{/* <button
-				onClick={addChallenge}
-				// onClick={() => {
-				// 	var xd = 'al-Hariz';
-				// 	console.log(xd.toLowerCase());
-				// }}
-			>
-				ADDCHALENGE
-			</button> */}
 		</Container>
 	);
 };

@@ -117,17 +117,14 @@ export default function GlobalChat() {
 					<Grid item xs={12}>
 						<Paper square elevation={0}>
 							<Box p={1} className='messagesBox'>
-								{globalMessages &&
-									globalMessages.map((msg) => {
-										return (
-											<ChatMessage
-												key={msg.createdAt.seconds}
-												message={msg}
-												currentUserData={currentUserData}
-												allUsersData={allUsersData}
-											/>
-										);
-									})}
+								{globalMessages?.map((msg) => (
+									<ChatMessage
+										key={msg.createdAt.seconds}
+										message={msg}
+										currentUserData={currentUserData}
+										allUsersData={allUsersData}
+									/>
+								))}
 								<div ref={dummy}></div>
 							</Box>
 						</Paper>
@@ -146,7 +143,7 @@ export default function GlobalChat() {
 											fullWidth
 											className={classes.input}
 											InputProps={{ classes: { input: classes.input } }}
-											onKeyPress={kliknietyEnter}
+											onKeyUp={kliknietyEnter}
 										/>
 									</Box>
 								</Grid>
