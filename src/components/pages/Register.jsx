@@ -37,7 +37,7 @@ export default function SignUp() {
 	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/v;
 	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/v;
 
-	async function handleSubmit(e) {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
@@ -59,7 +59,7 @@ export default function SignUp() {
 			setError('Failed to create an account');
 		}
 		setLoading(false);
-	}
+	};
 
 	return (
 		<Container component='main' maxWidth='xs'>

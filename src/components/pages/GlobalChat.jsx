@@ -45,7 +45,7 @@ export default function GlobalChat() {
 		sendMessage,
 	} = useAuth();
 
-	async function submitMessage() {
+	const submitMessage = async () => {
 		if (messageRef.current.value !== '' && !loading && messageRef.current.value.length < 1000) {
 			try {
 				setLoading(true);
@@ -60,7 +60,7 @@ export default function GlobalChat() {
 		} else if (messageRef.current.value.length >= 1000) {
 			setError(true);
 		}
-	}
+	};
 
 	const kliknietyEnter = (e) => {
 		if (e.key === 'Enter') {

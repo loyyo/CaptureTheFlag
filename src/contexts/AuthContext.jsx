@@ -263,6 +263,18 @@ function AuthProvider({ children }) {
 			});
 	}, []);
 
+	const rateChallenge = useCallback(async (value, challenge, user) => {
+		await db
+			.collection('challenges')
+			.doc(challenge)
+			.update({
+				[`ratings.${user}`]: value,
+			})
+			.catch((error) => {
+				console.error('Error updating document: ', error);
+			});
+	}, []);
+
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
@@ -317,6 +329,7 @@ function AuthProvider({ children }) {
 			resetPassword,
 			darkMode,
 			switchDarkMode,
+			rateChallenge,
 		}),
 		[
 			currentUser,
@@ -345,6 +358,7 @@ function AuthProvider({ children }) {
 			resetPassword,
 			darkMode,
 			switchDarkMode,
+			rateChallenge,
 		]
 	);
 

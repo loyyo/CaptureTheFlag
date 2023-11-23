@@ -2,10 +2,24 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Box, Typography, Button, Paper, Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Rating from 'react-rating';
 
 export default function Challenges({ category, allChallengesData, currentUserData }) {
 	const navigate = useNavigate();
 	const theme = useTheme();
+
+	const getInitialRating = (challenge) => {
+		let e = challenge.ratings;
+		let v = 0;
+		let i = 0;
+		for (let k in e) {
+			if (Object.hasOwn(e, k)) {
+				v = v + e[k];
+				i = i + 1;
+			}
+		}
+		return v / i;
+	};
 
 	return (
 		<Grid container>
@@ -48,6 +62,17 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 													Category: {e.category}
 												</Typography>
 											</Grid>
+										</Grid>
+										<Grid item xs={12}>
+											<Box className='ratings'>
+												<Rating
+													emptySymbol='fa fa-star-o fa-2x'
+													fullSymbol='fa fa-star fa-2x'
+													fractions={100}
+													initialRating={getInitialRating(e)}
+													readonly
+												/>
+											</Box>
 										</Grid>
 										<Grid item xs={12}>
 											<Button
