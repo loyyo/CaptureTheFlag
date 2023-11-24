@@ -315,6 +315,7 @@ function AuthProvider({ children }) {
 
             const points = calculatePoints(difficulty);
             const url = generateUrlFromTitle(title);
+			const createdAt = new Date();
 
             await db.collection('challenges').doc(`${url}`).set({
                 description: description,
@@ -326,8 +327,9 @@ function AuthProvider({ children }) {
                 completedBy: 0,
                 ratings: {},
 				url: url,
-                userID: userID
-            });
+                userID: userID,
+				createdAt: createdAt
+			});
         } catch (error) {
             console.error('Error adding document: ', error);
         }
