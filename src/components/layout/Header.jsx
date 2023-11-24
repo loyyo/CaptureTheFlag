@@ -42,7 +42,7 @@ const Header = () => {
 			<MenuItem key="settings" onClick={() => navigateTo('/profile/settings')}>Settings</MenuItem>,
 			<MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
 			<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>,
-			<MenuItem onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
+			<MenuItem key="mode" onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
 		];
 	};
 

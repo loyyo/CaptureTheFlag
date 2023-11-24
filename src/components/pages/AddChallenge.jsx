@@ -1,5 +1,18 @@
 import {useEffect, useRef, useState} from 'react';
-import {Container, TextField, Button, Grid, Box, Typography, Alert} from '@mui/material';
+import {
+    Radio,
+    RadioGroup,
+    FormControlLabel,
+    FormControl,
+    FormLabel,
+    Container,
+    TextField,
+    Button,
+    Grid,
+    Box,
+    Typography,
+    Alert
+} from '@mui/material';
 import {useAuth} from '../../contexts/AuthContext.jsx';
 
 export default function AddChallenge() {
@@ -10,7 +23,8 @@ export default function AddChallenge() {
 
     const challengeRef = useRef();
     const descriptionRef = useRef();
-    const difficultyRef = useRef();
+    const difficultyRef = useRef({value: 'easy'});
+    const [correctAnswer, setCorrectAnswer] = useState('');
 
     const fileRef = useRef();
 
@@ -22,8 +36,8 @@ export default function AddChallenge() {
         }, 100);
     }, []);
 
-    const handleFileChange = (e) => {
-        if (fileRef.current && fileRef.current.files && fileRef.current.files.length > 0) {
+    const handleFileChange = () => {
+        if (fileRef.current && fileRef.current?.files && fileRef.current.files.length > 0) {
             setError('');
         }
     };
@@ -36,16 +50,17 @@ export default function AddChallenge() {
             setSuccess(false);
             setLoading(true);
 
-            const challenge = challengeRef.current.value;
-            const description = descriptionRef.current.value;
-            const difficulty = difficultyRef.current.value;
+            const challenge = challengeRef.current?.value;
+            const description = descriptionRef.current?.value;
+            const difficulty = difficultyRef.current.value || 'easy';
 
-            await addChallenge(currentUserData.userID, challenge, description, difficulty, fileRef.current?.files?.[0]);
+            await addChallenge(currentUserData.userID, challenge, description, difficulty, correctAnswer, fileRef.current?.files?.[0]);
             setSuccess(true);
 
             challengeRef.current.value = '';
             descriptionRef.current.value = '';
-            difficultyRef.current.value = '';
+            difficultyRef.current.value = 'easy';
+            setCorrectAnswer('');
             fileRef.current.value = null;
         } catch (err) {
             setError('Failed to add challenge');
@@ -90,11 +105,28 @@ export default function AddChallenge() {
                             <TextField
                                 required
                                 fullWidth
-                                id="difficulty"
-                                label="Difficulty"
-                                name="difficulty"
-                                inputRef={difficultyRef}
+                                id="correctAnswer"
+                                label="Correct Answer"
+                                name="correctAnswer"
+                                value={correctAnswer}
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
                             />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">Difficulty</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-label="difficulty"
+                                    name="difficulty"
+                                    defaultValue="easy"
+                                    onChange={(e) => difficultyRef.current.value = e.target.value}
+                                >
+                                    <FormControlLabel value="easy" control={<Radio/>} label="Easy"/>
+                                    <FormControlLabel value="medium" control={<Radio/>} label="Medium"/>
+                                    <FormControlLabel value="hard" control={<Radio/>} label="Hard"/>
+                                </RadioGroup>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12}>
                             <Button variant="contained" component="label">
