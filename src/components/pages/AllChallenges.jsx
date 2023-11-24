@@ -59,11 +59,17 @@ function AllChallenges() {
         return sortedData;
     };
 
+    const calculateAverageRating = (ratings) => {
+        const ratingValues = Object.values(ratings).map(rating => parseInt(rating));
+        const total = ratingValues.reduce((acc, curr) => acc + curr, 0);
+        return ratingValues.length > 0 ? total / ratingValues.length : 0;
+    };
+
     const applyFilters = (data) => {
         return data
             .filter(challenge => selectedTitle ? challenge.title.toLowerCase().includes(selectedTitle.toLowerCase()) : true)
             .filter(challenge => selectedDifficultyFilter ? challenge.difficulty === selectedDifficultyFilter : true)
-            .filter(challenge => selectedRatingFilter ? challenge.ratings >= selectedRatingFilter : true);
+            .filter(challenge => selectedRatingFilter ? calculateAverageRating(challenge.ratings) >= selectedRatingFilter : true);
     };
 
     const sortedAndFilteredChallenges = applySorting(applyFilters(allChallengesData));
@@ -163,6 +169,7 @@ function AllChallenges() {
                             open={Boolean(ratingFilterMenuAnchorEl)}
                             onClose={() => setRatingFilterMenuAnchorEl(null)}
                         >
+                            <MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
                             <MenuItem onClick={() => setSelectedRatingFilter(1)}>1+</MenuItem>
                             <MenuItem onClick={() => setSelectedRatingFilter(2)}>2+</MenuItem>
                             <MenuItem onClick={() => setSelectedRatingFilter(3)}>3+</MenuItem>
