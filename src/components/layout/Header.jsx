@@ -52,7 +52,7 @@ const Header = () => {
 			<AppBar color="primary" position="static">
 				<Toolbar>
 					<Box sx={{ flexGrow: 1 }}>
-						<Button onClick={() => navigateTo('/')}>
+						<Button onClick={() => navigateTo('/challenges')}>
 							<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
 								Capture The Flag
 							</Typography>

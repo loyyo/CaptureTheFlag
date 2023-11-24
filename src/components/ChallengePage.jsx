@@ -169,23 +169,26 @@ export default function ChallengePage({ challenge, currentUser }) {
 			<Box sx={{ background: theme.palette.primary.main, width: '100%', display: 'grid' }}>
 				<Grid item container xs={12}>
 					<Grid item xs={12}>
-						<Paper sx={{ background: theme.palette.primary.main, width: '100%', display: 'grid' }}>
-							<Box
-								style={{
-									marginLeft: 'auto',
-									marginRight: 'auto',
-									marginTop: '0.5rem',
-									marginBottom: '0.5rem',
-								}}
-								component='img'
-								sx={{
-									height: 'auto',
-									width: { xs: 250, sm: 350, md: 500 },
-								}}
-								alt={`flag-${challenge[0].url}`}
-								src={challenge[0].flag}
-							/>
+						<Paper sx={{background: theme.palette.primary.main, width: '100%', display: 'grid'}}>
+							{challenge[0].image && (
+								<Box
+									style={{
+										marginLeft: 'auto',
+										marginRight: 'auto',
+										marginTop: '0.5rem',
+										marginBottom: '0.5rem',
+									}}
+									component='img'
+									sx={{
+										height: 'auto',
+										width: {xs: 250, sm: 350, md: 500},
+									}}
+									alt={`image-${challenge[0].url}`}
+									src={challenge[0].image}
+								/>
+							)}
 						</Paper>
+						)
 					</Grid>
 					{currentUser.challenges[challenge[0].url] && (
 						<Grid item xs={12}>
