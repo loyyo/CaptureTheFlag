@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Rating from 'react-rating';
 
-export default function Challenges({ category, allChallengesData, currentUserData }) {
+export default function Challenges({ allChallengesData, currentUserData }) {
 	const navigate = useNavigate();
 	const theme = useTheme();
 
@@ -24,7 +24,6 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 	return (
 		<Grid container>
 			{allChallengesData.map((e) => {
-				if (category === e.category || category === 'all') {
 					return (
 						<Grid item xs={12} sm={6} md={4} key={e.url}>
 							<Box m={1}>
@@ -93,16 +92,12 @@ export default function Challenges({ category, allChallengesData, currentUserDat
 							</Box>
 						</Grid>
 					);
-				} else {
-					return null;
-				}
 			})}
 		</Grid>
 	);
 }
 
 Challenges.propTypes = {
-	category: PropTypes.string.isRequired,
 	allChallengesData: PropTypes.array.isRequired,
 	currentUserData: PropTypes.object.isRequired,
 };

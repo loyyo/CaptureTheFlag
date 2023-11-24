@@ -130,10 +130,7 @@ function AuthProvider({ children }) {
 		try {
 			const querySnapshot = await db.collection('challenges').get();
 			querySnapshot.forEach((doc) => {
-				const challengeData = doc.data();
-				if (challengeData.category) {
-					Data.push(challengeData);
-				}
+				Data.push(doc.data());
 			});
 			setAllChallengesData(Data);
 		} catch (error) {
