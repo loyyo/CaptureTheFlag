@@ -1,9 +1,9 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Container, TextField, Button, Grid, Box, Typography, Alert} from '@mui/material';
 import {useAuth} from '../../contexts/AuthContext.jsx';
 
 export default function AddChallenge() {
-    const {addChallenge} = useAuth();
+    const {addChallenge, getProfile, currentUserData} = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -13,6 +13,14 @@ export default function AddChallenge() {
     const difficultyRef = useRef();
 
     const fileRef = useRef();
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (!currentUserData) {
+                getProfile();
+            }
+        }, 100);
+    }, []);
 
     const handleFileChange = (e) => {
         if (fileRef.current && fileRef.current.files && fileRef.current.files.length > 0) {
@@ -32,7 +40,7 @@ export default function AddChallenge() {
             const description = descriptionRef.current.value;
             const difficulty = difficultyRef.current.value;
 
-            await addChallenge(challenge, description, difficulty, fileRef.current?.files?.[0]);
+            await addChallenge(currentUserData.userID, challenge, description, difficulty, fileRef.current?.files?.[0]);
             setSuccess(true);
 
             challengeRef.current.value = '';

@@ -275,7 +275,7 @@ function AuthProvider({ children }) {
 			});
 	}, []);
 
-	const addChallenge = useCallback(async (title, description, difficulty, image) => {
+	const addChallenge = useCallback(async (userID, title, description, difficulty, image) => {
 		try {
 			let imageUrl = null;
 
@@ -320,6 +320,7 @@ function AuthProvider({ children }) {
 				title: title,
 				image: imageUrl ? imageUrl : null,
 				ratings: {},
+				userID: userID
 			});
 		} catch (error) {
 			console.error('Error adding document: ', error);
