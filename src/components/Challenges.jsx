@@ -58,7 +58,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 											</Grid>
 											<Grid item xs={12} md={6}>
 												<Typography variant='body1' className='header-text-light-right'>
-													Category: {e.category}
+													Completed by: {e.completedBy}
 												</Typography>
 											</Grid>
 										</Grid>
