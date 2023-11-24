@@ -42,8 +42,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 		if (loading) {
 			return;
 		} else if (
-			keyRef.current.value.toLowerCase() !== challenge[0].key.toLowerCase() &&
-			keyRef.current.value.toLowerCase() !== challenge[0].key2.toLowerCase()
+			keyRef.current.value.toLowerCase() !== challenge[0].key.toLowerCase()
 		) {
 			setError(true);
 		} else {
@@ -210,7 +209,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 										<TextField
 											error={error}
 											helperText={
-												error ? 'Unfortunately, that is not the correct country. Try again!' : ''
+												error ? 'Unfortunately, that is not the correct answer. Try again!' : ''
 											}
 											inputRef={keyRef}
 											placeholder='Enter the country here'
