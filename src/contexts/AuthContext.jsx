@@ -130,13 +130,17 @@ function AuthProvider({ children }) {
 		try {
 			const querySnapshot = await db.collection('challenges').get();
 			querySnapshot.forEach((doc) => {
-				Data.push(doc.data());
+				const challengeData = doc.data();
+				if (challengeData.category) {
+					Data.push(challengeData);
+				}
 			});
 			setAllChallengesData(Data);
 		} catch (error) {
 			console.error('Error getting documents:', error);
 		}
 	}, []);
+
 
 	const getSingleChallengeData = useCallback(
 		async (url) => {

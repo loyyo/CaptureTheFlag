@@ -1,21 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useTheme, CssBaseline, Container, Grid, Box, Typography, LinearProgress, AppBar, Tabs, Tab, Divider, useMediaQuery, TextField } from '@mui/material';
+import Autocomplete from '@mui/lab/Autocomplete';
 import PropTypes from 'prop-types';
-import {
-	CssBaseline,
-	Container,
-	Grid,
-	Box,
-	Typography,
-	LinearProgress,
-	AppBar,
-	Tabs,
-	Tab,
-	Divider,
-	useMediaQuery,
-} from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-
 import Challenges from '../Challenges.jsx';
 
 function TabPanel(props) {
@@ -23,7 +10,7 @@ function TabPanel(props) {
 
 	return (
 		<div
-			role='tabpanel'
+			role="tabpanel"
 			hidden={value !== index}
 			id={`category-tabpanel-${index}`}
 			aria-labelledby={`category-tab-${index}`}
@@ -34,6 +21,12 @@ function TabPanel(props) {
 	);
 }
 
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.any.isRequired,
+	value: PropTypes.any.isRequired,
+};
+
 function a11yProps(index) {
 	return {
 		id: `category-tab-${index}`,
@@ -43,12 +36,9 @@ function a11yProps(index) {
 
 export default function AllChallenges() {
 	const [value, setValue] = useState(0);
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
+	const [selectedCategory, setSelectedCategory] = useState('all');
 
 	const { getAllChallengesData, allChallengesData, getProfile, currentUserData } = useAuth();
-
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -59,11 +49,30 @@ export default function AllChallenges() {
 		if (allChallengesData.length === 0) {
 			getAllChallengesData();
 		}
-	});
+	}, [currentUserData, allChallengesData, getProfile, getAllChallengesData]);
+
+	const categories = useMemo(() => {
+		const uniqueCategories = new Set(['All']); // Dodaj opcję "Wszystko"
+		allChallengesData.forEach(challenge => {
+			if (challenge.category) {
+				uniqueCategories.add(challenge.category);
+			}
+		});
+		return Array.from(uniqueCategories);
+	}, [allChallengesData]);
+
+    const handleCategoryChange = (event, newValue) => {
+        if (newValue === null) {
+            setSelectedCategory('all');
+        } else {
+            setSelectedCategory(newValue === 'All' ? 'all' : newValue);
+        }
+    };
+
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<Container component="main" maxWidth="lg">
 				<CssBaseline />
 				<Box sx={{ width: '100%' }}>
 					<Box m={10}>
@@ -74,63 +83,38 @@ export default function AllChallenges() {
 		);
 	}
 
+	const filteredChallenges = selectedCategory === 'all'
+		? allChallengesData
+		: allChallengesData.filter(challenge => challenge.category === selectedCategory);
+
 	return (
-		<Container maxWidth='lg'>
+		<Container maxWidth="lg">
 			<CssBaseline />
 			<Box mt={5} mb={5}>
-				<Grid container direction='column'>
+				<Grid container direction="column">
 					<Grid item xs={12}>
-						<Typography variant='h4' className='header-text'>
+						<Typography variant="h4" className="header-text">
 							Available Challenges
 						</Typography>
 						<Divider />
 					</Grid>
+					<Grid item xs={12} style={{ marginTop: 20 }}>
+						<Autocomplete
+							options={categories}
+							defaultValue="All"
+							onChange={handleCategoryChange}
+							renderInput={(params) => (
+								<TextField {...params} label="Choose a category" variant="outlined" fullWidth />
+							)}
+						/>
+					</Grid>
 					<Grid item xs={12}>
-						<Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.paper }}>
-							<AppBar position='static' sx={{ background: theme.palette.primary.dark }}>
-								<Tabs value={value} onChange={handleChange} centered aria-label='category'>
-									<Tab label='All' {...a11yProps(0)} />
-									<Tab label='Europe' {...a11yProps(1)} />
-									<Tab label='Asia' {...a11yProps(2)} />
-									<Tab label='Africa' {...a11yProps(3)} />
-									<Tab hidden={matches} label='America' {...a11yProps(4)} />
-								</Tabs>
-							</AppBar>
-							<TabPanel value={value} index={0}>
-								<Challenges
-									category={'all'}
-									allChallengesData={allChallengesData}
-									currentUserData={currentUserData}
-								/>
-							</TabPanel>
-							<TabPanel value={value} index={1}>
-								<Challenges
-									category={'Europe'}
-									allChallengesData={allChallengesData}
-									currentUserData={currentUserData}
-								/>
-							</TabPanel>
-							<TabPanel value={value} index={2}>
-								<Challenges
-									category={'Asia'}
-									allChallengesData={allChallengesData}
-									currentUserData={currentUserData}
-								/>
-							</TabPanel>
-							<TabPanel value={value} index={3}>
-								<Challenges
-									category={'Africa'}
-									allChallengesData={allChallengesData}
-									currentUserData={currentUserData}
-								/>
-							</TabPanel>
-							<TabPanel value={value} index={4}>
-								<Challenges
-									category={'America'}
-									allChallengesData={allChallengesData}
-									currentUserData={currentUserData}
-								/>
-							</TabPanel>
+						<Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.paper, marginTop: 2 }}>
+							<Challenges
+								category={selectedCategory}
+								allChallengesData={filteredChallenges}
+								currentUserData={currentUserData}
+							/>
 						</Box>
 					</Grid>
 				</Grid>
@@ -138,9 +122,3 @@ export default function AllChallenges() {
 		</Container>
 	);
 }
-
-TabPanel.propTypes = {
-	children: PropTypes.node,
-	index: PropTypes.any.isRequired,
-	value: PropTypes.any.isRequired,
-};
