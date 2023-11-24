@@ -1,50 +1,30 @@
 import { useState, useEffect } from 'react';
-import {
-	Link,
-	Box,
-	Typography,
-	Container,
-	CssBaseline,
-	BottomNavigation,
-	BottomNavigationAction,
-} from '@mui/material';
-import {
-	Person as PersonIcon,
-	Flag as FlagIcon,
-	Equalizer as EqualizerIcon,
-} from '@mui/icons-material';
+import { Link, Box, Typography, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Person as PersonIcon, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const Footer = () => {
-	const [value, setValue] = useState(null);
+	const [selectedLocation, setSelectedLocation] = useState('');
 	const navigate = useNavigate();
-	const location = useLocation();
-
+	const { pathname } = useLocation();
 	const { currentUser } = useAuth();
 
-	useEffect(() => {
-		if (location.pathname !== '/challenges') {
-			if (location.pathname !== '/leaderboard') {
-				if (location.pathname !== '/profile') {
-					setValue(null);
-				}
-			}
-		}
-	}, [location.pathname]);
+	const navigationItems = [
+		{ label: 'Challenges', icon: FlagIcon, path: '/challenges' },
+		{ label: 'Leaderboard', icon: EqualizerIcon, path: '/leaderboard' },
+		{ label: 'Profile', icon: PersonIcon, path: '/profile' },
+	];
 
-	// return (
-	// 	<Box mt={3}>
-	// 		<Typography variant='body2' color='textSecondary' align='center'>
-	// 			{'Copyright © '}
-	// 			<Link underline='hover' color='inherit' href='https://github.com/loyyo/CaptureTheFlag'>
-	// 				Capture The Flag
-	// 			</Link>{' '}
-	// 			{new Date().getFullYear()}
-	// 			{'.'}
-	// 		</Typography>
-	// 	</Box>
-	// );
+	useEffect(() => {
+		// Set the selected location based on the current pathname
+		const currentNavItem = navigationItems.find(item => item.path === pathname);
+		setSelectedLocation(currentNavItem ? currentNavItem.path : '');
+	}, [pathname]);
+
+	const handleNavigationChange = (path) => {
+		navigate(path);
+	};
 
 	//TODO: zrobić może żeby to było zawsze przyklejone do dołu jak jest mobile
 	//TODO: trzeba pomyśleć co zrobić w takim wypadku z headerem i menu (logout, darkmode itp, bo jak mamy już bottom navigation to po co nam na górze jeszcze)
@@ -52,10 +32,10 @@ const Footer = () => {
 
 	if (!currentUser) {
 		return (
-			<Box mt={3}>
-				<Typography variant='body2' color='textSecondary' align='center'>
+			<Box mt={3} textAlign="center">
+				<Typography variant="body2" color="textSecondary">
 					{'Copyright © '}
-					<Link color='inherit' href='https://github.com/loyyo/CaptureTheWDIctory'>
+					<Link color="inherit" href="https://github.com/loyyo/CaptureTheWDIctory">
 						Capture The WDIctory
 					</Link>{' '}
 					{new Date().getFullYear()}
@@ -66,41 +46,19 @@ const Footer = () => {
 	}
 
 	return (
-		<Container maxWidth='lg'>
+		<Container maxWidth="lg">
 			<Box sx={{ width: '100%' }}>
-				<CssBaseline />
 				<Box mt={3}>
-					<BottomNavigation
-						value={value}
-						onChange={(event, newValue) => {
-							setValue(newValue);
-						}}
-						showLabels
-					>
-						<BottomNavigationAction
-							onClick={() => {
-								navigate('/challenges');
-							}}
-							label='Challenges'
-							icon={<FlagIcon stroke='#c6c6c6' strokeWidth={1} />}
-							className='bottomIcon'
-						/>
-						<BottomNavigationAction
-							onClick={() => {
-								navigate('/leaderboard');
-							}}
-							label='Leaderboard'
-							icon={<EqualizerIcon stroke='#c6c6c6' strokeWidth={1} />}
-							className='bottomIcon'
-						/>
-						<BottomNavigationAction
-							onClick={() => {
-								navigate('/profile');
-							}}
-							label='Profile'
-							icon={<PersonIcon stroke='#c6c6c6' strokeWidth={1} />}
-							className='bottomIcon'
-						/>
+					<BottomNavigation value={selectedLocation} showLabels>
+						{navigationItems.map(({ label, icon: Icon, path }) => (
+							<BottomNavigationAction
+								key={label}
+								label={label}
+								icon={<Icon stroke="#c6c6c6" strokeWidth={1} />}
+								value={path}
+								onClick={() => handleNavigationChange(path)}
+							/>
+						))}
 					</BottomNavigation>
 				</Box>
 				<Box mt={3}>

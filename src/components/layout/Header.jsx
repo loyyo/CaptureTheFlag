@@ -1,193 +1,99 @@
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import {
-	Typography,
-	Button,
-	IconButton,
-	AppBar,
-	Toolbar,
-	MenuItem,
-	Menu,
-	Box,
-} from '@mui/material';
-import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
+import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu, Box } from '@mui/material';
+import {AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon, Add as AddIcon} from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
-
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [error, setError] = useState('error');
-	const open = Boolean(anchorEl);
-
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 
+	const isMenuOpen = Boolean(anchorEl);
+
 	const handleLogout = async () => {
-		setError('');
 		try {
 			await logout();
-			navigate(0);
-		} catch {
-			setError('Failed to log out');
-			console.error(error);
+			navigate('/');
+		} catch (error) {
+			console.error('Failed to log out:', error);
 		}
 	};
 
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget);
+	const navigateTo = (path) => {
+		handleCloseMenu();
+		navigate(path);
 	};
 
-	const handleClose = () => {
-		setAnchorEl(null);
+	const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
+	const handleCloseMenu = () => setAnchorEl(null);
+
+	const renderMenuItems = () => {
+		if (currentUser === null) {
+			return [
+				<MenuItem key="login" onClick={() => navigateTo('/login')}>Login</MenuItem>,
+				<MenuItem key="register" onClick={() => navigateTo('/register')}>Sign Up</MenuItem>
+			];
+		}
+		return [
+			<MenuItem key="profile" onClick={() => navigateTo('/profile')}>Profile</MenuItem>,
+			<MenuItem key="settings" onClick={() => navigateTo('/profile/settings')}>Settings</MenuItem>,
+			<MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
+			<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>,
+			<MenuItem onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
+		];
 	};
 
-	const handleDarkMode = () => {
-		switchDarkMode();
-	};
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar color='primary' position='static'>
+			<AppBar color="primary" position="static">
 				<Toolbar>
 					<Box sx={{ flexGrow: 1 }}>
-						<Button
-							onClick={() => {
-								navigate('/');
-							}}
-						>
-							<Typography
-								sx={{
-									color: 'white',
-									textDecoration: 'none',
-									'&:hover': {
-										color: 'white',
-										textDecoration: 'none',
-									},
-								}}
-								variant='subtitle2'
-							>
+						<Button onClick={() => navigateTo('/')}>
+							<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
 								Capture The Flag
 							</Typography>
 						</Button>
 					</Box>
-
-					{currentUser !== null && (
+					{currentUser && (
 						<>
-							<Button
-								onClick={() => {
-									navigate('/challenges');
-								}}
-							>
+							<Button onClick={() => navigateTo('/challenge/add')} sx={{ marginRight: theme.spacing(-1 ) }}>
+								<AddIcon sx={{ color: 'white' }} />
+							</Button>
+							<Button onClick={() => navigateTo('/challenges')}>
 								<FlagIcon sx={{ color: 'white' }} />
 							</Button>
-							<Button
-								onClick={() => {
-									navigate('/leaderboard');
-								}}
-								sx={{
-									marginLeft: theme.spacing(-0.5),
-									marginRight: theme.spacing(0.5),
-								}}
-							>
+							<Button onClick={() => navigateTo('/leaderboard')} sx={{
+								marginLeft: theme.spacing(-0.5),
+								marginRight: theme.spacing(0.5),
+							}}>
 								<EqualizerIcon sx={{ color: 'white' }} />
 							</Button>
 						</>
 					)}
-
-					<div className=''>
-						<IconButton
-							aria-label='account of current user'
-							aria-controls='menu-appbar'
-							aria-haspopup='true'
-							onClick={handleMenu}
-							color='inherit'
-						>
-							<AccountCircle sx={{ color: 'white' }} />
-						</IconButton>
-						<Menu
-							id='menu-appbar'
-							anchorEl={anchorEl}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={open}
-							onClose={handleClose}
-						>
-							{currentUser === null && [
-								<MenuItem
-									key='login'
-									onClick={() => {
-										handleClose();
-										navigate('/login');
-									}}
-								>
-									Login
-								</MenuItem>,
-								<MenuItem
-									key='register'
-									onClick={() => {
-										handleClose();
-										navigate('/register');
-									}}
-								>
-									Sign Up
-								</MenuItem>,
-								<MenuItem key='darkMode' className='headerDarkMode' onClick={handleDarkMode}>
-									{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}
-								</MenuItem>,
-							]}
-							{currentUser !== null && [
-								<MenuItem
-									key='profile'
-									onClick={() => {
-										handleClose();
-										navigate('/profile');
-									}}
-								>
-									Profile
-								</MenuItem>,
-								<MenuItem
-									key='settings'
-									onClick={() => {
-										handleClose();
-										navigate('/profile/settings');
-									}}
-								>
-									Settings
-								</MenuItem>,
-								<MenuItem
-									key='home'
-									onClick={() => {
-										handleClose();
-										handleLogout();
-										navigate('/');
-									}}
-								>
-									Logout
-								</MenuItem>,
-								<MenuItem
-									key='chat'
-									onClick={() => {
-										handleClose();
-										navigate('/chat');
-									}}
-								>
-									Chat
-								</MenuItem>,
-								<MenuItem key='darkMode' className='headerDarkMode' onClick={handleDarkMode}>
-									{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}
-								</MenuItem>,
-							]}
-						</Menu>
-					</div>
+					<IconButton
+						aria-label="account of current user"
+						aria-controls="menu-appbar"
+						aria-haspopup="true"
+						onClick={handleOpenMenu}
+						color="inherit"
+					>
+						<AccountCircle sx={{ color: 'white' }} />
+					</IconButton>
+					<Menu
+						id="menu-appbar"
+						anchorEl={anchorEl}
+						anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+						keepMounted
+						transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+						open={isMenuOpen}
+						onClose={handleCloseMenu}
+					>
+						{renderMenuItems()}
+					</Menu>
 				</Toolbar>
 			</AppBar>
 		</Box>
