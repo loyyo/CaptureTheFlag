@@ -4,6 +4,7 @@ import cryptoRandomString from 'crypto-random-string';
 import { useNavigate } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import PropTypes from 'prop-types';
+import firebase from "firebase/compat/app";
 
 const AuthContext = React.createContext();
 
@@ -221,6 +222,16 @@ function AuthProvider({ children }) {
 			.update({
 				points: points,
 				[`challenges.${url}`]: true,
+			})
+			.catch((error) => {
+				console.error('Error updating document: ', error);
+			});
+
+		await db
+			.collection('challenges')
+			.doc(url)
+			.update({
+				completedBy: firebase.firestore.FieldValue.increment(1)
 			})
 			.catch((error) => {
 				console.error('Error updating document: ', error);
