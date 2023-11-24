@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import AllChallenges from './components/pages/AllChallenges.jsx';
+import AddChallenge from './components/pages/AddChallenge.jsx';
 import Home from './components/pages/Home.jsx';
 import Login from './components/pages/Login.jsx';
 import Register from './components/pages/Register.jsx';
@@ -100,6 +101,15 @@ function App() {
 						element={
 							<PrivateRoute>
 								<AllChallenges />
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						exact
+						path='/challenge/add'
+						element={
+							<PrivateRoute>
+								<AddChallenge />
 							</PrivateRoute>
 						}
 					/>
