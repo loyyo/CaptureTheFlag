@@ -138,6 +138,7 @@ function AuthProvider({ children }) {
 		}
 	}, []);
 
+
 	const getSingleChallengeData = useCallback(
 		async (url) => {
 			let Data = [];
