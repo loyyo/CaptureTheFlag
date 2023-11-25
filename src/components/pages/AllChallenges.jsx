@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
     useTheme,
     CssBaseline,
@@ -12,9 +12,10 @@ import {
     Menu,
     MenuItem
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Autocomplete from '@mui/lab/Autocomplete';
-import PropTypes from 'prop-types';
-import {useAuth} from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import Challenges from '../Challenges.jsx';
 
 function AllChallenges() {
@@ -26,8 +27,16 @@ function AllChallenges() {
     const [selectedDifficultyFilter, setSelectedDifficultyFilter] = useState('');
     const [selectedRatingFilter, setSelectedRatingFilter] = useState('');
 
-    const {getAllChallengesData, allChallengesData, getProfile, currentUserData} = useAuth();
+    const [isSortButtonClicked, setIsSortButtonClicked] = useState(false);
+    const [isDifficultyButtonClicked, setIsDifficultyButtonClicked] = useState(false);
+    const [isRatingButtonClicked, setIsRatingButtonClicked] = useState(false);
+
+    const { getAllChallengesData, allChallengesData, getProfile, currentUserData } = useAuth();
     const theme = useTheme();
+
+    const sortButtonRef = useRef(null);
+    const difficultyButtonRef = useRef(null);
+    const ratingButtonRef = useRef(null);
 
     useEffect(() => {
         if (!currentUserData) {
@@ -55,7 +64,6 @@ function AllChallenges() {
             default:
                 break;
         }
-        console.log(sortedData)
         return sortedData;
     };
 
@@ -98,10 +106,10 @@ function AllChallenges() {
     if (!currentUserData || allChallengesData.length === 0) {
         return (
             <Container component="main" maxWidth="lg">
-                <CssBaseline/>
-                <Box sx={{width: '100%'}}>
+                <CssBaseline />
+                <Box sx={{ width: '100%' }}>
                     <Box m={10}>
-                        <LinearProgress/>
+                        <LinearProgress />
                     </Box>
                 </Box>
             </Container>
@@ -110,75 +118,170 @@ function AllChallenges() {
 
     return (
         <Container maxWidth="lg">
-            <CssBaseline/>
+            <CssBaseline />
             <Box mt={5} mb={5}>
                 <Grid container direction="column">
                     <Grid item xs={12}>
-                        <Typography variant="h4" className="header-text">
+                        <Typography variant="h4">
                             Available Challenges
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} style={{marginTop: 20}}>
+                    <Grid item xs={12} style={{ marginTop: 20 }}>
                         <Autocomplete
                             options={challengeTitles}
-                            renderInput={(params) => <TextField {...params} label="Search Challenges by Title"
-                                                                variant="outlined" fullWidth/>}
+                            open={false} // Zapobiega otwieraniu listy opcji
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search Challenges by Title"
+                                    variant="outlined"
+                                    fullWidth
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: <SearchIcon />,
+                                    }}
+                                />
+                            )}
                             onInputChange={(event, newInputValue) => {
                                 setSelectedTitle(newInputValue);
                             }}
-                            filterOptions={(options, {inputValue}) =>
-                                options.filter(option =>
-                                    option.toLowerCase().includes(inputValue.toLowerCase())
-                                )
-                            }
                         />
                     </Grid>
-                    <Grid item xs={12} style={{marginTop: 20}}>
+                    <Grid item xs={12} style={{ marginTop: 20 }}>
                         <Button
-                            onClick={(event) => setSortMenuAnchorEl(event.currentTarget)}>{displaySortLabel()}</Button>
+                            ref={sortButtonRef}
+                            variant={isSortButtonClicked ? "contained" : "outlined"}
+                            onClick={(event) => {
+                                setSortMenuAnchorEl(event.currentTarget);
+                                setIsSortButtonClicked(true);
+                            }}
+                        >
+                            {displaySortLabel()} <ArrowDropDownIcon />
+                        </Button>
                         <Menu
                             anchorEl={sortMenuAnchorEl}
                             keepMounted
                             open={Boolean(sortMenuAnchorEl)}
                             onClose={() => setSortMenuAnchorEl(null)}
+                            sx={{
+                                "& .MuiPaper-root": {
+                                    width: sortButtonRef.current ? `${sortButtonRef.current.offsetWidth}px` : 'auto'
+                                }
+                            }}
                         >
-                            <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-                            <MenuItem onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
-                            <MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedSort('dateCreated');
+                                setSortMenuAnchorEl(null);
+                                setIsSortButtonClicked(false);
+                            }}>Date Created</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedSort('alphabetical');
+                                setSortMenuAnchorEl(null);
+                                setIsSortButtonClicked(false);
+                            }}>Alphabetical</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedSort('popularity');
+                                setSortMenuAnchorEl(null);
+                                setIsSortButtonClicked(false);
+                            }}>Popularity</MenuItem>
                         </Menu>
-
                         <Button
-                            onClick={(event) => setDifficultyFilterMenuAnchorEl(event.currentTarget)}>{displayDifficultyLabel()}</Button>
+                            ref={difficultyButtonRef}
+                            variant={isDifficultyButtonClicked ? "contained" : "outlined"}
+                            onClick={(event) => {
+                                setDifficultyFilterMenuAnchorEl(event.currentTarget);
+                                setIsDifficultyButtonClicked(true);
+                            }}
+                        >
+                            {displayDifficultyLabel()} <ArrowDropDownIcon />
+                        </Button>
                         <Menu
                             anchorEl={difficultyFilterMenuAnchorEl}
                             keepMounted
                             open={Boolean(difficultyFilterMenuAnchorEl)}
                             onClose={() => setDifficultyFilterMenuAnchorEl(null)}
+                            sx={{
+                                "& .MuiPaper-root": {
+                                    width: difficultyButtonRef.current ? `${difficultyButtonRef.current.offsetWidth}px` : 'auto'
+                                }
+                            }}
                         >
-                            <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
-                            <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-                            <MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
-                            <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedDifficultyFilter('');
+                                setDifficultyFilterMenuAnchorEl(null);
+                                setIsDifficultyButtonClicked(false);
+                            }}>All</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedDifficultyFilter('easy');
+                                setDifficultyFilterMenuAnchorEl(null);
+                                setIsDifficultyButtonClicked(false);
+                            }}>Easy</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedDifficultyFilter('medium');
+                                setDifficultyFilterMenuAnchorEl(null);
+                                setIsDifficultyButtonClicked(false);
+                            }}>Medium</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedDifficultyFilter('hard');
+                                setDifficultyFilterMenuAnchorEl(null);
+                                setIsDifficultyButtonClicked(false);
+                            }}>Hard</MenuItem>
                         </Menu>
-
                         <Button
-                            onClick={(event) => setRatingFilterMenuAnchorEl(event.currentTarget)}>{displayRatingLabel()}</Button>
+                            ref={ratingButtonRef}
+                            variant={isRatingButtonClicked ? "contained" : "outlined"}
+                            onClick={(event) => {
+                                setRatingFilterMenuAnchorEl(event.currentTarget);
+                                setIsRatingButtonClicked(true);
+                            }}
+                        >
+                            {displayRatingLabel()} <ArrowDropDownIcon />
+                        </Button>
                         <Menu
                             anchorEl={ratingFilterMenuAnchorEl}
                             keepMounted
                             open={Boolean(ratingFilterMenuAnchorEl)}
                             onClose={() => setRatingFilterMenuAnchorEl(null)}
+                            sx={{
+                                "& .MuiPaper-root": {
+                                    width: ratingButtonRef.current ? `${ratingButtonRef.current.offsetWidth}px` : 'auto'
+                                }
+                            }}
                         >
-                            <MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
-                            <MenuItem onClick={() => setSelectedRatingFilter(1)}>1+</MenuItem>
-                            <MenuItem onClick={() => setSelectedRatingFilter(2)}>2+</MenuItem>
-                            <MenuItem onClick={() => setSelectedRatingFilter(3)}>3+</MenuItem>
-                            <MenuItem onClick={() => setSelectedRatingFilter(4)}>4+</MenuItem>
-                            <MenuItem onClick={() => setSelectedRatingFilter(5)}>5</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(0);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>All</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(1);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>1+</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(2);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>2+</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(3);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>3+</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(4);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>4+</MenuItem>
+                            <MenuItem onClick={() => {
+                                setSelectedRatingFilter(5);
+                                setRatingFilterMenuAnchorEl(null);
+                                setIsRatingButtonClicked(false);
+                            }}>5</MenuItem>
                         </Menu>
                     </Grid>
                     <Grid item xs={12}>
-                        <Box sx={{flexGrow: 1, backgroundColor: theme.palette.background.paper, marginTop: 2}}>
+                        <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.paper, marginTop: 2 }}>
                             <Challenges
                                 allChallengesData={sortedAndFilteredChallenges}
                                 currentUserData={currentUserData}
