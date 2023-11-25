@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
+import { useRef, useState, useEffect } from "react";
+import { useTheme } from "@mui/material/styles";
 import {
 	CssBaseline,
 	Container,
@@ -13,11 +13,11 @@ import {
 	IconButton,
 	Alert,
 	AlertTitle,
-} from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
-import { Close as CloseIcon } from '@mui/icons-material';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { DropzoneArea } from "react-mui-dropzone";
+import { useNavigate } from "react-router-dom";
 
 export default function EditProfile() {
 	const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function EditProfile() {
 		updateBio,
 		updateAvatar,
 	} = useAuth();
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [file, setFile] = useState([]);
@@ -55,7 +55,7 @@ export default function EditProfile() {
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-			return setError('Passwords do not match');
+			return setError("Passwords do not match");
 		}
 
 		const promises = [];
@@ -83,13 +83,13 @@ export default function EditProfile() {
 		}
 
 		setLoading(true);
-		setError('');
+		setError("");
 		Promise.all(promises)
 			.then(() => {
 				if (promises.length !== 0) {
 					setSuccess(true);
 					setTimeout(() => {
-						navigate('/profile');
+						navigate("/profile");
 						navigate(0);
 					}, 1000);
 				} else {
@@ -98,7 +98,7 @@ export default function EditProfile() {
 			})
 			.catch((e) => {
 				if (e instanceof TypeError || e instanceof RangeError || e instanceof EvalError) {
-					setError('Failed to edit the account');
+					setError("Failed to edit the account");
 				}
 			})
 			.finally(() => {
@@ -114,9 +114,9 @@ export default function EditProfile() {
 
 	if (!currentUserData) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<Container component="main" maxWidth="lg">
 				<CssBaseline />
-				<Box sx={{ width: '100%' }}>
+				<Box sx={{ width: "100%" }}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
@@ -126,28 +126,28 @@ export default function EditProfile() {
 	}
 
 	return (
-		<Container component='main' maxWidth='lg'>
+		<Container component="main" maxWidth="lg">
 			<CssBaseline />
 			<Box
 				mt={5}
 				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
 				}}
 			>
 				<Grid container>
 					<Grid item xs={12}>
-						<Typography variant='h4' className='header-text'>
+						<Typography variant="h4" className="header-text">
 							Settings
 						</Typography>
 					</Grid>
 				</Grid>
-				<Box mt={3} sx={{ width: '100%' }}>
+				<Box mt={3} sx={{ width: "100%" }}>
 					<form onSubmit={handleSubmit}>
 						{error && (
 							<Box mt={-1} mb={2}>
-								<Alert variant='outlined' severity='error'>
+								<Alert variant="outlined" severity="error">
 									<AlertTitle>An error occured:</AlertTitle>
 									{error}
 								</Alert>
@@ -157,18 +157,18 @@ export default function EditProfile() {
 							<Box mt={-1} mb={2}>
 								<Collapse in={success}>
 									<Alert
-										variant='outlined'
-										severity='success'
+										variant="outlined"
+										severity="success"
 										action={
 											<IconButton
-												aria-label='close'
-												color='inherit'
-												size='small'
+												aria-label="close"
+												color="inherit"
+												size="small"
 												onClick={() => {
 													setSuccess(false);
 												}}
 											>
-												<CloseIcon fontSize='inherit' />
+												<CloseIcon fontSize="inherit" />
 											</IconButton>
 										}
 									>
@@ -182,12 +182,12 @@ export default function EditProfile() {
 							<Grid item container spacing={2} md={6}>
 								<Grid item md={11} xs={12}>
 									<TextField
-										variant='outlined'
+										variant="outlined"
 										fullWidth
-										id='username'
-										label='Username'
-										name='username'
-										autoComplete='username'
+										id="username"
+										label="Username"
+										name="username"
+										autoComplete="username"
 										inputRef={usernameRef}
 										defaultValue={currentUserData.username}
 										inputProps={{
@@ -198,44 +198,44 @@ export default function EditProfile() {
 								</Grid>
 								<Grid item md={11} xs={12}>
 									<TextField
-										variant='outlined'
+										variant="outlined"
 										fullWidth
-										id='email'
-										label='Email Address'
-										name='email'
-										autoComplete='email'
+										id="email"
+										label="Email Address"
+										name="email"
+										autoComplete="email"
 										inputRef={emailRef}
 										defaultValue={currentUser.email}
 									/>
 								</Grid>
 								<Grid item md={11} xs={12}>
 									<TextField
-										variant='outlined'
+										variant="outlined"
 										fullWidth
-										name='password'
-										label='Password'
-										type='password'
-										id='password'
-										autoComplete='current-password'
+										name="password"
+										label="Password"
+										type="password"
+										id="password"
+										autoComplete="current-password"
 										inputRef={passwordRef}
-										helperText='*Leave blank to keep the same'
+										helperText="*Leave blank to keep the same"
 										inputProps={{
 											pattern: regexpw.source,
-											title: 'Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.',
+											title: "Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.",
 										}}
 									/>
 								</Grid>
 								<Grid item md={11} xs={12}>
 									<TextField
-										variant='outlined'
+										variant="outlined"
 										fullWidth
-										name='passwordConfirmation'
-										label='Password Confirmation'
-										type='password'
-										id='passwordConfirmation'
-										autoComplete='current-password'
+										name="passwordConfirmation"
+										label="Password Confirmation"
+										type="password"
+										id="passwordConfirmation"
+										autoComplete="current-password"
 										inputRef={passwordConfirmationRef}
-										helperText='*Leave blank to keep the same'
+										helperText="*Leave blank to keep the same"
 									/>
 								</Grid>
 							</Grid>
@@ -243,14 +243,14 @@ export default function EditProfile() {
 							<Grid item container spacing={2} md={6}>
 								<Grid item xs={12}>
 									<TextField
-										variant='outlined'
+										variant="outlined"
 										fullWidth
-										id='biography'
-										label='Biography'
-										name='biography'
+										id="biography"
+										label="Biography"
+										name="biography"
 										inputRef={bioRef}
 										defaultValue={currentUserData.bio}
-										inputProps={{ pattern: bioregex, title: 'Użyj maksymalnie 300 znaków' }}
+										inputProps={{ pattern: bioregex, title: "Użyj maksymalnie 300 znaków" }}
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -259,33 +259,33 @@ export default function EditProfile() {
 										filesLimit={1}
 										onChange={handleChange}
 										dropzoneText={
-											'Drag and drop an image here (or click) to update your avatar (resized to 200x200 automatically)'
+											"Drag and drop an image here (or click) to update your avatar (resized to 200x200 automatically)"
 										}
-										acceptedFiles={['image/jpeg', 'image/jpg', 'image/gif', 'image/png']}
-										id='avatar'
-										name='avatar'
+										acceptedFiles={["image/jpeg", "image/jpg", "image/gif", "image/png"]}
+										id="avatar"
+										name="avatar"
 									/>
 								</Grid>
 							</Grid>
 						</Grid>
 						<Button
-							type='submit'
+							type="submit"
 							fullWidth
-							variant='contained'
-							color='primary'
-							size='large'
+							variant="contained"
+							color="primary"
+							size="large"
 							sx={{ margin: theme.spacing(3, 0, 2) }}
 							disabled={loading}
 						>
 							Save
 						</Button>
-						<Grid container justifyContent='center'>
+						<Grid container justifyContent="center">
 							<Grid item>
 								<Button
 									onClick={() => {
-										navigate('/profile');
+										navigate("/profile");
 									}}
-									variant='outlined'
+									variant="outlined"
 								>
 									Cancel
 								</Button>
