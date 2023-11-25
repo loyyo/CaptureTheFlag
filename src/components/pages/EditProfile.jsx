@@ -44,9 +44,9 @@ export default function EditProfile() {
 	const [success, setSuccess] = useState(false);
 	const [file, setFile] = useState([]);
 
-	const bioregex = /^(\p{ASCII}{1,300})$/v;
-	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/v;
-	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/v;
+	const bioregex = /^(\p{ASCII}{1,300})$/;
+	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/;
+	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/;
 
 	const handleChange = (e) => {
 		setFile(e);

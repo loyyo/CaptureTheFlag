@@ -19,13 +19,13 @@ export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData} = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState('');
+    const [fileName, setFileName] = useState('');
 
     const challengeRef = useRef();
     const descriptionRef = useRef();
     const difficultyRef = useRef({value: 'easy'});
     const [correctAnswer, setCorrectAnswer] = useState('');
-
     const fileRef = useRef();
 
     useEffect(() => {
@@ -37,9 +37,31 @@ export default function AddChallenge() {
     }, []);
 
     const handleFileChange = () => {
-        if (fileRef.current && fileRef.current?.files && fileRef.current.files.length > 0) {
-            setError('');
+        const file = fileRef.current?.files?.[0];
+        if (file) {
+            if (!file.type.startsWith('image/')) {
+                setError('Invalid file type. Please select an image.');
+                fileRef.current.value = null;
+                setFileName('');
+            } else {
+                setError('');
+                setFileName(file.name);
+                setSuccessMessage('File uploaded successfully!');
+            }
         }
+    };
+
+    const handleRemoveFile = () => {
+        setFileName('');
+        fileRef.current.value = null;
+        setSuccessMessage('File removed successfully!');
+    };
+
+    const setSuccessMessage = (message) => {
+        setSuccess(message);
+        setTimeout(() => {
+            setSuccess('');
+        }, 3000);
     };
 
     const handleSubmit = async (e) => {
@@ -47,7 +69,7 @@ export default function AddChallenge() {
 
         try {
             setError('');
-            setSuccess(false);
+            setSuccess('');
             setLoading(true);
 
             const challenge = challengeRef.current?.value;
@@ -55,13 +77,14 @@ export default function AddChallenge() {
             const difficulty = difficultyRef.current.value || 'easy';
 
             await addChallenge(currentUserData.userID, challenge, description, difficulty, correctAnswer, fileRef.current?.files?.[0]);
-            setSuccess(true);
+            setSuccessMessage('Challenge added successfully!');
 
             challengeRef.current.value = '';
             descriptionRef.current.value = '';
             difficultyRef.current.value = 'easy';
             setCorrectAnswer('');
             fileRef.current.value = null;
+            setFileName('');
         } catch (err) {
             setError('Failed to add challenge');
             console.error(err);
@@ -69,7 +92,6 @@ export default function AddChallenge() {
 
         setLoading(false);
     };
-
 
     return (
         <Container component="main" maxWidth="md">
@@ -134,24 +156,40 @@ export default function AddChallenge() {
                                 <input
                                     type="file"
                                     hidden
+                                    accept="image/*"
                                     ref={fileRef}
                                     onChange={handleFileChange}
                                 />
                             </Button>
+                            {fileName && (
+                                <>
+                                    <Alert severity="success" sx={{mt: 2}}>Selected file: {fileName}</Alert>
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        onClick={handleRemoveFile}
+                                        sx={{mt: 1}}
+                                    >
+                                        Remove File
+                                    </Button>
+                                </>
+                            )}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                sx={{mt: 3, mb: 2}}
+                                disabled={loading}
+                            >
+                                Add Challenge
+                            </Button>
+                            {error && <Alert severity="error">{error}</Alert>}
+                            {success && <Alert severity="success">{success}</Alert>}
                         </Grid>
                     </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        sx={{mt: 3, mb: 2}}
-                        disabled={loading}
-                    >
-                        Add Challenge
-                    </Button>
-                    {error && <Alert severity="error">{error}</Alert>}
-                    {success && <Alert severity="success">Challenge added successfully!</Alert>}
                 </Box>
             </Box>
         </Container>
