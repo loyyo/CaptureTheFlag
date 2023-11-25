@@ -4,6 +4,7 @@ import cryptoRandomString from 'crypto-random-string';
 import { useNavigate } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import PropTypes from 'prop-types';
+import firebase from "firebase/compat/app";
 
 const AuthContext = React.createContext();
 
@@ -226,6 +227,16 @@ function AuthProvider({ children }) {
 			.catch((error) => {
 				console.error('Error updating document: ', error);
 			});
+
+		await db
+			.collection('challenges')
+			.doc(url)
+			.update({
+				completedBy: firebase.firestore.FieldValue.increment(1)
+			})
+			.catch((error) => {
+				console.error('Error updating document: ', error);
+			});
 	}, []);
 
 	const getUserProfile = useCallback(
@@ -276,57 +287,82 @@ function AuthProvider({ children }) {
 			});
 	}, []);
 
-	const addChallenge = useCallback(async (userID, title, description, difficulty, image) => {
-		try {
-			let imageUrl = null;
+    const addChallenge = useCallback(async (userID, title, description, difficulty, correctAnswer, image) => {
+        try {
+            let imageUrl = null;
 
-			if (image && image.type) {
-				let filetype = image.type.slice(6);
-				let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
-				let fullFilename = `${filename}.${filetype}`;
+            if (image && image.type) {
+                let filetype = image.type.slice(6);
+                let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
+                let fullFilename = `${filename}.${filetype}`;
 
-				let metadata = {
-					contentType: image.type,
-				};
+                let metadata = {
+                    contentType: image.type,
+                };
 
-				let uploadTask = storageRef.child('challenges/' + fullFilename).put(image, metadata);
+                let uploadTask = storageRef.child('challenges/' + fullFilename).put(image, metadata);
 
-				imageUrl = await new Promise((resolve, reject) => {
-					uploadTask.on('state_changed',
-						(snapshot) => {
-							// Logika postępu przesyłania
-							// bez tego rzuca błąd
-						},
-						(error) => {
-							console.error('Error uploading file: ', error);
-							reject(error);
-						},
-						() => {
-							uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-								console.log('File available at', downloadURL);
-								resolve(downloadURL);
-							}).catch((error) => {
-								console.error('Error getting download URL: ', error);
-								reject(error);
-							});
-						}
-					);
-				});
-			}
+                imageUrl = await new Promise((resolve, reject) => {
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            // Logika postępu przesyłania
+                            // bez tego rzuca błąd
+                        },
+                        (error) => {
+                            console.error('Error uploading file: ', error);
+                            reject(error);
+                        },
+                        () => {
+                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                console.log('File available at', downloadURL);
+                                resolve(downloadURL);
+                            }).catch((error) => {
+                                console.error('Error getting download URL: ', error);
+                                reject(error);
+                            });
+                        }
+                    );
+                });
+            }
 
-			await db.collection('challenges').doc(`${title}`).set({
-				description: description,
-				difficulty: difficulty,
-				points: 400,
-				title: title,
-				image: imageUrl ? imageUrl : null,
-				ratings: {},
-				userID: userID
+            const points = calculatePoints(difficulty);
+            const url = generateUrlFromTitle(title);
+			const createdAt = new Date();
+
+            await db.collection('challenges').doc(`${url}`).set({
+                description: description,
+                difficulty: difficulty,
+                key: correctAnswer,
+                points: points,
+                title: title,
+                image: imageUrl ? imageUrl : null,
+                completedBy: 0,
+                ratings: {},
+				url: url,
+                userID: userID,
+				createdAt: createdAt
 			});
-		} catch (error) {
-			console.error('Error adding document: ', error);
-		}
-	}, [storageRef, db]);
+        } catch (error) {
+            console.error('Error adding document: ', error);
+        }
+    }, [storageRef, db]);
+
+    const calculatePoints = (difficulty) => {
+        switch (difficulty) {
+            case 'easy':
+                return 5;
+            case 'medium':
+                return 10;
+            case 'hard':
+                return 15;
+            default:
+                return 0;
+        }
+    };
+
+    const generateUrlFromTitle = (title) => {
+        return title.toLowerCase().split(' ').join('-').replace(/[^a-z0-9\-]/g, '');
+    };
 
 
 	useEffect(() => {

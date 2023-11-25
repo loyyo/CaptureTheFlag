@@ -42,7 +42,7 @@ const Header = () => {
 			<MenuItem key="settings" onClick={() => navigateTo('/profile/settings')}>Settings</MenuItem>,
 			<MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
 			<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>,
-			<MenuItem onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
+			<MenuItem key="mode" onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
 		];
 	};
 
@@ -52,7 +52,7 @@ const Header = () => {
 			<AppBar color="primary" position="static">
 				<Toolbar>
 					<Box sx={{ flexGrow: 1 }}>
-						<Button onClick={() => navigateTo('/')}>
+						<Button onClick={() => navigateTo('/challenges')}>
 							<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
 								Capture The Flag
 							</Typography>
