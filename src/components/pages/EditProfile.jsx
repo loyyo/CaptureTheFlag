@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
 	CssBaseline,
@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { DropzoneArea } from "react-mui-dropzone";
+import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 
 export default function EditProfile() {
@@ -52,6 +52,27 @@ export default function EditProfile() {
 		setFile(e);
 	};
 
+	// jeśli chcemy faktycznie mieć tu DropZone to trzeba go przystować - ew. rezygnujemy?
+	// Update ze względu na mui - deprecated
+	const MyDropzone = () => {
+		const { getRootProps, getInputProps, isDragActive } = useDropzone({
+			maxFiles: 1,
+			maxSize: 5000000,
+			accept: 'image/jpeg, image/jpg, image/gif, image/png',
+			onDrop: handleChange,
+		});
+
+		return (
+			<div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
+				<input {...getInputProps()} id="avatar" name="avatar" />
+				{
+					isDragActive ?
+						<p>Drop the image here...</p> :
+						<p>Drag and drop an image here (or click) to update your avatar (resized to 200x200 automatically)</p>
+				}
+			</div>
+		);
+	};
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
@@ -254,17 +275,7 @@ export default function EditProfile() {
 									/>
 								</Grid>
 								<Grid item xs={12}>
-									<DropzoneArea
-										maxFileSize={5000000}
-										filesLimit={1}
-										onChange={handleChange}
-										dropzoneText={
-											"Drag and drop an image here (or click) to update your avatar (resized to 200x200 automatically)"
-										}
-										acceptedFiles={["image/jpeg", "image/jpg", "image/gif", "image/png"]}
-										id="avatar"
-										name="avatar"
-									/>
+									<MyDropzone />
 								</Grid>
 							</Grid>
 						</Grid>
