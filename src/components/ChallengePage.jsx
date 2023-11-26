@@ -1,6 +1,7 @@
 import {useState, useRef, useEffect} from 'react';
 import {createTheme, ThemeProvider, styled, useTheme} from '@mui/material/styles';
 import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton} from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
@@ -35,6 +36,7 @@ export default function ChallengePage({challenge, currentUser}) {
     const [success, setSuccess] = useState(false);
     const keyRef = useRef();
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const navigate = useNavigate();
     const {doChallenge, rateChallenge} = useAuth();
@@ -147,10 +149,12 @@ export default function ChallengePage({challenge, currentUser}) {
             {!currentUser.challenges[challenge[0].url] && (
                 <Grid item xs={12}>
                     <Box className='ratings'>
-                        <Typography variant='h6' style={{color: 'white'}}>
-                            Community Ranking:
-                        </Typography>
-                        <Box ml={2}/>
+                        {!isMobile && (
+                            <Typography variant='h6' style={{ color: 'white' }}>
+                                Community Ranking:
+                            </Typography>
+                        )}
+                        <Box ml={2} />
                         <Rating
                             emptySymbol='fa fa-star-o fa-2x'
                             fullSymbol='fa fa-star fa-2x'
@@ -165,21 +169,45 @@ export default function ChallengePage({challenge, currentUser}) {
             {currentUser.challenges[challenge[0].url] && (
                 <Grid item xs={12}>
                     <Box className='ratings'>
-                        <Typography variant='h6' style={{color: 'white'}}>
-                            Rate This Challenge:
-                        </Typography>
-                        <Box ml={2}/>
-                        <Rating
-                            emptySymbol='fa fa-star-o fa-2x'
-                            fullSymbol='fa fa-star fa-2x'
-                            fractions={2}
-                            initialRating={
-                                challenge[0].ratings[currentUser.userID]
-                                    ? challenge[0].ratings[currentUser.userID]
-                                    : 5
-                            }
-                            onClick={handleRating}
-                        />
+                        {isMobile ? (
+                            <Grid container direction='column' alignItems='center'>
+                                <Grid item>
+                                    <Typography variant='h6' style={{ color: 'white', textAlign: 'center' }}>
+                                        Rate This Challenge:
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Rating
+                                        emptySymbol='fa fa-star-o fa-2x'
+                                        fullSymbol='fa fa-star fa-2x'
+                                        fractions={2}
+                                        initialRating={
+                                            challenge[0].ratings[currentUser.userID]
+                                                ? challenge[0].ratings[currentUser.userID]
+                                                : 5
+                                        }
+                                        onClick={handleRating}
+                                    />
+                                </Grid>
+                            </Grid>
+                        ) : (
+                            <>
+                                <Typography variant='h6' style={{ color: 'white' }}>
+                                    Rate This Challenge:
+                                </Typography>
+                                <Rating
+                                    emptySymbol='fa fa-star-o fa-2x'
+                                    fullSymbol='fa fa-star fa-2x'
+                                    fractions={2}
+                                    initialRating={
+                                        challenge[0].ratings[currentUser.userID]
+                                            ? challenge[0].ratings[currentUser.userID]
+                                            : 5
+                                    }
+                                    onClick={handleRating}
+                                />
+                            </>
+                        )}
                     </Box>
                 </Grid>
             )}
