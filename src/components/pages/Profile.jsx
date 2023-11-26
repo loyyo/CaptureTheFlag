@@ -1,47 +1,33 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
 	CssBaseline,
 	Paper,
 	Container,
-	Divider,
 	Grid,
-	ImageList,
 	Box,
 	Avatar,
 	Typography,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-	Checkbox,
-	LinearProgress,
-	Button,
-	useMediaQuery,
+	Button
 } from '@mui/material';
+import { Doughnut, Bar } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+import {
+	Chart as ChartJS,
+	ArcElement,
+	Tooltip,
+	Legend,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+} from 'chart.js';
 
 export default function Profile() {
 	const navigate = useNavigate();
 	const { getProfile, currentUserData, allChallengesData, getAllChallengesData } = useAuth();
-	const [catchedThemAll, setCatchedThemAll] = useState(true);
-
 	const theme = useTheme();
-	const lg = useMediaQuery(theme.breakpoints.up('md'));
-	const md = useMediaQuery(theme.breakpoints.down('md'));
-	const xs = useMediaQuery(theme.breakpoints.down('xs'));
-
-	const screenSize = () => {
-		if (lg) {
-			return 3;
-		}
-		if (md) {
-			if (xs) {
-				return 1;
-			}
-			return 3;
-		}
-	};
 
 	useEffect(() => {
 		if (!currentUserData) {
@@ -50,24 +36,60 @@ export default function Profile() {
 		if (allChallengesData.length === 0) {
 			getAllChallengesData();
 		}
-	});
+	}, [currentUserData, allChallengesData, getProfile, getAllChallengesData]);
 
-	useEffect(() => {
-		if (allChallengesData.length > 0 && currentUserData) {
-			allChallengesData.forEach((e) => {
-				if (!currentUserData.challenges[e.url]) setCatchedThemAll(false);
-			});
+	const totalChallenges = allChallengesData.length;
+	// const completedChallenges = currentUserData.challengesCompleted.length;
+	const completedChallenges = 15;
+
+	const doughnutData = {
+		labels: ['Completed', 'Remaining'],
+		datasets: [{
+			data: [completedChallenges, totalChallenges - completedChallenges],
+			backgroundColor: ['#003f5c', '#2f4b7c'],
+			hoverBackgroundColor: ['#003f5c', '#2f4b7c']
+		}]
+	};
+
+	const barData = {
+		labels: ['Easy', 'Medium', 'Hard'],
+		datasets: [{
+			label: 'Challenges',
+			data: [20, 15, 10],
+			backgroundColor: ['#2f4b7c', '#665191', '#a05195'],
+			borderColor: ['#747d8c', '#747d8c', '#747d8c'],
+			borderWidth: 1
+		}]
+	};
+
+	const barOptions = {
+		indexAxis: 'y',
+		scales: {
+			x: {
+				grid: {
+					display: false
+				}
+			},
+			y: {
+				grid: {
+					display: false
+				}
+			}
+		},
+		plugins: {
+			legend: {
+				display: false
+			}
 		}
-	}, [currentUserData, allChallengesData]);
+	};
+
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
 			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<Box sx={{ width: '100%' }}>
-					<Box m={10}>
-						<LinearProgress />
-					</Box>
+				<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+					<Typography variant='h4'>Loading...</Typography>
 				</Box>
 			</Container>
 		);
@@ -77,139 +99,58 @@ export default function Profile() {
 		<Container maxWidth='lg'>
 			<CssBaseline />
 			<Box mt={5} mb={5}>
-				<Paper variant='elevation' elevation={6}>
-					<Grid container>
-						<Grid item xs={12}>
-							<Typography variant='h4' className='header-text'>
-								Your Profile
-							</Typography>
-						</Grid>
-						<Grid item xs={12} lg={3}>
-							<Box m={2} mb={2}>
-								<Paper variant='outlined'>
-									<Box m={2} mb={1} ml={3} pr={2} mr={1}>
-										<Paper variant='outlined'>
-											<Avatar
-												variant='rounded'
-												alt='default_avatar'
-												src={currentUserData.avatar}
-												sx={{ width: '200px', height: '200px', margin: 'auto' }}
-												style={{ padding: '0.5rem' }}
-											/>
-											<Divider variant='middle' />
-											<Box pb={1} pt={1}>
-												<Typography align='center' display='block' variant='overline'>
-													<strong>{currentUserData.username}</strong>
-												</Typography>
-											</Box>
-										</Paper>
+				<Paper variant='elevation' elevation={7}>
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={3}>
+							<Box display='flex' flexDirection='column' alignItems='center' mb={2}>
+								<Box display='flex' flexDirection='row' alignItems='center' sx={{ width: '100%', justifyContent: 'center' }}>
+									<Avatar
+										variant='rounded'
+										alt='Profile Avatar'
+										src={currentUserData.avatar}
+										sx={{ width: '100px', height: '100px', mr: 2 }}
+									/>
+									<Box>
+										<Typography variant='h6'>{currentUserData.username}</Typography>
+										<Typography variant='body1'>Points: {currentUserData.points}</Typography>
+										<Typography variant='body1'>Ranking: {currentUserData.ranking}</Typography>
 									</Box>
-									<Box p={1} ml={1} pl={2} pr={4} mb={1} mr={-1}>
-										<Paper variant='outlined'>
-											<Box m={2} mb={2}>
-												<Typography display='block' variant='h6'>
-													Bio
-												</Typography>
-												<Typography
-													display='block'
-													variant='body2'
-													style={{ wordWrap: 'break-word' }}
-												>
-													{currentUserData.bio}
-												</Typography>
-											</Box>
-										</Paper>
-									</Box>
-									<Box m={1} mr={3} ml={3} mt={-1}>
-										<Button
-											type='button'
-											fullWidth
-											variant='contained'
-											color='primary'
-											sx={{ margin: theme.spacing(0.5, 0, 0.5) }}
-											onClick={() => {
-												navigate('/profile/settings');
-											}}
-										>
-											Edit Profile
-										</Button>
-									</Box>
-								</Paper>
+								</Box>
+								<Button
+									variant='contained'
+									color='primary'
+									onClick={() => navigate('/profile/settings')}
+									sx={{ mt: 2 }}
+								>
+									Edit Profile
+								</Button>
 							</Box>
 						</Grid>
-						<Grid item xs={12} lg={9}>
-							<Box m={2} mb={2} ml={3}>
-								<Paper variant='outlined'>
-									{catchedThemAll && (
-										<>
-											<Box mb={1} mt={1}>
-												<Typography align='center' display='block' variant='h5'>
-													YOU&apos;VE CATCHED THEM ALL!
-												</Typography>
-											</Box>
-											<Divider />
-										</>
-									)}
-									<Box mb={1} mt={1}>
-										<Typography align='center' display='block' variant='h5'>
-											Points: {currentUserData.points}
-										</Typography>
-									</Box>
-									<Divider variant='middle' />
-									<Box mt={1}>
-										<Typography align='center' display='block' variant='h5'>
-											Completed Challenges:
-										</Typography>
-										<Box mt={1}>
-											<Divider />
-											<Divider />
-											<ImageList
-												rowHeight='auto'
-												gap={0}
-												cols={screenSize()}
-												sx={{
-													width: '100%',
-													backgroundColor: theme.palette.background.paper,
-													// display: 'flex',
-													flexDirection: 'row',
-													// padding: 0,
-												}}
-											>
-												{allChallengesData.map((e, index) => {
-													return (
-														<ListItemButton
-															sx={{ cursor: 'default' }}
-															divider
-															onClick={() => {
-																navigate(`/challenges/${e.url}`);
-															}}
-															key={index}
-														>
-															<Divider orientation='vertical' />
-															<ListItemIcon>
-																<Checkbox
-																	sx={{ cursor: 'default' }}
-																	edge='end'
-																	checked={currentUserData.challenges[e.url]}
-																	disableRipple
-																	disabled
-																	color='primary'
-																/>
-															</ListItemIcon>
-															<ListItemText id='challenge1' primary={e.title} />
-															<Divider orientation='vertical' />
-														</ListItemButton>
-													);
-												})}
-											</ImageList>
-										</Box>
-									</Box>
-								</Paper>
+						<Grid item xs={12} md={9}>
+							<Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' height='100%'>
+								<Box width='50%'>
+									<Doughnut data={doughnutData} />
+								</Box>
+								<Box width='50%'>
+									<Bar data={barData} options={barOptions} />
+								</Box>
 							</Box>
 						</Grid>
+
 					</Grid>
 				</Paper>
 			</Box>
 		</Container>
 	);
 }
+
+
+ChartJS.register(
+	ArcElement,
+	Tooltip,
+	Legend,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title
+);
