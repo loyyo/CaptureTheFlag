@@ -108,7 +108,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 											// padding: 0,
 										}}
 									>
-										{allChallengesData.map((e) => {
+										{allChallengesData.map((e, index) => {
 											return (
 												<ListItemButton
 													sx={{ cursor: 'default' }}
@@ -116,7 +116,7 @@ export default function UserProfile({ currentUserData, allChallengesData }) {
 													onClick={() => {
 														navigate(`/challenges/${e.url}`);
 													}}
-													key={e.title.replaceAll(' ', '_')}
+													key={index}
 												>
 													<Divider orientation='vertical' />
 													<ListItemIcon>

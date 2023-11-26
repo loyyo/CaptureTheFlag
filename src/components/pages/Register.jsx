@@ -34,8 +34,8 @@ export default function SignUp() {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 
-	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/v;
-	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/v;
+	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/;
+	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/;
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

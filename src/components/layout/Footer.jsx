@@ -31,18 +31,7 @@ const Footer = () => {
 	//TODO: jakoś to ze sobą pogodzić żeby to miało ręce i nogi
 
 	if (!currentUser) {
-		return (
-			<Box mt={3} textAlign="center">
-				<Typography variant="body2" color="textSecondary">
-					{'Copyright © '}
-					<Link color="inherit" href="https://github.com/loyyo/CaptureTheWDIctory">
-						Capture The WDIctory
-					</Link>{' '}
-					{new Date().getFullYear()}
-					{'.'}
-				</Typography>
-			</Box>
-		);
+		return;
 	}
 
 	return (
@@ -60,16 +49,6 @@ const Footer = () => {
 							/>
 						))}
 					</BottomNavigation>
-				</Box>
-				<Box mt={3}>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						{'Copyright © '}
-						<Link color='inherit' href='https://github.com/loyyo/CaptureTheWDIctory'>
-							Capture The WDIctory
-						</Link>{' '}
-						{new Date().getFullYear()}
-						{'.'}
-					</Typography>
 				</Box>
 			</Box>
 		</Container>
