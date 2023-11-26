@@ -47,6 +47,12 @@ export default function EditChallenge() {
     useEffect(() => {
         if (singleChallengeData.length > 0 && singleChallengeData[0].url === challengeURL) {
             const challengeData = singleChallengeData[0];
+
+            if (currentUserData.userID !== challengeData.userID) {
+                navigate('/'); // Przekierowanie na inną stronę, np. główną
+                return;
+            }
+
             if (challengeRef.current) {
                 challengeRef.current.value = challengeData.title;
             }
