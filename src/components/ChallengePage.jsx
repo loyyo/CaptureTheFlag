@@ -116,7 +116,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 			<Grid container item xs={12}>
 				<Grid item xs={12} sm={6}>
 					<Typography variant='h6' className='header-text-light'>
-						{challenge[0].points} Points
+						{challenge[0].difficulty.charAt(0).toUpperCase() + challenge[0].difficulty.slice(1)}
 					</Typography>
 				</Grid>
 				<Grid item xs={12} sm={6}>

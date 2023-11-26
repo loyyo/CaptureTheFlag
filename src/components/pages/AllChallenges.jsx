@@ -129,7 +129,7 @@ function AllChallenges() {
                     <Grid item xs={12} style={{ marginTop: 20 }}>
                         <Autocomplete
                             options={challengeTitles}
-                            open={false} // Zapobiega otwieraniu listy opcji
+                            open={false}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
