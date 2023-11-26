@@ -306,7 +306,7 @@ function AuthProvider({ children }) {
                     uploadTask.on('state_changed',
                         (snapshot) => {
                             // Logika postępu przesyłania
-                            // bez tego rzuca błąd
+                            // Bez tego rzuca błąd
                         },
                         (error) => {
                             console.error('Error uploading file: ', error);
@@ -336,6 +336,7 @@ function AuthProvider({ children }) {
                 points: points,
                 title: title,
                 image: imageUrl ? imageUrl : null,
+				fileName: image?.name || null,
                 completedBy: 0,
                 ratings: {},
 				url: url,
@@ -347,7 +348,74 @@ function AuthProvider({ children }) {
         }
     }, [storageRef, db]);
 
-    const calculatePoints = (difficulty) => {
+	const updateChallenge = useCallback(async (challengeID, { title, description, difficulty, correctAnswer, image }) => {
+		try {
+			let imageUrl = null;
+
+			if (image && image.type) {
+				let filetype = image.type.slice(6);
+				let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
+				let fullFilename = `${filename}.${filetype}`;
+
+				let metadata = {
+					contentType: image.type,
+				};
+
+				let uploadTask = storageRef.child('challenges/' + fullFilename).put(image, metadata);
+
+				imageUrl = await new Promise((resolve, reject) => {
+					uploadTask.on('state_changed',
+						(snapshot) => {
+							// Logika postępu przesyłania
+							// Bez tego rzuca błąd
+						},
+						(error) => {
+							console.error('Error uploading file: ', error);
+							reject(error);
+						},
+						() => {
+							uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+								console.log('File available at', downloadURL);
+								resolve(downloadURL);
+							}).catch((error) => {
+								console.error('Error getting download URL: ', error);
+								reject(error);
+							});
+						}
+					);
+				});
+			}
+
+			const points = calculatePoints(difficulty);
+
+			const updateData = {
+				description: description,
+				difficulty: difficulty,
+				key: correctAnswer,
+				points: points,
+				title: title,
+				image: imageUrl ? imageUrl : null,
+				fileName: image?.name || null
+				// updatedAt: new Date(), // aktualizujemy?
+			};
+
+			await db.collection('challenges').doc(challengeID).update(updateData);
+		} catch (error) {
+			console.error('Error updating document: ', error);
+		}
+	}, [storageRef, db]);
+
+	const deleteChallenge = useCallback(async (challengeURL) => {
+		try {
+			// Usuwanie dokumentu z kolekcji 'challenges' na podstawie URL
+			await db.collection('challenges').doc(challengeURL).delete();
+			console.log(`Challenge with URL '${challengeURL}' has been deleted.`);
+		} catch (error) {
+			console.error('Error deleting challenge: ', error);
+		}
+	}, [db]);
+
+	const calculatePoints = (difficulty) => {
         switch (difficulty) {
             case 'easy':
                 return 5;
@@ -420,7 +488,9 @@ function AuthProvider({ children }) {
 			darkMode,
 			switchDarkMode,
 			rateChallenge,
-			addChallenge
+			addChallenge,
+			updateChallenge,
+			deleteChallenge
 		}),
 		[
 			currentUser,
@@ -450,7 +520,9 @@ function AuthProvider({ children }) {
 			darkMode,
 			switchDarkMode,
 			rateChallenge,
-			addChallenge
+			addChallenge,
+			updateChallenge,
+			deleteChallenge
 		]
 	);
 
