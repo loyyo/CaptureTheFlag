@@ -4,11 +4,19 @@ import {
 	CssBaseline,
 	Paper,
 	Container,
+	Divider,
 	Grid,
+	ImageList,
 	Box,
 	Avatar,
 	Typography,
-	Button
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+	Checkbox,
+	LinearProgress,
+	Button,
+	useMediaQuery,
 } from '@mui/material';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +36,10 @@ export default function Profile() {
 	const navigate = useNavigate();
 	const { getProfile, currentUserData, allChallengesData, getAllChallengesData } = useAuth();
 	const theme = useTheme();
-
+	const lg = useMediaQuery(theme.breakpoints.up('md'));
+	const md = useMediaQuery(theme.breakpoints.down('md'));
+	const xs = useMediaQuery(theme.breakpoints.down('xs'));
+	const [activeView, setActiveView] = useState('profile');
 	useEffect(() => {
 		if (!currentUserData) {
 			getProfile();
@@ -83,6 +94,17 @@ export default function Profile() {
 		}
 	};
 
+	const screenSize = () => {
+		if (lg) {
+			return 3;
+		}
+		if (md) {
+			if (xs) {
+				return 1;
+			}
+			return 3;
+		}
+	};
 
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
@@ -100,7 +122,27 @@ export default function Profile() {
 			<CssBaseline />
 			<Box mt={5} mb={5}>
 				<Paper variant='elevation' elevation={7}>
+					{/* Przyciski do przełączania widoków */}
+					<Box display='flex' justifyContent='center' p={2}>
+						<Button
+							variant={activeView === 'profile' ? 'contained' : 'outlined'}
+							color='primary'
+							onClick={() => setActiveView('profile')}
+							sx={{ mr: 1 }}
+						>
+							Your Profile
+						</Button>
+						<Button
+							variant={activeView === 'challenges' ? 'contained' : 'outlined'}
+							color='primary'
+							onClick={() => setActiveView('challenges')}
+						>
+							Your Challenges
+						</Button>
+					</Box>
+
 					<Grid container spacing={3}>
+						{/* Avatar, opis i przycisk */}
 						<Grid item xs={12} md={3}>
 							<Box display='flex' flexDirection='column' alignItems='center' mb={2}>
 								<Box display='flex' flexDirection='row' alignItems='center' sx={{ width: '100%', justifyContent: 'center' }}>
@@ -126,17 +168,74 @@ export default function Profile() {
 								</Button>
 							</Box>
 						</Grid>
-						<Grid item xs={12} md={9}>
-							<Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' height='100%'>
-								<Box width='50%'>
-									<Doughnut data={doughnutData} />
-								</Box>
-								<Box width='50%'>
-									<Bar data={barData} options={barOptions} />
-								</Box>
-							</Box>
-						</Grid>
 
+						{/* Warunkowe renderowanie zawartości */}
+						{activeView === 'profile' ? (
+							// Wyświetl wykresy
+							<Grid item xs={12} md={9}>
+								<Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' height='100%'>
+									<Box width='50%'>
+										<Doughnut data={doughnutData} />
+									</Box>
+									<Box width='50%'>
+										<Bar data={barData} options={barOptions} />
+									</Box>
+								</Box>
+							</Grid>
+						) : (
+							// Wyświetl wykonane wyzwania
+							<Grid item xs={12} md={9}>
+
+								<Box mt={1}>
+									<Typography align='center' display='block' variant='h5'>
+										Completed Challenges:
+									</Typography>
+									<Box mt={1}>
+										<Divider />
+										<Divider />
+										<ImageList
+											rowHeight='auto'
+											gap={0}
+											cols={screenSize()}
+											sx={{
+												width: '100%',
+												backgroundColor: theme.palette.background.paper,
+												// display: 'flex',
+												flexDirection: 'row',
+												// padding: 0,
+											}}
+										>
+											{allChallengesData.map((e, index) => {
+												return (
+													<ListItemButton
+														sx={{ cursor: 'default' }}
+														divider
+														onClick={() => {
+															navigate(`/challenges/${e.url}`);
+														}}
+														key={index}
+													>
+														<Divider orientation='vertical' />
+														<ListItemIcon>
+															<Checkbox
+																sx={{ cursor: 'default' }}
+																edge='end'
+																checked={currentUserData.challenges[e.url]}
+																disableRipple
+																disabled
+																color='primary'
+															/>
+														</ListItemIcon>
+														<ListItemText id='challenge1' primary={e.title} />
+														<Divider orientation='vertical' />
+													</ListItemButton>
+												);
+											})}
+										</ImageList>
+									</Box>
+								</Box>
+							</Grid>
+						)}
 					</Grid>
 				</Paper>
 			</Box>
