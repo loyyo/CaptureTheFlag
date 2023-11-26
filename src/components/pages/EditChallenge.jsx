@@ -49,7 +49,7 @@ export default function EditChallenge() {
             const challengeData = singleChallengeData[0];
 
             if (currentUserData.userID !== challengeData.userID) {
-                navigate('/'); // Przekierowanie na inną stronę, np. główną
+                navigate('/challenges');
                 return;
             }
 

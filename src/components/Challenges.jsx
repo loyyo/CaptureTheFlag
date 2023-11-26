@@ -10,9 +10,16 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 	const theme = useTheme();
 
     const getInitialRating = (challenge) => {
-        const ratingValues = Object.values(challenge.ratings || {}).map(rating => parseInt(rating, 10));
-        const total = ratingValues.reduce((acc, curr) => acc + curr, 0);
-        return ratingValues.length > 0 ? total / ratingValues.length : 0;
+        let e = challenge.ratings;
+        let v = 0;
+        let i = 0;
+        for (let k in e) {
+            if (Object.hasOwn(e, k)) {
+                v = v + e[k];
+                i = i + 1;
+            }
+        }
+        return v / i;
     };
 
     return (
@@ -48,6 +55,17 @@ export default function Challenges({ allChallengesData, currentUserData }) {
                                             Completed by: {challenge.completedBy}
                                         </Typography>
                                     </Grid>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Box className='ratings'>
+                                        <Rating
+                                            emptySymbol='fa fa-star-o fa-2x'
+                                            fullSymbol='fa fa-star fa-2x'
+                                            fractions={100}
+                                            initialRating={getInitialRating(challenge)}
+                                            readonly
+                                        />
+                                    </Box>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', background: theme.palette.primary.dark }}>
