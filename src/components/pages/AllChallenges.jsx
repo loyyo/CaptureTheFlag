@@ -133,12 +133,13 @@ function AllChallenges() {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Search Challenges by Title"
+                                    placeholder="Search Challenges by Title"
                                     variant="outlined"
                                     fullWidth
                                     InputProps={{
                                         ...params.InputProps,
-                                        endAdornment: <SearchIcon />,
+                                        startAdornment: <SearchIcon />,
+                                        endAdornment: null,
                                     }}
                                 />
                             )}

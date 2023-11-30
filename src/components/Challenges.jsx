@@ -72,7 +72,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
                                         <Button
                                             variant='contained'
                                             color='primary'
-                                            sx={{ margin: 1, color: 'white', borderColor: 'red' }}
+                                            sx={{ margin: 1, color: 'white', width: '100%', borderColor: 'red' }}
                                             onClick={() => navigate(`/challenges/${challenge.url}`)}
                                         >
                                             View
@@ -81,7 +81,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
                                             <Button
                                                 variant='contained'
                                                 color='primary'
-                                                sx={{ margin: 1, color: 'white', borderColor: 'transparent' }}
+                                                sx={{ margin: 1, color: 'white', width: '100%', borderColor: 'transparent', background: theme.palette.primary.light }}
                                                 onClick={() => navigate(`/challenges/${challenge.url}/edit`)}
                                             >
                                                 Edit
