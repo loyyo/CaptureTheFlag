@@ -14,6 +14,7 @@ import {
     Alert
 } from '@mui/material';
 import {useAuth} from '../../contexts/AuthContext.jsx';
+import {useNavigate} from "react-router-dom";
 
 export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData} = useAuth();
@@ -27,6 +28,8 @@ export default function AddChallenge() {
     const difficultyRef = useRef({value: 'easy'});
     const [correctAnswer, setCorrectAnswer] = useState('');
     const fileRef = useRef();
+    const [file, setFile] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setTimeout(() => {
@@ -37,22 +40,24 @@ export default function AddChallenge() {
     }, []);
 
     const handleFileChange = () => {
-        const file = fileRef.current?.files?.[0];
-        if (file) {
-            if (!file.type.startsWith('image/')) {
+        const selectedFile = fileRef.current?.files?.[0];
+        if (selectedFile) {
+            if (!selectedFile.type.startsWith('image/')) {
                 setError('Invalid file type. Please select an image.');
                 fileRef.current.value = null;
-                setFileName('');
+                setFile(null);
             } else {
                 setError('');
-                setFileName(file.name);
-                setSuccessMessage('File uploaded successfully!');
+                setFile(selectedFile);
+                setFileName(selectedFile.name);
+                setSuccess('');
             }
         }
     };
 
     const handleRemoveFile = () => {
         setFileName('');
+        setFile(null);
         fileRef.current.value = null;
         setSuccessMessage('File removed successfully!');
     };
@@ -76,15 +81,8 @@ export default function AddChallenge() {
             const description = descriptionRef.current?.value;
             const difficulty = difficultyRef.current.value || 'easy';
 
-            await addChallenge(currentUserData.userID, challenge, description, difficulty, correctAnswer, fileRef.current?.files?.[0]);
-            setSuccessMessage('Challenge added successfully!');
-
-            challengeRef.current.value = '';
-            descriptionRef.current.value = '';
-            difficultyRef.current.value = 'easy';
-            setCorrectAnswer('');
-            fileRef.current.value = null;
-            setFileName('');
+            const redirectUrl = await addChallenge(currentUserData.userID, challenge, description, difficulty, correctAnswer, file);
+            navigate(`/challenges/${redirectUrl}`);
         } catch (err) {
             setError('Failed to add challenge');
             console.error(err);
@@ -151,29 +149,28 @@ export default function AddChallenge() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="contained" component="label">
-                                Upload File
-                                <input
-                                    type="file"
-                                    hidden
-                                    accept="image/*"
-                                    ref={fileRef}
-                                    onChange={handleFileChange}
-                                />
-                            </Button>
-                            {fileName && (
-                                <>
-                                    <Alert severity="success" sx={{mt: 2}}>Selected file: {fileName}</Alert>
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={handleRemoveFile}
-                                        sx={{mt: 1}}
-                                    >
-                                        Remove File
-                                    </Button>
-                                </>
+                            {fileName ? (
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={handleRemoveFile}
+                                    sx={{ mt: 1 }}
+                                >
+                                    Remove File
+                                </Button>
+                            ) : (
+                                <Button variant="contained" component="label">
+                                    Upload File
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        ref={fileRef}
+                                        onChange={handleFileChange}
+                                    />
+                                </Button>
                             )}
+                            {fileName && <Alert severity="success" sx={{ mt: 2 }}>Selected file: {fileName}</Alert>}
                         </Grid>
                         <Grid item xs={12}>
                             <Button

@@ -343,6 +343,8 @@ function AuthProvider({ children }) {
                 userID: userID,
 				createdAt: createdAt
 			});
+
+			return url;
         } catch (error) {
             console.error('Error adding document: ', error);
         }
