@@ -40,7 +40,7 @@ export default function Challenge() {
 			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
 				<Box mt={5} mb={5}>
-					<ChallengePage challenge={singleChallengeData} currentUser={currentUserData} />
+					<ChallengePage challenge={singleChallengeData[0]} currentUser={currentUserData} />
 				</Box>
 			</Container>
 		);

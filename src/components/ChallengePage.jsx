@@ -1,7 +1,7 @@
 import {useState, useRef, useEffect} from 'react';
 import {createTheme, ThemeProvider, styled, useTheme} from '@mui/material/styles';
 import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton} from '@mui/material';
-import { useMediaQuery } from '@mui/material';
+import {useMediaQuery} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
@@ -37,6 +37,7 @@ export default function ChallengePage({challenge, currentUser}) {
     const keyRef = useRef();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isAuthor = currentUser.userID === challenge.userID;
 
     const navigate = useNavigate();
     const {doChallenge, rateChallenge} = useAuth();
@@ -55,7 +56,7 @@ export default function ChallengePage({challenge, currentUser}) {
         if (loading) {
             return;
         } else if (
-            keyRef.current.value.toLowerCase() !== challenge[0].key.toLowerCase()
+            keyRef.current.value.toLowerCase() !== challenge.key.toLowerCase()
         ) {
             setError(true);
         } else {
@@ -63,8 +64,8 @@ export default function ChallengePage({challenge, currentUser}) {
                 setError(false);
                 setLoading(true);
                 await doChallenge(
-                    challenge[0].url,
-                    challenge[0].points,
+                    challenge.url,
+                    challenge.points,
                     currentUser.email,
                     currentUser.points
                 );
@@ -102,7 +103,7 @@ export default function ChallengePage({challenge, currentUser}) {
 
     const handleRating = async (value) => {
         try {
-            await rateChallenge(value, challenge[0].url, currentUser.userID);
+            await rateChallenge(value, challenge.url, currentUser.userID);
             navigate('/challenges');
             navigate(0);
         } catch {
@@ -122,57 +123,57 @@ export default function ChallengePage({challenge, currentUser}) {
         <StyledGrid container direction='column'>
             <Grid item xs={12}>
                 <Typography variant='h4' className='header-text-dark'>
-                    {challenge[0].title}
+                    {challenge.title}
                 </Typography>
                 <Divider/>
             </Grid>
             <Grid item xs={12}>
                 <Box>
                     <Typography variant='h5' className="description">
-                        {challenge[0].description}
+                        {challenge.description}
                     </Typography>
                 </Box>
             </Grid>
             <Grid container item xs={12}>
                 <Grid item xs={12} sm={6}>
                     <Typography variant='h6' className='header-text-light'>
-                        {challenge[0].difficulty.charAt(0).toUpperCase() + challenge[0].difficulty.slice(1)}
+                        {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Typography variant='h6' className='header-text-light-right'>
-                        Completed by: {challenge[0].completedBy}
+                        Popularity: {challenge.completedBy}
                     </Typography>
                 </Grid>
             </Grid>
 
-            {!currentUser.challenges[challenge[0].url] && (
+            {!currentUser.challenges[challenge.url] && (
                 <Grid item xs={12}>
                     <Box className='ratings'>
                         {!isMobile && (
-                            <Typography variant='h6' style={{ color: 'white' }}>
+                            <Typography variant='h6' style={{color: 'white'}}>
                                 Community Ranking:
                             </Typography>
                         )}
-                        <Box ml={2} />
+                        <Box ml={2}/>
                         <Rating
                             emptySymbol='fa fa-star-o fa-2x'
                             fullSymbol='fa fa-star fa-2x'
                             fractions={100}
-                            initialRating={getInitialRating(challenge[0])}
+                            initialRating={getInitialRating(challenge)}
                             readonly
                         />
                     </Box>
                 </Grid>
             )}
 
-            {currentUser.challenges[challenge[0].url] && (
+            {currentUser.challenges[challenge.url] && (
                 <Grid item xs={12}>
                     <Box className='ratings'>
                         {isMobile ? (
                             <Grid container direction='column' alignItems='center'>
                                 <Grid item>
-                                    <Typography variant='h6' style={{ color: 'white', textAlign: 'center' }}>
+                                    <Typography variant='h6' style={{color: 'white', textAlign: 'center'}}>
                                         Rate This Challenge:
                                     </Typography>
                                 </Grid>
@@ -182,8 +183,8 @@ export default function ChallengePage({challenge, currentUser}) {
                                         fullSymbol='fa fa-star fa-2x'
                                         fractions={2}
                                         initialRating={
-                                            challenge[0].ratings[currentUser.userID]
-                                                ? challenge[0].ratings[currentUser.userID]
+                                            challenge.ratings[currentUser.userID]
+                                                ? challenge.ratings[currentUser.userID]
                                                 : 5
                                         }
                                         onClick={handleRating}
@@ -192,7 +193,7 @@ export default function ChallengePage({challenge, currentUser}) {
                             </Grid>
                         ) : (
                             <>
-                                <Typography variant='h6' style={{ color: 'white' }}>
+                                <Typography variant='h6' style={{color: 'white'}}>
                                     Rate This Challenge:
                                 </Typography>
                                 <Rating
@@ -200,8 +201,8 @@ export default function ChallengePage({challenge, currentUser}) {
                                     fullSymbol='fa fa-star fa-2x'
                                     fractions={2}
                                     initialRating={
-                                        challenge[0].ratings[currentUser.userID]
-                                            ? challenge[0].ratings[currentUser.userID]
+                                        challenge.ratings[currentUser.userID]
+                                            ? challenge.ratings[currentUser.userID]
                                             : 5
                                     }
                                     onClick={handleRating}
@@ -215,32 +216,31 @@ export default function ChallengePage({challenge, currentUser}) {
             <Box sx={{background: theme.palette.primary.main, width: '100%', display: 'grid'}}>
                 <Grid item container xs={12}>
                     <Grid item xs={12}>
-                        <Paper sx={{background: theme.palette.primary.main, width: '100%', display: 'grid'}}>
-                            {challenge[0].image && (
-                                <Grid item xs={12}>
-                                    <Box
-                                        onClick={handleImageClick}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            '& img': {
-                                                maxWidth: '100%',
-                                                maxHeight: '500px',
-                                                borderRadius: '4px',
-                                            },
-                                        }}
-                                    >
-                                        <img
-                                            alt={`image-${challenge[0].url}`}
-                                            src={challenge[0].image}
-                                            style={{ width: 'auto', height: 'auto' }}
-                                        />
-                                    </Box>
-                                </Grid>
+                        <Paper sx={{ background: theme.palette.primary.main, width: '100%', padding: 0, margin: 0 }}>
+                            {challenge.image && (
+                                <Box
+                                    onClick={handleImageClick}
+                                    sx={{
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        padding: 0,
+                                        margin: 0,
+                                        '& img': {
+                                            maxWidth: '100%',
+                                            maxHeight: '500px',
+                                            borderRadius: '4px',
+                                        },
+                                    }}
+                                >
+                                    <img
+                                        alt={`image-${challenge.url}`}
+                                        src={challenge.image}
+                                        style={{ width: 'auto', height: 'auto' }}
+                                    />
+                                </Box>
                             )}
                         </Paper>
-                        )
                     </Grid>
 
                     <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="lg">
@@ -255,74 +255,95 @@ export default function ChallengePage({challenge, currentUser}) {
                         >
                             <CloseIcon/>
                         </IconButton>
-                        <img src={challenge[0].image} alt={`image-${challenge[0].url}`} style={{width: '100%'}}/>
+                        <img src={challenge.image} alt={`image-${challenge.url}`} style={{width: '100%'}}/>
                     </Dialog>
 
-                    {currentUser.challenges[challenge[0].url] && (
-                        <Grid item xs={12}>
-                            {challenge[0].ratings[currentUser.userID] && (
-                                <Typography variant='h5' className='header-text-dark'>
-                                    You&apos;ve already done & rated this challenge. You can change your vote anytime.
-                                </Typography>
-                            )}
-                            {!challenge[0].ratings[currentUser.userID] && (
-                                <Typography variant='h5' className='header-text-dark'>
-                                    Good Job! You&apos;ve successfully completed this challenge. You can now rate it.
-                                </Typography>
-                            )}
-                        </Grid>
-                    )}
-                    {!currentUser.challenges[challenge[0].url] && (
+                    {!isAuthor ? (
                         <>
-                            <Grid item xs={12} sm={6}>
-                                <Box p={2}>
-                                    {!success && (
-                                        <TextField
-                                            error={error}
-                                            helperText={
-                                                error ? 'Unfortunately, that is not the correct answer. Try again!' : ''
-                                            }
-                                            inputRef={keyRef}
-                                            placeholder='Enter the country here'
-                                            variant='outlined'
-                                            fullWidth
-                                            className={classes.input}
-                                            InputProps={{classes: {input: classes.input}}}
-                                            onKeyUp={kliknietyEnter}
-                                        />
+                            {currentUser.challenges[challenge.url] && (
+                                <Grid item xs={12}>
+                                    {challenge.ratings[currentUser.userID] && (
+                                        <Typography variant='h5' className='header-text-dark'>
+                                            You&apos;ve already done & rated this challenge. You can change your vote
+                                            anytime.
+                                        </Typography>
                                     )}
-                                    {success && (
-                                        <ThemeProvider theme={successTheme}>
-                                            <TextField
-                                                error={success}
-                                                helperText={success ? 'Your page will refresh in a few seconds...' : ''}
-                                                value='Congratulations! You have captured the flag!'
-                                                variant='outlined'
+                                    {!challenge.ratings[currentUser.userID] && (
+                                        <Typography variant='h5' className='header-text-dark'>
+                                            Good Job! You&apos;ve successfully completed this challenge. You can now
+                                            rate it.
+                                        </Typography>
+                                    )}
+                                </Grid>
+                            )}
+                            {!currentUser.challenges[challenge.url] && (
+                                <>
+                                    <Grid item xs={12} sm={6}>
+                                        <Box p={2}>
+                                            {!success && (
+                                                <TextField
+                                                    error={error}
+                                                    helperText={
+                                                        error ? 'Unfortunately, that is not the correct answer. Try again!' : ''
+                                                    }
+                                                    inputRef={keyRef}
+                                                    placeholder='Enter the answer here'
+                                                    variant='outlined'
+                                                    fullWidth
+                                                    className={classes.input}
+                                                    InputProps={{classes: {input: classes.input}}}
+                                                    onKeyUp={kliknietyEnter}
+                                                />
+                                            )}
+                                            {success && (
+                                                <ThemeProvider theme={successTheme}>
+                                                    <TextField
+                                                        error={success}
+                                                        helperText={success ? 'Your page will refresh in a few seconds...' : ''}
+                                                        value='Congratulations! You have captured the flag!'
+                                                        variant='outlined'
+                                                        fullWidth
+                                                        className={classes.input}
+                                                        InputProps={{classes: {input: classes.input}}}
+                                                    />
+                                                </ThemeProvider>
+                                            )}
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Box p={1} m={2}>
+                                            <Button
+                                                type='button'
                                                 fullWidth
-                                                className={classes.input}
-                                                InputProps={{classes: {input: classes.input}}}
-                                            />
-                                        </ThemeProvider>
-                                    )}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <Box p={1} m={2}>
-                                    <Button
-                                        type='button'
-                                        fullWidth
-                                        variant='contained'
-                                        color='primary'
-                                        size='large'
-                                        disabled={loading || success}
-                                        sx={{background: theme.palette.primary.light}}
-                                        onClick={checkKey}
-                                    >
-                                        Submit Flag
-                                    </Button>
-                                </Box>
-                            </Grid>
+                                                variant='contained'
+                                                color='primary'
+                                                size='large'
+                                                disabled={loading || success}
+                                                sx={{background: theme.palette.primary.light}}
+                                                onClick={checkKey}
+                                            >
+                                                Submit Flag
+                                            </Button>
+                                        </Box>
+                                    </Grid>
+                                </>
+                            )}
                         </>
+                    ) : (
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h6'
+                                style={{
+                                    color: 'white',
+                                    textAlign: 'center',
+                                    marginTop: '20px',
+                                    marginBottom: '20px'
+                                }}
+                            >
+                                As the author of this challenge, you cannot respond to it.
+                            </Typography>
+                        </Grid>
+
                     )}
                 </Grid>
             </Box>
