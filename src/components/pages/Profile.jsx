@@ -155,7 +155,7 @@ export default function Profile() {
                                                     sx={{width: '100px', height: '100px', mr: 2}}
                                                 />
                                                 <Box>
-                                                    <Typography variant='h6'>{userData.username}</Typography>
+                                                    <Typography variant='h5'>{userData.username}</Typography>
                                                     <Typography variant='body1'>Rank: {userData.ranking}</Typography>
                                                     <Typography variant='body1'>Points: {userData.points}</Typography>
                                                 </Box>
