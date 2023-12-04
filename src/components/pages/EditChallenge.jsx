@@ -17,7 +17,14 @@ import {useAuth} from '../../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
 
 export default function EditChallenge() {
-    const {getSingleChallengeData, updateChallenge, deleteChallenge, singleChallengeData, getProfile, currentUserData} = useAuth();
+    const {
+        getSingleChallengeData,
+        updateChallenge,
+        deleteChallenge,
+        singleChallengeData,
+        getProfile,
+        currentUserData
+    } = useAuth();
     const {challengeURL} = useParams();
     const navigate = useNavigate();
 
@@ -25,12 +32,13 @@ export default function EditChallenge() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [fileName, setFileName] = useState('');
+    const [file, setFile] = useState(null);
 
     const challengeRef = useRef();
     const descriptionRef = useRef();
     const [difficulty, setDifficulty] = useState('easy');
     const [correctAnswer, setCorrectAnswer] = useState('');
-    const fileRef = useRef();
+    const fileRef = useRef(null);
 
     useEffect(() => {
         if (!currentUserData) {
@@ -67,25 +75,31 @@ export default function EditChallenge() {
 
 
     const handleFileChange = () => {
-        const file = fileRef.current?.files?.[0];
-        if (file) {
-            if (!file.type.startsWith('image/')) {
+        const selectedFile = fileRef.current?.files?.[0];
+
+        if (selectedFile) {
+            if (!selectedFile.type.startsWith('image/')) {
                 setError('Invalid file type. Please select an image.');
                 fileRef.current.value = null;
+                setFile(null);
                 setFileName('');
             } else {
                 setError('');
-                setFileName(file.name);
-                setSuccessMessage('File uploaded successfully!');
+                setFile(selectedFile);
+                setFileName(selectedFile.name);
+                // setSuccessMessage('File uploaded successfully!');
             }
         }
     };
 
+
     const handleRemoveFile = () => {
         setFileName('');
-        fileRef.current.value = null;
-        setSuccessMessage('File removed successfully!');
+        // fileRef.current.value = null;
+        setFile(null);
+        // setSuccessMessage('File removed successfully!');
     };
+
 
     const setSuccessMessage = (message) => {
         setSuccess(message);
@@ -109,9 +123,10 @@ export default function EditChallenge() {
                 description,
                 difficulty,
                 correctAnswer,
-                image: fileRef.current?.files?.[0]
+                image: file
             });
-            setSuccessMessage('Challenge updated successfully!');
+            window.location.href = `/challenges/${challengeURL}`;
+            // setSuccessMessage('Challenge updated successfully!');
         } catch (err) {
             setError('Failed to update challenge');
             console.error(err);
@@ -203,29 +218,28 @@ export default function EditChallenge() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="contained" component="label">
-                                Upload File
-                                <input
-                                    type="file"
-                                    hidden
-                                    accept="image/*"
-                                    ref={fileRef}
-                                    onChange={handleFileChange}
-                                />
-                            </Button>
-                            {fileName && (
-                                <>
-                                    <Alert severity="success" sx={{mt: 2}}>Selected file: {fileName}</Alert>
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={handleRemoveFile}
-                                        sx={{mt: 1}}
-                                    >
-                                        Remove File
-                                    </Button>
-                                </>
+                            {fileName ? (
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={handleRemoveFile}
+                                    sx={{mt: 1}}
+                                >
+                                    Remove File
+                                </Button>
+                            ) : (
+                                <Button variant="contained" component="label">
+                                    Upload File
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        ref={fileRef}
+                                        onChange={handleFileChange}
+                                    />
+                                </Button>
                             )}
+                            {fileName && <Alert severity="success" sx={{mt: 2}}>Selected file: {fileName}</Alert>}
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={2} justifyContent="flex-start">
@@ -234,7 +248,7 @@ export default function EditChallenge() {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        sx={{ mb: 2 }}
+                                        sx={{mb: 2}}
                                         disabled={loading}
                                     >
                                         SAVE
@@ -246,7 +260,7 @@ export default function EditChallenge() {
                                         color="secondary"
                                         onClick={handleDelete}
                                         disabled={loading}
-                                        sx={{ mb: 2 }}
+                                        sx={{mb: 2}}
                                     >
                                         DELETE
                                     </Button>
