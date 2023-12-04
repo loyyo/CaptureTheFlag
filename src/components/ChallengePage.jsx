@@ -142,7 +142,7 @@ export default function ChallengePage({challenge, currentUser}) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Typography variant='h6' className='header-text-light-right'>
-                        Completed by: {challenge.completedBy}
+                        Popularity: {challenge.completedBy}
                     </Typography>
                 </Grid>
             </Grid>

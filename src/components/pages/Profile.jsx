@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+import Challenges from '../Challenges.jsx';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -32,6 +33,7 @@ export default function Profile() {
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [userData, setUserData] = useState(null);
     const [challengesData, setChallengesData] = useState([]);
+    const userCreatedChallenges = allChallengesData.filter(challenge => currentUserData.userID === challenge.userID);
 
     useEffect(() => {
         if (!currentUserData) {
@@ -119,12 +121,12 @@ export default function Profile() {
     }
 
     return (
-        <Container maxWidth='lg'>
+        <Container component='main' maxWidth='lg' sx={{ mt: 2 }}>
             <CssBaseline />
-            <Paper elevation={7}>
-                {/* Nagłówek strony */}
+            <Paper elevation={7} sx={{ padding: 2, borderRadius: '4px' }}>
+                {/* Nagłówek strony i przyciski zakładek */}
                 <Box p={2} borderBottom={1} borderColor='grey.300'>
-                    <Typography variant='h5' align='center'>
+                    <Typography variant='h4' align='center'>
                         Profile
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
@@ -146,41 +148,51 @@ export default function Profile() {
                     </Box>
                 </Box>
 
-                <Grid container spacing={3}>
+                <Grid>
                     {activeTab === 'informations' && (
-                        <>
-                            {/* Avatar i opis */}
+                        <Grid container spacing={1} alignItems="stretch">
+                            {/* Avatar, bio i opis */}
                             <Grid item xs={12} md={6}>
-                                <Paper elevation={3} sx={{ p: 2 }}>
-                                <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
-                                    <Box display='flex' flexDirection='row' alignItems='center' sx={{ width: '100%', justifyContent: 'center' }}>
-                                        <Avatar
-                                            variant='rounded'
-                                            alt='Profile Avatar'
-                                            src={currentUserData.avatar}
-                                            sx={{ width: '100px', height: '100px', mr: 2 }}
-                                        />
-                                        <Box>
-                                            <Typography variant='h6'>d</Typography>
-                                            <Typography variant='body1'>Points: 23</Typography>
-                                            <Typography variant='body1'>Ranking: x</Typography>
-                                        </Box>
+                                <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+                                    <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
+                                        {/* Otoczka wokół avatara i informacji */}
+                                        <Paper elevation={1} sx={{ p: 2, mb: 2, width: '95%', bgcolor: 'background.paper' }}>
+                                            <Box display='flex' flexDirection='row' alignItems='center' sx={{ width: '100%', justifyContent: 'center' }}>
+                                                <Avatar
+                                                    variant='rounded'
+                                                    alt='Profile Avatar'
+                                                    src={currentUserData.avatar}
+                                                    sx={{ width: '100px', height: '100px', mr: 2 }}
+                                                />
+                                                <Box>
+                                                    <Typography variant='h6'>{userData.username}</Typography>
+                                                    <Typography variant='body1'>Rank: {userData.ranking}</Typography>
+                                                    <Typography variant='body1'>Points: {userData.points}</Typography>
+                                                </Box>
+                                            </Box>
+                                        </Paper>
+
+                                        {/* Otoczka tylko dla bio */}
+                                        <Paper elevation={1} sx={{ p: 2, mb: 2, width: '95%', bgcolor: 'background.paper' }}>
+                                            <Typography variant='body1'>{userData.bio}</Typography>
+                                        </Paper>
+
+                                        <Button
+                                            variant='contained'
+                                            color='primary'
+                                            onClick={() => navigate('/profile/settings')}
+                                            sx={{ width: '95%' }}
+                                        >
+                                            Edit Profile
+                                        </Button>
                                     </Box>
-                                    <Button
-                                        variant='contained'
-                                        color='primary'
-                                        onClick={() => navigate('/profile/settings')}
-                                        sx={{ mt: 2 }}
-                                    >
-                                        Edit Profile
-                                    </Button>
-                                </Box>
                                 </Paper>
                             </Grid>
 
+
                             {/* Solved challenges */}
                             <Grid item xs={12} md={6}>
-                                <Paper elevation={3} sx={{ p: 2 }}>
+                                <Paper elevation={3} sx={{ p: 2, height: '100%', mb: 2 }}>
                                     <Typography variant='h6' gutterBottom>
                                         Solved Challenges
                                     </Typography>
@@ -209,6 +221,15 @@ export default function Profile() {
 
                                         {/* Paski postępu */}
                                         <Grid item xs>
+
+                                            {/*może ten?*/}
+                                            {/*<Box sx={{ width: 'calc(100% - 120px)' }}> */}
+                                            {/*    <Box sx={{ mb: 1 }}>*/}
+                                            {/*        <Typography variant='body2'>{`Easy Challenges: ${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>*/}
+                                            {/*        <LinearProgress variant='determinate' value={calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)} />*/}
+                                            {/*    </Box>*/}
+                                            {/*</Box>*/}
+
                                             <Box>
                                                 {/* Pasek postępu dla Easy Challenges */}
                                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
@@ -245,17 +266,19 @@ export default function Profile() {
                                     </Grid>
                                 </Paper>
                             </Grid>
-                        </>
+                        </Grid>
                     )}
 
-                    {/* Zakładka "Your Challenges" - tu możesz dodać własną zawartość */}
+                    {/* Zakładka "Your Challenges" */}
                     {activeTab === 'challenges' && (
                         <Grid item xs={12} md={12}>
-                            {/* Własna zawartość dla zakładki "Your Challenges" */}
+                            <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData} />
                         </Grid>
                     )}
                 </Grid>
             </Paper>
         </Container>
     );
+
+
 }
