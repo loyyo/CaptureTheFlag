@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+import React, {useEffect, useState} from 'react';
+import {useTheme} from '@mui/material/styles';
 import {
     CssBaseline,
     Paper,
@@ -18,13 +18,13 @@ import {
     Button,
     useMediaQuery,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import {useNavigate} from 'react-router-dom';
+import {useAuth} from '../../contexts/AuthContext.jsx';
 import Challenges from '../Challenges.jsx';
 
 export default function Profile() {
     const navigate = useNavigate();
-    const { getProfile, currentUserData, allChallengesData, getAllChallengesData } = useAuth();
+    const {getProfile, currentUserData, allChallengesData, getAllChallengesData, getChallengeStats} = useAuth();
     const theme = useTheme();
     const [activeTab, setActiveTab] = useState('informations');
 
@@ -38,41 +38,23 @@ export default function Profile() {
     useEffect(() => {
         if (!currentUserData) {
             getProfile();
+        } else {
+            setUserData(currentUserData);
         }
+
         if (allChallengesData.length === 0) {
             getAllChallengesData();
+        } else {
+            setChallengesData(allChallengesData);
         }
-    }, [currentUserData, allChallengesData, getProfile, getAllChallengesData]);
 
-    useEffect(() => {
-        // W rzeczywistym projekcie te dane pochodziłyby z API lub bazy danych
-        const mockUserData = {
-            avatar: 'https://example.com/avatar.jpg',
-            username: 'JohnDoe',
-            points: 250,
-            ranking: 5,
-            bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            solvedChallenges: 35,
-            solvedEasyChallenges: 12,
-            solvedMediumChallenges: 18,
-            solvedHardChallenges: 5,
-            totalEasyChallenges: 30,
-            totalMediumChallenges: 40,
-            totalHardChallenges: 20,
-        };
+        if (currentUserData && currentUserData.userID) {
+            getChallengeStats(currentUserData.userID).then(stats => {
+                setUserData(prevState => ({...prevState, ...stats}));
+            });
+        }
+    }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
 
-        const mockChallengesData = [
-            { title: 'Challenge 1', category: 'Easy', completed: true },
-            { title: 'Challenge 2', category: 'Medium', completed: true },
-            { title: 'Challenge 3', category: 'Hard', completed: false },
-            { title: 'Challenge 4', category: 'Easy', completed: false },
-            // Dodaj więcej wyzwań w podobnym formacie
-        ];
-
-        // Ustaw dane w stanie komponentu
-        setUserData(mockUserData);
-        setChallengesData(mockChallengesData);
-    }, []);
 
     const primaryColors = 1
         ? {
@@ -90,7 +72,7 @@ export default function Profile() {
     if (!userData) {
         return (
             <Container component='main' maxWidth='lg'>
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         display: 'flex',
@@ -112,8 +94,14 @@ export default function Profile() {
     if (!currentUserData || allChallengesData.length === 0) {
         return (
             <Container component='main' maxWidth='lg'>
-                <CssBaseline />
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CssBaseline/>
+                <Box sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh'
+                }}>
                     <Typography variant='h4'>Loading...</Typography>
                 </Box>
             </Container>
@@ -121,15 +109,15 @@ export default function Profile() {
     }
 
     return (
-        <Container component='main' maxWidth='lg' sx={{ mt: 2 }}>
-            <CssBaseline />
-            <Paper elevation={7} sx={{ padding: 2, borderRadius: '4px' }}>
+        <Container component='main' maxWidth='lg' sx={{mt: 2}}>
+            <CssBaseline/>
+            <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
                 <Box p={2} borderBottom={1} borderColor='grey.300'>
                     <Typography variant='h4' align='center'>
                         Profile
                     </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', mt: 1}}>
                         <Button
                             variant={activeTab === 'informations' ? 'contained' : 'outlined'}
                             color='primary'
@@ -141,7 +129,7 @@ export default function Profile() {
                             variant={activeTab === 'challenges' ? 'contained' : 'outlined'}
                             color='primary'
                             onClick={() => setActiveTab('challenges')}
-                            sx={{ ml: 2 }}
+                            sx={{ml: 2}}
                         >
                             Your Challenges
                         </Button>
@@ -153,16 +141,18 @@ export default function Profile() {
                         <Grid container spacing={1} alignItems="stretch">
                             {/* Avatar, bio i opis */}
                             <Grid item xs={12} md={6}>
-                                <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+                                <Paper elevation={3} sx={{p: 2, height: '100%'}}>
                                     <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
                                         {/* Otoczka wokół avatara i informacji */}
-                                        <Paper elevation={1} sx={{ p: 2, mb: 2, width: '95%', bgcolor: 'background.paper' }}>
-                                            <Box display='flex' flexDirection='row' alignItems='center' sx={{ width: '100%', justifyContent: 'center' }}>
+                                        <Paper elevation={1}
+                                               sx={{p: 2, mb: 2, width: '95%', bgcolor: 'background.paper'}}>
+                                            <Box display='flex' flexDirection='row' alignItems='center'
+                                                 sx={{width: '100%', justifyContent: 'center'}}>
                                                 <Avatar
                                                     variant='rounded'
                                                     alt='Profile Avatar'
                                                     src={currentUserData.avatar}
-                                                    sx={{ width: '100px', height: '100px', mr: 2 }}
+                                                    sx={{width: '100px', height: '100px', mr: 2}}
                                                 />
                                                 <Box>
                                                     <Typography variant='h6'>{userData.username}</Typography>
@@ -173,7 +163,8 @@ export default function Profile() {
                                         </Paper>
 
                                         {/* Otoczka tylko dla bio */}
-                                        <Paper elevation={1} sx={{ p: 2, mb: 2, width: '95%', bgcolor: 'background.paper' }}>
+                                        <Paper elevation={1}
+                                               sx={{p: 2, mb: 2, width: '95%', bgcolor: 'background.paper'}}>
                                             <Typography variant='body1'>{userData.bio}</Typography>
                                         </Paper>
 
@@ -181,7 +172,7 @@ export default function Profile() {
                                             variant='contained'
                                             color='primary'
                                             onClick={() => navigate('/profile/settings')}
-                                            sx={{ width: '95%' }}
+                                            sx={{width: '95%'}}
                                         >
                                             Edit Profile
                                         </Button>
@@ -192,7 +183,7 @@ export default function Profile() {
 
                             {/* Solved challenges */}
                             <Grid item xs={12} md={6}>
-                                <Paper elevation={3} sx={{ p: 2, height: '100%', mb: 2 }}>
+                                <Paper elevation={3} sx={{p: 2, height: '100%', mb: 2}}>
                                     <Typography variant='h6' gutterBottom>
                                         Solved Challenges
                                     </Typography>
@@ -215,7 +206,7 @@ export default function Profile() {
                                                 }}
                                             >
                                                 {userData.solvedChallenges}
-                                                <div style={{ fontSize: '12px' }}>Solved</div>
+                                                <div style={{fontSize: '12px'}}>Solved</div>
                                             </div>
                                         </Grid>
 
@@ -232,34 +223,61 @@ export default function Profile() {
 
                                             <Box>
                                                 {/* Pasek postępu dla Easy Challenges */}
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
+                                                <Box sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    marginBottom: 1
+                                                }}>
                                                     <Typography variant='body1'>{`Easy`}</Typography>
-                                                    <Typography variant='body1'>{`${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>
+                                                    <Typography
+                                                        variant='body1'>{`${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{ width: `${calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)}%`, backgroundColor: primaryColors.main }}></div>
+                                                    <div className='progress-fill' style={{
+                                                        width: `${calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)}%`,
+                                                        backgroundColor: primaryColors.main
+                                                    }}></div>
                                                 </div>
                                             </Box>
 
                                             {/* Pasek postępu dla Medium Challenges */}
-                                            <Box sx={{ marginTop: 2 }}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
+                                            <Box sx={{marginTop: 2}}>
+                                                <Box sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    marginBottom: 1
+                                                }}>
                                                     <Typography variant='body1'>{`Medium`}</Typography>
-                                                    <Typography variant='body1'>{`${userData.solvedMediumChallenges}/${userData.totalMediumChallenges}`}</Typography>
+                                                    <Typography
+                                                        variant='body1'>{`${userData.solvedMediumChallenges}/${userData.totalMediumChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{ width: `${calculatePercentage(userData.solvedMediumChallenges, userData.totalMediumChallenges)}%`, backgroundColor: primaryColors.main }}></div>
+                                                    <div className='progress-fill' style={{
+                                                        width: `${calculatePercentage(userData.solvedMediumChallenges, userData.totalMediumChallenges)}%`,
+                                                        backgroundColor: primaryColors.main
+                                                    }}></div>
                                                 </div>
                                             </Box>
 
                                             {/* Pasek postępu dla Hard Challenges */}
-                                            <Box sx={{ marginTop: 2 }}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
+                                            <Box sx={{marginTop: 2}}>
+                                                <Box sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    marginBottom: 1
+                                                }}>
                                                     <Typography variant='body1'>{`Hard`}</Typography>
-                                                    <Typography variant='body1'>{`${userData.solvedHardChallenges}/${userData.totalHardChallenges}`}</Typography>
+                                                    <Typography
+                                                        variant='body1'>{`${userData.solvedHardChallenges}/${userData.totalHardChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{ width: `${calculatePercentage(userData.solvedHardChallenges, userData.totalHardChallenges)}%`, backgroundColor: primaryColors.main }}></div>
+                                                    <div className='progress-fill' style={{
+                                                        width: `${calculatePercentage(userData.solvedHardChallenges, userData.totalHardChallenges)}%`,
+                                                        backgroundColor: primaryColors.main
+                                                    }}></div>
                                                 </div>
                                             </Box>
                                         </Grid>
@@ -272,13 +290,11 @@ export default function Profile() {
                     {/* Zakładka "Your Challenges" */}
                     {activeTab === 'challenges' && (
                         <Grid item xs={12} md={12}>
-                            <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData} />
+                            <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
                         </Grid>
                     )}
                 </Grid>
             </Paper>
         </Container>
     );
-
-
 }
