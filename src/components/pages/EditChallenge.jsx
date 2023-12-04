@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Radio,
     RadioGroup,
@@ -11,11 +11,16 @@ import {
     Grid,
     Box,
     Typography,
-    Alert
+    Alert,
+    LinearProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
 } from '@mui/material';
-import {useAuth} from '../../contexts/AuthContext.jsx';
-import {useParams, useNavigate} from 'react-router-dom';
-import {LinearProgress} from '@mui/material';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function EditChallenge() {
     const {
@@ -35,6 +40,7 @@ export default function EditChallenge() {
     const [success, setSuccess] = useState('');
     const [fileName, setFileName] = useState('');
     const [file, setFile] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const challengeRef = useRef();
     const descriptionRef = useRef();
@@ -76,7 +82,6 @@ export default function EditChallenge() {
         }
     }, [singleChallengeData, challengeURL]);
 
-
     const handleFileChange = () => {
         const selectedFile = fileRef.current?.files?.[0];
 
@@ -90,19 +95,14 @@ export default function EditChallenge() {
                 setError('');
                 setFile(selectedFile);
                 setFileName(selectedFile.name);
-                // setSuccessMessage('File uploaded successfully!');
             }
         }
     };
 
-
     const handleRemoveFile = () => {
         setFileName('');
-        // fileRef.current.value = null;
         setFile(null);
-        // setSuccessMessage('File removed successfully!');
     };
-
 
     const setSuccessMessage = (message) => {
         setSuccess(message);
@@ -110,6 +110,7 @@ export default function EditChallenge() {
             setSuccess('');
         }, 3000);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -129,7 +130,6 @@ export default function EditChallenge() {
                 image: file
             });
             window.location.href = `/challenges/${challengeURL}`;
-            // setSuccessMessage('Challenge updated successfully!');
         } catch (err) {
             setError('Failed to update challenge');
             console.error(err);
@@ -138,23 +138,24 @@ export default function EditChallenge() {
         setLoading(false);
     };
 
-    const handleDelete = async () => {
-        if (!window.confirm('Are you sure you want to delete this challenge?')) return;
+    const handleDelete = () => {
+        setIsModalOpen(true);
+    };
 
+    const handleDeleteConfirm = async () => {
         try {
             setLoading(true);
             await deleteChallenge(challengeURL);
-            navigate('/');
+            window.location.href = '/';
         } catch (err) {
             console.error(err);
             setError('Failed to delete challenge');
         } finally {
             setLoading(false);
+            setIsModalOpen(false);
         }
     };
 
-    console.log(currentUserData.length)
-    console.log(singleChallengeData)
     if (!loaded) {
         return (
             <Container component="main" maxWidth="md">
@@ -286,6 +287,25 @@ export default function EditChallenge() {
                         </Grid>
                     </Box>
                 </Box>
+                <Dialog
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this challenge? This action cannot be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setIsModalOpen(false)}>No</Button>
+                        <Button onClick={handleDeleteConfirm} autoFocus>
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         );
     }
