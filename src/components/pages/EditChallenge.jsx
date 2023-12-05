@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Radio,
     RadioGroup,
@@ -19,8 +19,8 @@ import {
     DialogContentText,
     DialogTitle
 } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useAuth} from '../../contexts/AuthContext.jsx';
+import {useParams, useNavigate} from 'react-router-dom';
 
 export default function EditChallenge() {
     const {
@@ -300,8 +300,8 @@ export default function EditChallenge() {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setIsModalOpen(false)}>No</Button>
-                        <Button onClick={handleDeleteConfirm} autoFocus>
+                        <Button onClick={() => setIsModalOpen(false)} color="secondary">No</Button>
+                        <Button onClick={handleDeleteConfirm} autoFocus color="secondary">
                             Yes
                         </Button>
                     </DialogActions>
