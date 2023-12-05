@@ -461,10 +461,12 @@ function AuthProvider({children}) {
                 key: correctAnswer,
                 points: points,
                 title: title,
-                image: imageUrl ? imageUrl : null,
-                fileName: image?.name || null
-                // updatedAt: new Date(), // aktualizujemy?
             };
+
+            if (image !== null) {
+                updateData.image = imageUrl ? imageUrl : null;
+                updateData.fileName = image?.name || null
+            }
 
             await db.collection('challenges').doc(challengeID).update(updateData);
         } catch (error) {

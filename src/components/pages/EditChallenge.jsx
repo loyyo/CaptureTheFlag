@@ -101,7 +101,7 @@ export default function EditChallenge() {
 
     const handleRemoveFile = () => {
         setFileName('');
-        setFile(null);
+        setFile('remove');
     };
 
     const setSuccessMessage = (message) => {
