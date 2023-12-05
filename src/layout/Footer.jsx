@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Box, Typography, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { Person as PersonIcon, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { useMediaQuery } from '@mui/material';
 
 const Footer = () => {

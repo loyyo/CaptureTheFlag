@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {useAuth} from '../../contexts/AuthContext.jsx';
+import {useAuth} from '../contexts/AuthContext.jsx';
 import {useTheme} from '@mui/material/styles';
 
 import {
@@ -15,7 +15,7 @@ import {
     Button,
     useMediaQuery,
 } from '@mui/material';
-import Challenges from '../Challenges.jsx';
+import Challenges from '../components/Challenges.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export default function UserProfile() {

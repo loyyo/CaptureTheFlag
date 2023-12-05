@@ -19,7 +19,7 @@ import {
     DialogContentText,
     DialogTitle
 } from '@mui/material';
-import {useAuth} from '../../contexts/AuthContext.jsx';
+import {useAuth} from '../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
 
 export default function EditChallenge() {

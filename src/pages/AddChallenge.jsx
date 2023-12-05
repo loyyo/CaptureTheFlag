@@ -13,7 +13,7 @@ import {
     Typography,
     Alert
 } from '@mui/material';
-import {useAuth} from '../../contexts/AuthContext.jsx';
+import {useAuth} from '../contexts/AuthContext.jsx';
 
 export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData} = useAuth();

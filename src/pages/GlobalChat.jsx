@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import {
 	CssBaseline,
 	Container,
@@ -12,7 +12,7 @@ import {
 	TextField,
 	LinearProgress,
 } from '@mui/material';
-import ChatMessage from '../ChatMessage.jsx';
+import ChatMessage from '../components/ChatMessage.jsx';
 
 const PREFIX = 'GlobalChat';
 const classes = {

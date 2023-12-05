@@ -19,8 +19,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import {useAuth} from '../../contexts/AuthContext.jsx';
-import Challenges from '../Challenges.jsx';
+import {useAuth} from '../contexts/AuthContext.jsx';
+import Challenges from '../components/Challenges.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {

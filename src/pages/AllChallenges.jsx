@@ -15,8 +15,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Autocomplete from '@mui/lab/Autocomplete';
-import { useAuth } from '../../contexts/AuthContext.jsx';
-import Challenges from '../Challenges.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import Challenges from '../components/Challenges.jsx';
 
 function AllChallenges() {
     const [selectedTitle, setSelectedTitle] = useState('');

@@ -14,7 +14,7 @@ import {
 	Alert,
 	AlertTitle,
 } from "@mui/material";
-import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";

@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { useTheme } from '@mui/material/styles';
 
 export default function ForgotPassword() {
