@@ -14,7 +14,6 @@ import {
     Alert
 } from '@mui/material';
 import {useAuth} from '../../contexts/AuthContext.jsx';
-import {useNavigate} from "react-router-dom";
 
 export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData} = useAuth();
@@ -29,7 +28,6 @@ export default function AddChallenge() {
     const [correctAnswer, setCorrectAnswer] = useState('');
     const fileRef = useRef();
     const [file, setFile] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         setTimeout(() => {
@@ -82,7 +80,7 @@ export default function AddChallenge() {
             const difficulty = difficultyRef.current.value || 'easy';
 
             const redirectUrl = await addChallenge(currentUserData.userID, challenge, description, difficulty, correctAnswer, file);
-            navigate(`/challenges/${redirectUrl}`);
+            window.location.href = `/challenges/${redirectUrl}`;
         } catch (err) {
             setError('Failed to add challenge');
             console.error(err);
