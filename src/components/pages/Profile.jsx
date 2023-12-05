@@ -50,7 +50,7 @@ export default function Profile() {
         }
 
         if (currentUserData && currentUserData.userID) {
-            getChallengeStats(currentUserData.userID).then(stats => {
+            getChallengeStats(currentUserData.userID, currentUserData.email).then(stats => {
                 setUserData(prevState => ({...prevState, ...stats}));
             });
         }
