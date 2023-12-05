@@ -110,6 +110,7 @@ export default function Profile() {
                             color='primary'
                             onClick={() => setActiveTab('informations')}
                             sx={{
+                                width: '250px',
                                 color: 'white',
                                 background: activeTab === 'informations' ? theme.palette.primary.dark : theme.palette.primary.light,
                                 '&:hover': {
@@ -124,6 +125,7 @@ export default function Profile() {
                             color='primary'
                             onClick={() => setActiveTab('challenges')}
                             sx={{
+                                width: '250px',
                                 ml: 2,
                                 color: 'white',
                                 background: activeTab === 'challenges' ? theme.palette.primary.dark : theme.palette.primary.light,
