@@ -52,6 +52,9 @@ function App() {
 					'.header-text-dark': {
 						backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
 					},
+					'.header-text-gold': {
+						backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
+					},
 					'.header-text-light': {
 						backgroundColor: prefersDarkMode ? '#3f4fa3' : '#7986cb',
 					},

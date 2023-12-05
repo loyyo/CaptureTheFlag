@@ -159,54 +159,6 @@ export default function ChallengePage({challenge, currentUser}) {
                 </Grid>
             </Grid>
 
-
-            {currentUser.challenges[challenge.url] && (
-                <Grid item xs={12}>
-                    <Box className='ratings'>
-                        {isMobile ? (
-                            <Grid container direction='column' alignItems='center'>
-                                <Grid item>
-                                    <Typography variant='h6' style={{color: 'white', textAlign: 'center'}}>
-                                        Rate This Challenge:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Rating
-                                        emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
-                                        fractions={2}
-                                        initialRating={
-                                            challenge.ratings[currentUser.userID]
-                                                ? challenge.ratings[currentUser.userID]
-                                                : 5
-                                        }
-                                        onClick={handleRating}
-                                    />
-                                </Grid>
-                            </Grid>
-                        ) : (
-                            <>
-                                <Typography variant='h6' style={{color: 'white'}}>
-                                    Rate This Challenge:
-                                </Typography>
-                                <Box ml={2} />
-                                <Rating
-                                    emptySymbol='fa fa-star-o fa-2x'
-                                    fullSymbol='fa fa-star fa-2x'
-                                    fractions={2}
-                                    initialRating={
-                                        challenge.ratings[currentUser.userID]
-                                            ? challenge.ratings[currentUser.userID]
-                                            : 5
-                                    }
-                                    onClick={handleRating}
-                                />
-                            </>
-                        )}
-                    </Box>
-                </Grid>
-            )}
-
             <Box sx={{background: theme.palette.primary.main, width: '100%', display: 'grid'}}>
                 <Grid item container xs={12}>
                     <Grid item xs={12}>
@@ -257,13 +209,13 @@ export default function ChallengePage({challenge, currentUser}) {
                             {currentUser.challenges[challenge.url] && (
                                 <Grid item xs={12}>
                                     {challenge.ratings[currentUser.userID] && (
-                                        <Typography variant='h5' className='header-text-dark'>
+                                        <Typography variant='h5' className='header-text-light'>
                                             You&apos;ve already done & rated this challenge. You can change your vote
                                             anytime.
                                         </Typography>
                                     )}
                                     {!challenge.ratings[currentUser.userID] && (
-                                        <Typography variant='h5' className='header-text-dark'>
+                                        <Typography variant='h5' className='header-text-light'>
                                             Good Job! You&apos;ve successfully completed this challenge. You can now
                                             rate it.
                                         </Typography>
@@ -341,6 +293,54 @@ export default function ChallengePage({challenge, currentUser}) {
                     )}
                 </Grid>
             </Box>
+
+            {currentUser.challenges[challenge.url] && (
+                <Grid item xs={12}>
+                    <Box className='header-text-gold'>
+                        {isMobile ? (
+                            <Grid container direction='column' alignItems='center'>
+                                <Grid item>
+                                    <Typography variant='h6' style={{color: 'white', textAlign: 'center'}}>
+                                        Rate This Challenge:
+                                    </Typography>
+                                </Grid>
+                                <Grid >
+                                    <Rating
+                                        emptySymbol='fa fa-star-o fa-2x'
+                                        fullSymbol='fa fa-star fa-2x'
+                                        fractions={2}
+                                        initialRating={
+                                            challenge.ratings[currentUser.userID]
+                                                ? challenge.ratings[currentUser.userID]
+                                                : 5
+                                        }
+                                        onClick={handleRating}
+                                    />
+                                </Grid>
+                            </Grid>
+                        ) : (
+                            <>
+                                <Typography variant='h6' style={{color: 'white'}}>
+                                    Rate This Challenge:
+                                </Typography>
+                                <Box ml={2} />
+                                <Rating
+                                    emptySymbol='fa fa-star-o fa-2x'
+                                    fullSymbol='fa fa-star fa-2x'
+                                    fractions={2}
+                                    initialRating={
+                                        challenge.ratings[currentUser.userID]
+                                            ? challenge.ratings[currentUser.userID]
+                                            : 5
+                                    }
+                                    onClick={handleRating}
+                                />
+                            </>
+                        )}
+                    </Box>
+                </Grid>
+            )}
+
         </StyledGrid>
     );
 }

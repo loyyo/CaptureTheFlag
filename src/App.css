@@ -42,6 +42,7 @@
 
 .header-text,
 .header-text-dark,
+.header-text-gold,
 .header-text-light,
 .header-text-light-right,
 .description,
@@ -72,6 +73,7 @@
     border-color: white;
 }
 
+.header-text-gold,
 .ratings {
     color: gold;
     border-left: none;
