@@ -21,6 +21,7 @@ import {
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../../contexts/AuthContext.jsx';
 import Challenges from '../Challenges.jsx';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -54,20 +55,6 @@ export default function Profile() {
             });
         }
     }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
-
-
-    const primaryColors = 1
-        ? {
-            light: '#3f4fa3',
-            main: '#2c387e',
-            dark: '#212c6f',
-        }
-        : {
-            light: '#7986cb',
-            main: '#3f51b5',
-            dark: '#303f9f',
-        };
-
 
     if (!userData) {
         return (
@@ -122,6 +109,13 @@ export default function Profile() {
                             variant={activeTab === 'informations' ? 'contained' : 'outlined'}
                             color='primary'
                             onClick={() => setActiveTab('informations')}
+                            sx={{
+                                color: 'white',
+                                background: activeTab === 'informations' ? theme.palette.primary.dark : theme.palette.primary.light,
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.dark,
+                                },
+                            }}
                         >
                             Informations
                         </Button>
@@ -129,7 +123,14 @@ export default function Profile() {
                             variant={activeTab === 'challenges' ? 'contained' : 'outlined'}
                             color='primary'
                             onClick={() => setActiveTab('challenges')}
-                            sx={{ml: 2}}
+                            sx={{
+                                ml: 2,
+                                color: 'white',
+                                background: activeTab === 'challenges' ? theme.palette.primary.dark : theme.palette.primary.light,
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.dark,
+                                },
+                            }}
                         >
                             Your Challenges
                         </Button>
@@ -145,7 +146,12 @@ export default function Profile() {
                                     <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
                                         {/* Otoczka wokół avatara i informacji */}
                                         <Paper elevation={1}
-                                               sx={{p: 2, mb: 2, width: '95%', bgcolor: 'background.paper'}}>
+                                               sx={{
+                                                   p: 2,
+                                                   mb: 2,
+                                                   width: '95%',
+                                                   bgcolor: theme.palette.background.paper
+                                               }}>
                                             <Box display='flex' flexDirection='row' alignItems='center'
                                                  sx={{width: '100%', justifyContent: 'center'}}>
                                                 <Avatar
@@ -164,7 +170,12 @@ export default function Profile() {
 
                                         {/* Otoczka tylko dla bio */}
                                         <Paper elevation={1}
-                                               sx={{p: 2, mb: 2, width: '95%', bgcolor: 'background.paper'}}>
+                                               sx={{
+                                                   p: 2,
+                                                   mb: 2,
+                                                   width: '95%',
+                                                   bgcolor: theme.palette.background.paper
+                                               }}>
                                             <Typography variant='body1'>{userData.bio}</Typography>
                                         </Paper>
 
@@ -191,23 +202,50 @@ export default function Profile() {
                                     <Grid container spacing={2} alignItems="center">
                                         {/* Koło z ilością wykonanych wyzwań */}
                                         <Grid item>
-                                            <div
-                                                style={{
-                                                    width: '100px',
-                                                    height: '100px',
-                                                    borderRadius: '50%',
-                                                    border: `4px solid ${primaryColors.main}`,
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
+                                            <Paper>
+                                                <Box sx={{
+                                                    position: 'relative',
+                                                    display: 'inline-flex',
                                                     justifyContent: 'center',
-                                                    fontSize: '24px',
-                                                    fontWeight: 'bold',
-                                                }}
-                                            >
-                                                {userData.solvedChallenges}
-                                                <div style={{fontSize: '12px'}}>Solved</div>
-                                            </div>
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={100}
+                                                        size={100}
+                                                        thickness={4}
+                                                        sx={{color: theme.palette.primary.light}}
+                                                    />
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
+                                                        size={100}
+                                                        thickness={4}
+                                                        sx={{position: 'absolute', color: theme.palette.primary.dark}}
+                                                    />
+                                                    <Box
+                                                        sx={{
+                                                            top: 0,
+                                                            left: 0,
+                                                            bottom: 0,
+                                                            right: 0,
+                                                            position: 'absolute',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                        }}
+                                                    >
+                                                        <Typography variant="caption" component="div" sx={{
+                                                            textAlign: 'center',
+                                                            fontSize: '24px',
+                                                            fontWeight: 'bold'
+                                                        }}>
+                                                            {userData.solvedChallenges}
+                                                            <div style={{fontSize: '12px'}}>Solved</div>
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Paper>
                                         </Grid>
 
                                         {/* Paski postępu */}
@@ -236,7 +274,7 @@ export default function Profile() {
                                                 <div className='progress-bar'>
                                                     <div className='progress-fill' style={{
                                                         width: `${calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)}%`,
-                                                        backgroundColor: primaryColors.main
+                                                        backgroundColor: theme.palette.primary.main
                                                     }}></div>
                                                 </div>
                                             </Box>
@@ -256,7 +294,7 @@ export default function Profile() {
                                                 <div className='progress-bar'>
                                                     <div className='progress-fill' style={{
                                                         width: `${calculatePercentage(userData.solvedMediumChallenges, userData.totalMediumChallenges)}%`,
-                                                        backgroundColor: primaryColors.main
+                                                        backgroundColor: theme.palette.primary.main
                                                     }}></div>
                                                 </div>
                                             </Box>
@@ -276,7 +314,7 @@ export default function Profile() {
                                                 <div className='progress-bar'>
                                                     <div className='progress-fill' style={{
                                                         width: `${calculatePercentage(userData.solvedHardChallenges, userData.totalHardChallenges)}%`,
-                                                        backgroundColor: primaryColors.main
+                                                        backgroundColor: theme.palette.primary.main
                                                     }}></div>
                                                 </div>
                                             </Box>

@@ -240,17 +240,23 @@ function AuthProvider({children}) {
             });
     }, []);
 
-    const calculateRanking = (usersData, userTotalChallengesSolved, currentUserId) => {
-        return usersData.reduce((rank, user) => {
+    const calculateRanking = (usersData, currentUserPoints, currentUserId) => {
+        let rank = 1;
+        let usersWithMorePoints = 0;
+
+        usersData.forEach(user => {
             if (user.userID !== currentUserId) {
-                const totalChallengesSolved = Object.keys(user.challenges || {}).length;
-                if (totalChallengesSolved > userTotalChallengesSolved) {
-                    return rank + 1;
+                const userPoints = user.points || 0;
+                if (userPoints < currentUserPoints) {
+                    usersWithMorePoints++;
                 }
             }
-            return rank;
-        }, 1);
+        });
+
+        rank += usersWithMorePoints;
+        return rank;
     };
+
 
     const getChallengeStats = async () => {
         const userDataSnapshot = await db.collection('users').doc(currentUserData.email).get();
@@ -267,11 +273,21 @@ function AuthProvider({children}) {
         const usersSnapshot = await db.collection('users').get();
         const usersData = usersSnapshot.docs.map(doc => doc.data());
 
-        let challengeStats = { solvedChallenges: 0, solvedEasyChallenges: 0, solvedMediumChallenges: 0, solvedHardChallenges: 0, totalEasyChallenges: 0, totalMediumChallenges: 0, totalHardChallenges: 0 };
+        let challengeStats = {
+            solvedChallenges: 0,
+            solvedEasyChallenges: 0,
+            solvedMediumChallenges: 0,
+            solvedHardChallenges: 0,
+            totalEasyChallenges: 0,
+            totalMediumChallenges: 0,
+            totalHardChallenges: 0,
+            totalChallenges: 0 // Added totalChallenges counter
+        };
 
         challengeStats = challenges.reduce((stats, challenge) => {
             const { difficulty, url } = challenge;
 
+            stats.totalChallenges++; // Increment totalChallenges for each challenge
             stats[`total${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
 
             if (userChallenges[url]) {
@@ -286,6 +302,7 @@ function AuthProvider({children}) {
 
         return { ...challengeStats, ranking };
     };
+
 
     const getUserProfile = useCallback(
         async (user) => {

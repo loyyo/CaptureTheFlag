@@ -72,7 +72,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
                                         <Button
                                             variant='contained'
                                             color='primary'
-                                            sx={{ margin: 1, color: 'white', width: '100%', borderColor: 'red' }}
+                                            sx={{ margin: 1, color: 'white', width: '100%' }}
                                             onClick={() => navigate(`/challenges/${challenge.url}`)}
                                         >
                                             View
