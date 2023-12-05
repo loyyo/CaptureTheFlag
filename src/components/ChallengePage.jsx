@@ -196,6 +196,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                 <Typography variant='h6' style={{color: 'white'}}>
                                     Rate This Challenge:
                                 </Typography>
+                                <Box ml={2} />
                                 <Rating
                                     emptySymbol='fa fa-star-o fa-2x'
                                     fullSymbol='fa fa-star fa-2x'
