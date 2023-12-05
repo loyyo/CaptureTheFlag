@@ -134,38 +134,31 @@ export default function ChallengePage({challenge, currentUser}) {
                     </Typography>
                 </Box>
             </Grid>
-            <Grid container item xs={12}>
-                <Grid item xs={12} sm={6}>
+            <Grid container item xs={12} justifyContent="space-between" alignItems="center">
+                <Grid item xs={12} sm={4}>
                     <Typography variant='h6' className='header-text-light'>
                         {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
+                    <Box className='ratings'>
+                    <Rating
+                        emptySymbol='fa fa-star-o fa-2x'
+                        fullSymbol='fa fa-star fa-2x'
+                        fractions={100}
+                        initialRating={getInitialRating(challenge)}
+                        readonly
+                    />
+                    </Box>
+                </Grid>
+
+                <Grid item xs={12} sm={4}>
                     <Typography variant='h6' className='header-text-light-right'>
                         Popularity: {challenge.completedBy}
                     </Typography>
                 </Grid>
             </Grid>
 
-            {!currentUser.challenges[challenge.url] && (
-                <Grid item xs={12}>
-                    <Box className='ratings'>
-                        {!isMobile && (
-                            <Typography variant='h6' style={{color: 'white'}}>
-                                Community Ranking:
-                            </Typography>
-                        )}
-                        <Box ml={2}/>
-                        <Rating
-                            emptySymbol='fa fa-star-o fa-2x'
-                            fullSymbol='fa fa-star fa-2x'
-                            fractions={100}
-                            initialRating={getInitialRating(challenge)}
-                            readonly
-                        />
-                    </Box>
-                </Grid>
-            )}
 
             {currentUser.challenges[challenge.url] && (
                 <Grid item xs={12}>

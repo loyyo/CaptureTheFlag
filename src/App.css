@@ -1,94 +1,80 @@
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .messagesBox {
-	height: 50vh;
-	overflow-y: scroll;
+    height: 50vh;
+    overflow-y: scroll;
 }
 
 .messages {
-	display: flex;
-	align-items: center;
-	overflow-wrap: break-word;
+    display: flex;
+    align-items: center;
+    overflow-wrap: break-word;
 }
 
 .sent {
-	flex-direction: row-reverse;
+    flex-direction: row-reverse;
 }
 
 .sent .message {
-	color: white;
-	background: #0b93f6;
-	align-self: flex-end;
+    color: white;
+    background: #0b93f6;
+    align-self: flex-end;
 }
 
 .received .message {
-	background: #e5e5ea;
-	color: black;
+    background: #e5e5ea;
+    color: black;
 }
 
 .message {
-	max-width: 64vw;
-	padding: 10px 20px;
-	border-radius: 2.5rem;
+    max-width: 64vw;
+    padding: 10px 20px;
+    border-radius: 2.5rem;
 }
 
 .App-leaderboard {
-	overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 .header-text,
 .header-text-dark,
 .header-text-light,
 .header-text-light-right,
-.description {
-	color: white;
-	padding: 1rem;
-	text-align: center;
+.description,
+.ratings {
+    border: solid;
+    border-width: 0.01rem;
+    border-color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5rem;
 }
 
 .header-text-light {
-	border: solid;
-	border-left: none;
-	border-width: 0.01rem;
-	height: 100%;
-	border-color: white;
+    border-left: none;
 }
 
 .header-text-light-right {
-	border: solid;
-	border-left: none;
-	border-right: none;
-	border-width: 0.01rem;
-	height: 100%;
-	border-color: white;
+    border-left: none;
+    border-right: none;
 }
 
 .description {
-	border: none;
-	border-left: none;
-	border-width: 0.01rem;
-	height: 100%;
-	border-color: white;
+    border: none;
+    border-left: none;
+    border-width: 0.01rem;
+    border-color: white;
 }
 
 .ratings {
-	color: gold;
-	border: solid;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	border-width: 0.01rem;
-	height: 100%;
-	border-color: white;
-	padding: 1rem;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    color: gold;
+    border-left: none;
 }
 
 .progress-bar {
@@ -105,8 +91,8 @@
 }
 
 @media (max-width: 600px) {
-	.header-text-light {
-		border-right: none;
-		border-bottom: none;
-	}
+    .header-text-light {
+        border-right: none;
+        border-bottom: none;
+    }
 }
