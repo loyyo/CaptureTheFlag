@@ -281,13 +281,13 @@ function AuthProvider({children}) {
             totalEasyChallenges: 0,
             totalMediumChallenges: 0,
             totalHardChallenges: 0,
-            totalChallenges: 0 // Added totalChallenges counter
+            totalChallenges: 0
         };
 
         challengeStats = challenges.reduce((stats, challenge) => {
             const { difficulty, url } = challenge;
 
-            stats.totalChallenges++; // Increment totalChallenges for each challenge
+            stats.totalChallenges++;
             stats[`total${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
 
             if (userChallenges[url]) {

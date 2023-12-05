@@ -56,7 +56,7 @@ export default function Profile() {
         }
     }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
 
-    if (!userData) {
+    if (!userData || !userData.totalChallenges) {
         return (
             <Container component='main' maxWidth='lg'>
                 <CssBaseline/>
@@ -202,50 +202,48 @@ export default function Profile() {
                                     <Grid container spacing={2} alignItems="center">
                                         {/* Koło z ilością wykonanych wyzwań */}
                                         <Grid item>
-                                            <Paper>
-                                                <Box sx={{
-                                                    position: 'relative',
-                                                    display: 'inline-flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center'
-                                                }}>
-                                                    <CircularProgress
-                                                        variant="determinate"
-                                                        value={100}
-                                                        size={100}
-                                                        thickness={4}
-                                                        sx={{color: theme.palette.primary.light}}
-                                                    />
-                                                    <CircularProgress
-                                                        variant="determinate"
-                                                        value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
-                                                        size={100}
-                                                        thickness={4}
-                                                        sx={{position: 'absolute', color: theme.palette.primary.dark}}
-                                                    />
-                                                    <Box
-                                                        sx={{
-                                                            top: 0,
-                                                            left: 0,
-                                                            bottom: 0,
-                                                            right: 0,
-                                                            position: 'absolute',
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                        }}
-                                                    >
-                                                        <Typography variant="caption" component="div" sx={{
-                                                            textAlign: 'center',
-                                                            fontSize: '24px',
-                                                            fontWeight: 'bold'
-                                                        }}>
-                                                            {userData.solvedChallenges}
-                                                            <div style={{fontSize: '12px'}}>Solved</div>
-                                                        </Typography>
-                                                    </Box>
+                                            <Box sx={{
+                                                position: 'relative',
+                                                display: 'inline-flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}>
+                                                <CircularProgress
+                                                    variant="determinate"
+                                                    value={100}
+                                                    size={100}
+                                                    thickness={4}
+                                                    sx={{color: theme.palette.primary.light}}
+                                                />
+                                                <CircularProgress
+                                                    variant="determinate"
+                                                    value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
+                                                    size={100}
+                                                    thickness={4}
+                                                    sx={{position: 'absolute', color: theme.palette.primary.dark}}
+                                                />
+                                                <Box
+                                                    sx={{
+                                                        top: 0,
+                                                        left: 0,
+                                                        bottom: 0,
+                                                        right: 0,
+                                                        position: 'absolute',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}
+                                                >
+                                                    <Typography variant="caption" component="div" sx={{
+                                                        textAlign: 'center',
+                                                        fontSize: '24px',
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        {userData.solvedChallenges}
+                                                        <div style={{fontSize: '12px'}}>Solved</div>
+                                                    </Typography>
                                                 </Box>
-                                            </Paper>
+                                            </Box>
                                         </Grid>
 
                                         {/* Paski postępu */}
