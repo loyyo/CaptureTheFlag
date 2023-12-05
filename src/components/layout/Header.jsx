@@ -49,7 +49,7 @@ const Header = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar color="primary" position="static">
+			<AppBar color="primary" position="fixed">
 				<Toolbar>
 					<Box sx={{ flexGrow: 1 }}>
 						<Button onClick={() => navigateTo('/challenges')}>
@@ -96,7 +96,9 @@ const Header = () => {
 					</Menu>
 				</Toolbar>
 			</AppBar>
+			<Box sx={{ mt: '90px' }}></Box>
 		</Box>
+
 	);
 };
 

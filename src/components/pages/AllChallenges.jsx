@@ -150,6 +150,7 @@ function AllChallenges() {
                     </Grid>
                     <Grid item xs={12} style={{ marginTop: 20 }}>
                         <Button
+                            color='inherit'
                             ref={sortButtonRef}
                             variant={isSortButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {
@@ -187,6 +188,7 @@ function AllChallenges() {
                             }}>Popularity</MenuItem>
                         </Menu>
                         <Button
+                            color='inherit'
                             ref={difficultyButtonRef}
                             variant={isDifficultyButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {
@@ -229,6 +231,7 @@ function AllChallenges() {
                             }}>Hard</MenuItem>
                         </Menu>
                         <Button
+                            color='inherit'
                             ref={ratingButtonRef}
                             variant={isRatingButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {

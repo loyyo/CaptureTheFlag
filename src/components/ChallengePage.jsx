@@ -277,15 +277,10 @@ export default function ChallengePage({challenge, currentUser}) {
                         </>
                     ) : (
                         <Grid item xs={12}>
-                            <Typography
-                                variant='h6'
-                                style={{
-                                    color: 'white',
-                                    textAlign: 'center',
-                                    marginTop: '20px',
-                                    marginBottom: '20px'
-                                }}
-                            >
+                            <Typography variant='h5' className='header-text-dark'
+                                        style={{
+                                            borderTop: 'none'
+                                        }}>
                                 As the author of this challenge, you cannot respond to it.
                             </Typography>
                         </Grid>
