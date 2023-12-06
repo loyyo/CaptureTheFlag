@@ -44,10 +44,6 @@ export default function EditProfile() {
 	const [success, setSuccess] = useState(false);
 	const [file, setFile] = useState([]);
 
-	const bioregex = /^(\p{ASCII}{1,300})$/;
-	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/;
-	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/;
-
 	const handleChange = (e) => {
 		setFile(e);
 	};
@@ -75,8 +71,30 @@ export default function EditProfile() {
 	};
 	function handleSubmit(e) {
 		e.preventDefault();
+
+		if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
+			setError("Username must be between 5 and 15 characters");
+			return;
+		}
+
+		if (!emailRef.current.value.includes('@') || !emailRef.current.value.endsWith('.com')) {
+			setError("Email address is not valid");
+			return;
+		}
+
+		if (passwordRef.current.value && passwordRef.current.value.length < 6) {
+			setError("Password must be at least 6 characters");
+			return;
+		}
+
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-			return setError("Passwords do not match");
+			setError("Passwords do not match");
+			return;
+		}
+
+		if (bioRef.current.value.length > 300) {
+			setError("Biography must be less than 300 characters");
+			return;
 		}
 
 		const promises = [];
@@ -216,10 +234,6 @@ export default function EditProfile() {
 										autoComplete="username"
 										inputRef={usernameRef}
 										defaultValue={currentUserData.username}
-										inputProps={{
-											pattern: regex.source,
-											title: `Użyj od 5 do 15 znaków. Dozwolone znaki specjalne to '-' oraz '_'`,
-										}}
 									/>
 								</Grid>
 								<Grid item md={11} xs={12}>
@@ -245,10 +259,6 @@ export default function EditProfile() {
 										autoComplete="current-password"
 										inputRef={passwordRef}
 										helperText="*Leave blank to keep the same"
-										inputProps={{
-											pattern: regexpw.source,
-											title: "Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.",
-										}}
 									/>
 								</Grid>
 								<Grid item md={11} xs={12}>
@@ -276,7 +286,6 @@ export default function EditProfile() {
 										name="biography"
 										inputRef={bioRef}
 										defaultValue={currentUserData.bio}
-										inputProps={{ pattern: bioregex, title: "Użyj maksymalnie 300 znaków" }}
 									/>
 								</Grid>
 								<Grid item xs={12}>
