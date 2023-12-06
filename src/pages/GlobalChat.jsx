@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import {
@@ -93,9 +93,14 @@ export default function GlobalChat() {
 
 	if (!currentUserData || allUsersData.length === 0) {
 		return (
-			<Container component='main' maxWidth='lg'>
+			<Container component="main" maxWidth="lg">
 				<CssBaseline />
-				<Box sx={{ width: '100%' }}>
+				<Box sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					height: 'calc(100vh - 90px)' // Header height
+				}}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>

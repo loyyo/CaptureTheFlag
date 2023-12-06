@@ -107,7 +107,12 @@ function AllChallenges() {
         return (
             <Container component="main" maxWidth="lg">
                 <CssBaseline />
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    height: 'calc(100vh - 90px)' // Header height
+                }}>
                     <Box m={10}>
                         <LinearProgress />
                     </Box>

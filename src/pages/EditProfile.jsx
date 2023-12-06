@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useEffect } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
 	CssBaseline,
@@ -137,7 +137,12 @@ export default function EditProfile() {
 		return (
 			<Container component="main" maxWidth="lg">
 				<CssBaseline />
-				<Box sx={{ width: "100%" }}>
+				<Box sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					height: 'calc(100vh - 90px)' // Header height
+				}}>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>

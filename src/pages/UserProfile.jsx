@@ -65,10 +65,17 @@ export default function UserProfile() {
 
     if (!thisUserData || !userData || !userData.totalChallenges) {
         return (
-            <Container component='main' maxWidth='lg'>
-                <CssBaseline/>
-                <Box sx={{width: '100%', mt: 10}}>
-                    <LinearProgress/>
+            <Container component="main" maxWidth="lg">
+                <CssBaseline />
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    height: 'calc(100vh - 90px)' // Header height
+                }}>
+                    <Box m={10}>
+                        <LinearProgress />
+                    </Box>
                 </Box>
             </Container>
         );

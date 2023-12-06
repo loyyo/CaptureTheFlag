@@ -17,7 +17,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle, CssBaseline
 } from '@mui/material';
 import {useAuth} from '../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
@@ -158,9 +158,17 @@ export default function EditChallenge() {
 
     if (!loaded) {
         return (
-            <Container component="main" maxWidth="md">
-                <Box sx={{width: '100%'}}>
-                    <LinearProgress/>
+            <Container component="main" maxWidth="lg">
+                <CssBaseline />
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    height: 'calc(100vh - 90px)' // Header height
+                }}>
+                    <Box m={10}>
+                        <LinearProgress />
+                    </Box>
                 </Box>
             </Container>
         );

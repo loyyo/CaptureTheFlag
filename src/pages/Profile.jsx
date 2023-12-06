@@ -80,16 +80,17 @@ export default function Profile() {
 
     if (!currentUserData || allChallengesData.length === 0) {
         return (
-            <Container component='main' maxWidth='lg'>
-                <CssBaseline/>
+            <Container component="main" maxWidth="lg">
+                <CssBaseline />
                 <Box sx={{
-                    width: '100%',
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100vh'
+                    height: 'calc(100vh - 90px)' // Header height
                 }}>
-                    <Typography variant='h4'>Loading...</Typography>
+                    <Box m={10}>
+                        <LinearProgress />
+                    </Box>
                 </Box>
             </Container>
         );
