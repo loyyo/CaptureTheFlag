@@ -36,7 +36,7 @@ export default function UserProfile() {
     const md = useMediaQuery(theme.breakpoints.down('md'));
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [userData, setUserData] = useState(null);
-    const userCreatedChallenges = allChallengesData.filter(challenge => thisUserData.userID === challenge.userID);
+    const userCreatedChallenges = thisUserData ? allChallengesData.filter(challenge => thisUserData.userID === challenge.userID) : [];
 
     useEffect(() => {
         if (!currentUserData) {
