@@ -27,14 +27,13 @@ export default function UserProfile() {
         thisUserData,
         allChallengesData,
         getAllChallengesData,
-        getChallengeStats
+        getChallengeStats,
+        allUsersData,
+        getAllUsersData
     } = useAuth();
     const [activeTab, setActiveTab] = useState('informations');
     const theme = useTheme();
 
-    const lg = useMediaQuery(theme.breakpoints.up('md'));
-    const md = useMediaQuery(theme.breakpoints.down('md'));
-    const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [userData, setUserData] = useState(null);
     const userCreatedChallenges = thisUserData ? allChallengesData.filter(challenge => thisUserData.userID === challenge.userID) : [];
 
@@ -45,12 +44,15 @@ export default function UserProfile() {
             setUserData(currentUserData);
         }
 
-        async function fetchUserData() {
+        const fetchUserData = async () => {
             if (!thisUserData || thisUserData.userID !== userID) {
                 await getUserProfile(userID);
             }
             if (allChallengesData.length === 0) {
                 await getAllChallengesData();
+            }
+            if (allUsersData.length === 0) {
+                await getAllUsersData();
             }
             if (thisUserData && thisUserData.userID) {
                 const stats = await getChallengeStats(thisUserData.userID, thisUserData.email);
@@ -58,10 +60,10 @@ export default function UserProfile() {
                     setUserData(stats);
                 }
             }
-        }
+        };
 
         fetchUserData();
-    }, [userID, thisUserData, allChallengesData, getUserProfile, getAllChallengesData, getChallengeStats]);
+    }, [userID, thisUserData, currentUserData, allChallengesData, allUsersData, getUserProfile, getAllChallengesData, getChallengeStats]);
 
     if (!thisUserData || !userData || !userData.totalChallenges) {
         return (

@@ -25,38 +25,54 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {
     const navigate = useNavigate();
-    const {getProfile, currentUserData, allChallengesData, getAllChallengesData, getChallengeStats} = useAuth();
+    const {
+        getProfile,
+        currentUserData,
+        allChallengesData,
+        getAllChallengesData,
+        getChallengeStats,
+        allUsersData,
+        getAllUsersData
+    } = useAuth();
     const theme = useTheme();
     const [activeTab, setActiveTab] = useState('informations');
 
-    const lg = useMediaQuery(theme.breakpoints.up('md'));
-    const md = useMediaQuery(theme.breakpoints.down('md'));
-    const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [userData, setUserData] = useState(null);
     const [challengesData, setChallengesData] = useState([]);
     const userCreatedChallenges = allChallengesData.filter(challenge => currentUserData.userID === challenge.userID);
 
+    const [usersDataLoaded, setUsersDataLoaded] = useState(false);
+
     useEffect(() => {
-        if (!currentUserData) {
-            getProfile();
-        } else {
-            setUserData(currentUserData);
-        }
+        const loadData = async () => {
+            if (!currentUserData) {
+                await getProfile();
+            } else {
+                setUserData(currentUserData);
+            }
 
-        if (allChallengesData.length === 0) {
-            getAllChallengesData();
-        } else {
-            setChallengesData(allChallengesData);
-        }
+            if (allChallengesData.length === 0) {
+                await getAllChallengesData();
+            } else {
+                setChallengesData(allChallengesData);
+            }
 
-        if (currentUserData && currentUserData.userID) {
-            getChallengeStats(currentUserData.userID, currentUserData.email).then(stats => {
-                setUserData(prevState => ({...prevState, ...stats}));
-            });
-        }
+            if (allUsersData.length === 0) {
+                await getAllUsersData();
+            }
+
+            if (currentUserData && currentUserData.userID) {
+                const stats = await getChallengeStats(currentUserData.userID, currentUserData.email);
+                if (stats) {
+                    setUserData(prevState => ({...prevState, ...stats}));
+                }
+            }
+        };
+
+        loadData().then(() => setUsersDataLoaded(true));
     }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
 
-    if (!userData || !userData.totalChallenges) {
+    if (!usersDataLoaded) {
         return (
             <Container component='main' maxWidth='lg'>
                 <CssBaseline/>
@@ -81,7 +97,7 @@ export default function Profile() {
     if (!currentUserData || allChallengesData.length === 0) {
         return (
             <Container component="main" maxWidth="lg">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -89,7 +105,7 @@ export default function Profile() {
                     height: 'calc(100vh - 90px)' // Header height
                 }}>
                     <Box m={10}>
-                        <LinearProgress />
+                        <LinearProgress/>
                     </Box>
                 </Box>
             </Container>
@@ -165,7 +181,8 @@ export default function Profile() {
                                                 />
                                                 <Box>
                                                     <Typography variant='h5'>{userData.username}</Typography>
-                                                    <Typography variant='body1'>Rank: {userData.ranking}</Typography>
+                                                    <Typography
+                                                        variant='body1'>Rank: {userData.ranking === 0 ? "---" : userData.ranking}</Typography>
                                                     <Typography variant='body1'>Points: {userData.points}</Typography>
                                                 </Box>
                                             </Box>
