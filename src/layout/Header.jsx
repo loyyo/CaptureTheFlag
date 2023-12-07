@@ -16,7 +16,7 @@ const Header = () => {
 	const handleLogout = async () => {
 		try {
 			await logout();
-			window.location.href = `/`;
+			navigate(0);
 		} catch (error) {
 			console.error('Failed to log out:', error);
 		}

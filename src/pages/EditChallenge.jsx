@@ -29,7 +29,8 @@ export default function EditChallenge() {
         deleteChallenge,
         singleChallengeData,
         getProfile,
-        currentUserData
+        currentUserData,
+        getAllChallengesData
     } = useAuth();
     const {challengeURL} = useParams();
     const navigate = useNavigate();
@@ -129,10 +130,13 @@ export default function EditChallenge() {
                 correctAnswer,
                 image: file
             });
-            window.location.href = `/challenges/${challengeURL}`;
+            navigate(`/challenges/${challengeURL}`);
         } catch (err) {
             setError('Failed to update challenge');
             console.error(err);
+        } finally {
+            getAllChallengesData();
+            getSingleChallengeData(challengeURL);
         }
 
         setLoading(false);
@@ -146,13 +150,14 @@ export default function EditChallenge() {
         try {
             setLoading(true);
             await deleteChallenge(challengeURL);
-            window.location.href = '/';
+            navigate(`/`);
         } catch (err) {
             console.error(err);
             setError('Failed to delete challenge');
         } finally {
             setLoading(false);
             setIsModalOpen(false);
+            getAllChallengesData();
         }
     };
 

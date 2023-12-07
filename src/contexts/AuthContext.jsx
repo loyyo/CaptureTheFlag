@@ -45,6 +45,9 @@ function AuthProvider({children}) {
 
     const logout = useCallback(async () => {
         await auth.signOut();
+        setCurrentUserData([]);
+        setCurrentUser([]);
+        setAllChallengesData([]);
     }, []);
 
     const resetPassword = useCallback(async (email) => {
