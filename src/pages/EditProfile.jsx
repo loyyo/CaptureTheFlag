@@ -19,6 +19,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import Dropzone from '../components/Dropzone';
 
 export default function EditProfile() {
 	const navigate = useNavigate();
@@ -43,55 +44,8 @@ export default function EditProfile() {
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
-	const [fileDrop, setFileDrop] = useState([]);
+	const [file, setFile] = useState([]);
 	const [image, setImage] = useState();
-
-	const MyDropzone = () => {
-		const onDrop = useCallback((acceptedFiles) => {
-			setImage(URL.createObjectURL(acceptedFiles[0]));
-			setFileDrop(acceptedFiles[0]);
-		}, []);
-
-		const { getRootProps, getInputProps } = useDropzone({
-			accept: "image/jpeg, image/jpg, image/gif, image/png",
-			maxFiles: 1,
-			maxSize: 5000000,
-			onDrop,
-		});
-
-		const removeImage = (event) => {
-			event.stopPropagation();
-			setImage(null);
-			setFileDrop(null);
-		};
-
-		return (
-			<div
-				{...getRootProps()}
-				style={{
-					border: "2px dashed #ccc",
-					padding: "20px",
-					textAlign: "center",
-					position: "relative",
-				}}
-			>
-				<input {...getInputProps()} />
-				{image ? (
-					<div>
-						<Avatar src={image} alt="Avatar" style={{ width: 200, height: 200 }} />
-						<IconButton onClick={removeImage} style={{ position: "absolute", top: 0, right: 0 }}>
-							<DeleteIcon />
-						</IconButton>
-					</div>
-				) : (
-					<p>
-						Drag and drop an image here (or click) to update your avatar (resized to 200x200
-						automatically)
-					</p>
-				)}
-			</div>
-		);
-	};
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -139,8 +93,8 @@ export default function EditProfile() {
 			if (bioRef.current.value !== currentUserData.bio && bioRef.current.value.length < 301) {
 				promises.push(updateBio(emailRef.current.value, bioRef.current.value));
 			}
-			if (fileDrop) {
-				promises.push(updateAvatar(emailRef.current.value, fileDrop));
+			if (file) {
+				promises.push(updateAvatar(emailRef.current.value, file));
 			}
 		}
 
@@ -320,7 +274,13 @@ export default function EditProfile() {
 									/>
 								</Grid>
 								<Grid item xs={12}>
-									{currentUserData && <MyDropzone />}
+									{currentUserData && <Dropzone
+										image={image}
+										setImage={setImage}
+										file={file}
+										setFile={setFile}
+									/>
+									}
 								</Grid>
 							</Grid>
 						</Grid>

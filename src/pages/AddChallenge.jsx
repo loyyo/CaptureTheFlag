@@ -15,21 +15,21 @@ import {
 } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
+import Dropzone from '../components/Dropzone';
 
 export default function AddChallenge() {
 	const { addChallenge, getProfile, currentUserData, getAllChallengesData } = useAuth();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
-	const [fileName, setFileName] = useState("");
 
 	const navigate = useNavigate();
 	const challengeRef = useRef();
 	const descriptionRef = useRef();
 	const difficultyRef = useRef({ value: "easy" });
 	const [correctAnswer, setCorrectAnswer] = useState("");
-	const fileRef = useRef();
-	const [file, setFile] = useState(null);
+	const [image, setImage] = useState();
+	const [file, setFile] = useState();
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -38,29 +38,6 @@ export default function AddChallenge() {
 			}
 		}, 100);
 	}, []);
-
-	const handleFileChange = () => {
-		const selectedFile = fileRef.current?.files?.[0];
-		if (selectedFile) {
-			if (!selectedFile.type.startsWith("image/")) {
-				setError("Invalid file type. Please select an image.");
-				fileRef.current.value = null;
-				setFile(null);
-			} else {
-				setError("");
-				setFile(selectedFile);
-				setFileName(selectedFile.name);
-				setSuccess("");
-			}
-		}
-	};
-
-	const handleRemoveFile = () => {
-		setFileName("");
-		setFile(null);
-		fileRef.current.value = null;
-		setSuccessMessage("File removed successfully!");
-	};
 
 	const setSuccessMessage = (message) => {
 		setSuccess(message);
@@ -158,32 +135,9 @@ export default function AddChallenge() {
 							</FormControl>
 						</Grid>
 						<Grid item xs={12}>
-							{fileName ? (
-								<Button
-									variant="outlined"
-									color="secondary"
-									onClick={handleRemoveFile}
-									sx={{ mt: 1 }}
-								>
-									Remove File
-								</Button>
-							) : (
-								<Button variant="contained" component="label">
-									Upload File
-									<input
-										type="file"
-										hidden
-										accept="image/*"
-										ref={fileRef}
-										onChange={handleFileChange}
-									/>
-								</Button>
-							)}
-							{fileName && (
-								<Alert severity="success" sx={{ mt: 2 }}>
-									Selected file: {fileName}
-								</Alert>
-							)}
+							<Grid item xs={12}>
+								<Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
+							</Grid>
 						</Grid>
 						<Grid item xs={12}>
 							<Button

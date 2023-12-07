@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import {useAuth} from '../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
+import Dropzone from '../components/Dropzone';
 
 export default function EditChallenge() {
     const {
@@ -39,15 +40,14 @@ export default function EditChallenge() {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [fileName, setFileName] = useState('');
-    const [file, setFile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const challengeRef = useRef();
     const descriptionRef = useRef();
     const [difficulty, setDifficulty] = useState('easy');
     const [correctAnswer, setCorrectAnswer] = useState('');
-    const fileRef = useRef(null);
+    const [image, setImage] = useState();
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         if (!currentUserData) {
@@ -79,38 +79,10 @@ export default function EditChallenge() {
             }
             setDifficulty(challengeData.difficulty);
             setCorrectAnswer(challengeData.key);
-            setFileName(challengeData.fileName || '');
+            setImage(challengeData.image);
+            setFile(challengeData.image);
         }
     }, [singleChallengeData, challengeURL]);
-
-    const handleFileChange = () => {
-        const selectedFile = fileRef.current?.files?.[0];
-
-        if (selectedFile) {
-            if (!selectedFile.type.startsWith('image/')) {
-                setError('Invalid file type. Please select an image.');
-                fileRef.current.value = null;
-                setFile(null);
-                setFileName('');
-            } else {
-                setError('');
-                setFile(selectedFile);
-                setFileName(selectedFile.name);
-            }
-        }
-    };
-
-    const handleRemoveFile = () => {
-        setFileName('');
-        setFile('remove');
-    };
-
-    const setSuccessMessage = (message) => {
-        setSuccess(message);
-        setTimeout(() => {
-            setSuccess('');
-        }, 3000);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -246,28 +218,9 @@ export default function EditChallenge() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
-                                {fileName ? (
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={handleRemoveFile}
-                                        sx={{mt: 1}}
-                                    >
-                                        Remove File
-                                    </Button>
-                                ) : (
-                                    <Button variant="contained" component="label">
-                                        Upload File
-                                        <input
-                                            type="file"
-                                            hidden
-                                            accept="image/*"
-                                            ref={fileRef}
-                                            onChange={handleFileChange}
-                                        />
-                                    </Button>
-                                )}
-                                {fileName && <Alert severity="success" sx={{mt: 2}}>Selected file: {fileName}</Alert>}
+                                <Grid item xs={12}>
+                                    <Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
+                                </Grid>
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container spacing={2} justifyContent="flex-start">
