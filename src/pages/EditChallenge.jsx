@@ -1,10 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-    Radio,
-    RadioGroup,
-    FormControlLabel,
     FormControl,
-    FormLabel,
     Container,
     TextField,
     Button,
@@ -17,7 +13,12 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, CssBaseline
+    DialogTitle,
+    CssBaseline,
+    InputLabel,
+    Select,
+    MenuItem,
+    Paper
 } from '@mui/material';
 import {useAuth} from '../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
@@ -136,7 +137,7 @@ export default function EditChallenge() {
     if (!loaded) {
         return (
             <Container component="main" maxWidth="lg">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -144,7 +145,7 @@ export default function EditChallenge() {
                     height: 'calc(100vh - 90px)' // Header height
                 }}>
                     <Box m={10}>
-                        <LinearProgress />
+                        <LinearProgress/>
                     </Box>
                 </Box>
             </Container>
@@ -152,106 +153,115 @@ export default function EditChallenge() {
     } else {
         return (
             <Container component="main" maxWidth="md">
-                <Box sx={{mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Typography component="h1" variant="h5">
-                        Edit Challenge
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="challenge"
-                                    label="Challenge Name"
-                                    name="challenge"
-                                    inputRef={challengeRef}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="description"
-                                    label="Description"
-                                    name="description"
-                                    multiline
-                                    rows={4}
-                                    inputRef={descriptionRef}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="correctAnswer"
-                                    label="Correct Answer"
-                                    name="correctAnswer"
-                                    value={correctAnswer}
-                                    onChange={(e) => setCorrectAnswer(e.target.value)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">Difficulty</FormLabel>
-                                    <RadioGroup
-                                        row
-                                        aria-label="difficulty"
-                                        name="difficulty"
-                                        value={difficulty}
-                                        onChange={(e) => setDifficulty(e.target.value)}
-                                    >
-                                        <FormControlLabel value="easy" control={<Radio/>} label="Easy"/>
-                                        <FormControlLabel value="medium" control={<Radio/>} label="Medium"/>
-                                        <FormControlLabel value="hard" control={<Radio/>} label="Hard"/>
-                                    </RadioGroup>
-
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
+                <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    <Paper elevation={7} sx={{
+                        padding: 2,
+                        borderRadius: '4px',
+                        mt: 3,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                    }}>
+                        <Typography component="h1" variant="h5">Edit Challenge</Typography>
+                        <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
+                            <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="challenge"
+                                        label="Challenge Name"
+                                        name="challenge"
+                                        inputRef={challengeRef}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={7}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="description"
+                                        label="Description"
+                                        name="description"
+                                        multiline
+                                        rows={4}
+                                        inputRef={descriptionRef}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
+                                        <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
+                                    </Box>
+                                </Grid>
+
+                                <Grid item xs={5}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
+                                        <Select
+                                            labelId="difficulty-select-label"
+                                            id="difficulty-select"
+                                            value={difficulty}
+                                            label="Difficulty"
+                                            onChange={(e) => setDifficulty(e.target.value)}
+                                        >
+                                            <MenuItem value="easy">Easy</MenuItem>
+                                            <MenuItem value="medium">Medium</MenuItem>
+                                            <MenuItem value="hard">Hard</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={7}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="correctAnswer"
+                                        label="Correct Answer"
+                                        name="correctAnswer"
+                                        value={correctAnswer}
+                                        onChange={(e) => setCorrectAnswer(e.target.value)}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <Grid container spacing={2} justifyContent="center">
+                                        <Grid item>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={handleDelete}
+                                                disabled={loading}
+                                                sx={{mb: 2, width: 100}}
+                                            >
+                                                DELETE
+                                            </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                sx={{mb: 2, width: 200}}
+                                                disabled={loading}
+                                            >
+                                                SAVE
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                    {error && <Alert severity="error">{error}</Alert>}
+                                    {success && <Alert severity="success">{success}</Alert>}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Grid container spacing={2} justifyContent="flex-start">
-                                    <Grid item>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            sx={{mb: 2}}
-                                            disabled={loading}
-                                        >
-                                            SAVE
-                                        </Button>
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={handleDelete}
-                                            disabled={loading}
-                                            sx={{mb: 2}}
-                                        >
-                                            DELETE
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                                {error && <Alert severity="error">{error}</Alert>}
-                                {success && <Alert severity="success">{success}</Alert>}
-                            </Grid>
-                        </Grid>
-                    </Box>
+                        </Box>
+                    </Paper>
                 </Box>
                 <Dialog
                     open={isModalOpen}
