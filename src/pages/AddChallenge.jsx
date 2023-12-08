@@ -1,10 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	FormControl,
-	FormLabel,
 	Container,
 	TextField,
 	Button,
@@ -12,6 +7,10 @@ import {
 	Box,
 	Typography,
 	Alert,
+	Select,
+	MenuItem,
+	InputLabel,
+	FormControl,
 } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +29,7 @@ export default function AddChallenge() {
 	const [correctAnswer, setCorrectAnswer] = useState("");
 	const [image, setImage] = useState();
 	const [file, setFile] = useState();
+	const [difficulty, setDifficulty] = useState("easy");
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -80,9 +80,7 @@ export default function AddChallenge() {
 	return (
 		<Container component="main" maxWidth="md">
 			<Box sx={{ mt: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
-				<Typography component="h1" variant="h5">
-					Add New Challenge
-				</Typography>
+				<Typography component="h1" variant="h5">Add New Challenge</Typography>
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
@@ -95,7 +93,8 @@ export default function AddChallenge() {
 								inputRef={challengeRef}
 							/>
 						</Grid>
-						<Grid item xs={12}>
+
+						<Grid item xs={7}>
 							<TextField
 								required
 								fullWidth
@@ -107,7 +106,29 @@ export default function AddChallenge() {
 								inputRef={descriptionRef}
 							/>
 						</Grid>
-						<Grid item xs={12}>
+						<Grid item xs={5}>
+							<Box sx={{ minHeight: '100%', display: 'flex', alignItems: 'center' }}>
+								<Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
+							</Box>
+						</Grid>
+
+						<Grid item xs={5}>
+							<FormControl fullWidth>
+								<InputLabel id="difficulty-select-label">Difficulty</InputLabel>
+								<Select
+									labelId="difficulty-select-label"
+									id="difficulty-select"
+									value={difficulty}
+									label="Difficulty"
+									onChange={(e) => (difficultyRef.current.value = e.target.value)}
+								>
+									<MenuItem value="easy">Easy</MenuItem>
+									<MenuItem value="medium">Medium</MenuItem>
+									<MenuItem value="hard">Hard</MenuItem>
+								</Select>
+							</FormControl>
+						</Grid>
+						<Grid item xs={7}>
 							<TextField
 								required
 								fullWidth
@@ -118,27 +139,7 @@ export default function AddChallenge() {
 								onChange={(e) => setCorrectAnswer(e.target.value)}
 							/>
 						</Grid>
-						<Grid item xs={12}>
-							<FormControl component="fieldset">
-								<FormLabel component="legend">Difficulty</FormLabel>
-								<RadioGroup
-									row
-									aria-label="difficulty"
-									name="difficulty"
-									defaultValue="easy"
-									onChange={(e) => (difficultyRef.current.value = e.target.value)}
-								>
-									<FormControlLabel value="easy" control={<Radio />} label="Easy" />
-									<FormControlLabel value="medium" control={<Radio />} label="Medium" />
-									<FormControlLabel value="hard" control={<Radio />} label="Hard" />
-								</RadioGroup>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12}>
-							<Grid item xs={12}>
-								<Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
-							</Grid>
-						</Grid>
+
 						<Grid item xs={12}>
 							<Button
 								type="submit"
