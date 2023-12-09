@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CssBaseline, Container, Box, LinearProgress } from '@mui/material';
-import ChallengePage from '../ChallengePage.jsx';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import ChallengePage from '../components/ChallengePage.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function Challenge() {
 	const { challengeID } = useParams();

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu, Box } from '@mui/material';
 import {AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon, Add as AddIcon} from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -16,7 +16,7 @@ const Header = () => {
 	const handleLogout = async () => {
 		try {
 			await logout();
-			navigate('/');
+			navigate(0);
 		} catch (error) {
 			console.error('Failed to log out:', error);
 		}
@@ -49,7 +49,7 @@ const Header = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar color="primary" position="static">
+			<AppBar color="primary" position="fixed">
 				<Toolbar>
 					<Box sx={{ flexGrow: 1 }}>
 						<Button onClick={() => navigateTo('/challenges')}>
@@ -96,7 +96,9 @@ const Header = () => {
 					</Menu>
 				</Toolbar>
 			</AppBar>
+			<Box sx={{ mt: '90px' }}></Box>
 		</Box>
+
 	);
 };
 

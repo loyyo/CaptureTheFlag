@@ -68,7 +68,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Box sx={{ display: 'flex', justifyContent: 'center', background: theme.palette.primary.dark }}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', background: theme.palette.primary.dark, border: "solid 0.01rem" }}>
                                         <Button
                                             variant='contained'
                                             color='primary'

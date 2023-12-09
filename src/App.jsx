@@ -1,26 +1,26 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import AllChallenges from './components/pages/AllChallenges.jsx';
-import AddChallenge from './components/pages/AddChallenge.jsx';
-import EditChallenge from './components/pages/EditChallenge.jsx';
-import Home from './components/pages/Home.jsx';
-import Login from './components/pages/Login.jsx';
-import Register from './components/pages/Register.jsx';
-import Profile from './components/pages/Profile.jsx';
-import Leaderboard from './components/pages/Leaderboard.jsx';
-import EditProfile from './components/pages/EditProfile.jsx';
-import ErrorPage from './components/pages/ErrorPage.jsx';
-import Footer from './components/layout/Footer.jsx';
-import Header from './components/layout/Header.jsx';
+import AllChallenges from './pages/AllChallenges.jsx';
+import AddChallenge from './pages/AddChallenge.jsx';
+import EditChallenge from './pages/EditChallenge.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
+import Profile from './pages/Profile.jsx';
+import Leaderboard from './pages/Leaderboard.jsx';
+import EditProfile from './pages/EditProfile.jsx';
+import ErrorPage from './pages/ErrorPage.jsx';
+import Footer from './layout/Footer.jsx';
+import Header from './layout/Header.jsx';
 import PrivateRoute from './contexts/PrivateRoute.jsx';
 import PrivateSubRoutes from './contexts/PrivateSubRoutes.jsx';
 import LoggedInRoute from './contexts/LoggedInRoute.jsx';
 import { CssBaseline, useMediaQuery, createTheme, ThemeProvider } from '@mui/material';
-import Challenge from './components/pages/Challenge.jsx';
-import UserProfile from './components/pages/UserProfile.jsx';
-import GlobalChat from './components/pages/GlobalChat.jsx';
-import ForgotPassword from './components/pages/ForgotPassword.jsx';
+import Challenge from './pages/Challenge.jsx';
+import UserProfile from './pages/UserProfile.jsx';
+import GlobalChat from './pages/GlobalChat.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 import { useAuth } from './contexts/AuthContext.jsx';
 
 function App() {
@@ -50,6 +50,9 @@ function App() {
 						backgroundColor: prefersDarkMode ? '#2c387e' : '#3f51b5',
 					},
 					'.header-text-dark': {
+						backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
+					},
+					'.header-text-gold': {
 						backgroundColor: prefersDarkMode ? '#212c6f' : '#303f9f',
 					},
 					'.header-text-light': {

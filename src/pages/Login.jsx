@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function SignIn() {
 	const navigate = useNavigate();

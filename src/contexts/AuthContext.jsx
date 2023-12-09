@@ -45,6 +45,9 @@ function AuthProvider({children}) {
 
     const logout = useCallback(async () => {
         await auth.signOut();
+        setCurrentUserData([]);
+        setCurrentUser([]);
+        setAllChallengesData([]);
     }, []);
 
     const resetPassword = useCallback(async (email) => {
@@ -240,26 +243,13 @@ function AuthProvider({children}) {
             });
     }, []);
 
-    const calculateRanking = (usersData, currentUserPoints, currentUserId) => {
-        let rank = 1;
-        let usersWithMorePoints = 0;
-
-        usersData.forEach(user => {
-            if (user.userID !== currentUserId) {
-                const userPoints = user.points || 0;
-                if (userPoints < currentUserPoints) {
-                    usersWithMorePoints++;
-                }
-            }
-        });
-
-        rank += usersWithMorePoints;
-        return rank;
+    const calculateRanking = (sortedUsersData, currentUserId) => {
+        const userIndex = sortedUsersData.findIndex(user => user.userID === currentUserId);
+        return userIndex + 1;
     };
 
-
-    const getChallengeStats = async () => {
-        const userDataSnapshot = await db.collection('users').doc(currentUserData.email).get();
+    const getChallengeStats = async (userID, email) => {
+        const userDataSnapshot = await db.collection('users').doc(email).get();
         if (!userDataSnapshot.exists) {
             console.error('User data not found');
             return null;
@@ -285,7 +275,7 @@ function AuthProvider({children}) {
         };
 
         challengeStats = challenges.reduce((stats, challenge) => {
-            const { difficulty, url } = challenge;
+            const {difficulty, url} = challenge;
 
             stats.totalChallenges++;
             stats[`total${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
@@ -298,9 +288,9 @@ function AuthProvider({children}) {
             return stats;
         }, challengeStats);
 
-        const ranking = calculateRanking(usersData, Object.keys(userChallenges).length, currentUserData.userID);
+        const ranking = calculateRanking(allUsersData, userID);
 
-        return { ...challengeStats, ranking };
+        return {...challengeStats, ranking};
     };
 
 

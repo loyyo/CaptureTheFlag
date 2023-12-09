@@ -19,44 +19,60 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import {useAuth} from '../../contexts/AuthContext.jsx';
-import Challenges from '../Challenges.jsx';
+import {useAuth} from '../contexts/AuthContext.jsx';
+import Challenges from '../components/Challenges.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {
     const navigate = useNavigate();
-    const {getProfile, currentUserData, allChallengesData, getAllChallengesData, getChallengeStats} = useAuth();
+    const {
+        getProfile,
+        currentUserData,
+        allChallengesData,
+        getAllChallengesData,
+        getChallengeStats,
+        allUsersData,
+        getAllUsersData
+    } = useAuth();
     const theme = useTheme();
     const [activeTab, setActiveTab] = useState('informations');
 
-    const lg = useMediaQuery(theme.breakpoints.up('md'));
-    const md = useMediaQuery(theme.breakpoints.down('md'));
-    const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [userData, setUserData] = useState(null);
     const [challengesData, setChallengesData] = useState([]);
     const userCreatedChallenges = allChallengesData.filter(challenge => currentUserData.userID === challenge.userID);
 
+    const [usersDataLoaded, setUsersDataLoaded] = useState(false);
+
     useEffect(() => {
-        if (!currentUserData) {
-            getProfile();
-        } else {
-            setUserData(currentUserData);
-        }
+        const loadData = async () => {
+            if (!currentUserData) {
+                await getProfile();
+            } else {
+                setUserData(currentUserData);
+            }
 
-        if (allChallengesData.length === 0) {
-            getAllChallengesData();
-        } else {
-            setChallengesData(allChallengesData);
-        }
+            if (allChallengesData.length === 0) {
+                await getAllChallengesData();
+            } else {
+                setChallengesData(allChallengesData);
+            }
 
-        if (currentUserData && currentUserData.userID) {
-            getChallengeStats(currentUserData.userID).then(stats => {
-                setUserData(prevState => ({...prevState, ...stats}));
-            });
-        }
+            if (allUsersData.length === 0) {
+                await getAllUsersData();
+            }
+
+            if (currentUserData && currentUserData.userID) {
+                const stats = await getChallengeStats(currentUserData.userID, currentUserData.email);
+                if (stats) {
+                    setUserData(prevState => ({...prevState, ...stats}));
+                }
+            }
+        };
+
+        loadData().then(() => setUsersDataLoaded(true));
     }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
 
-    if (!userData || !userData.totalChallenges) {
+    if (!usersDataLoaded) {
         return (
             <Container component='main' maxWidth='lg'>
                 <CssBaseline/>
@@ -80,16 +96,17 @@ export default function Profile() {
 
     if (!currentUserData || allChallengesData.length === 0) {
         return (
-            <Container component='main' maxWidth='lg'>
+            <Container component="main" maxWidth="lg">
                 <CssBaseline/>
                 <Box sx={{
-                    width: '100%',
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100vh'
+                    height: 'calc(100vh - 90px)' // Header height
                 }}>
-                    <Typography variant='h4'>Loading...</Typography>
+                    <Box m={10}>
+                        <LinearProgress/>
+                    </Box>
                 </Box>
             </Container>
         );
@@ -110,6 +127,7 @@ export default function Profile() {
                             color='primary'
                             onClick={() => setActiveTab('informations')}
                             sx={{
+                                width: '250px',
                                 color: 'white',
                                 background: activeTab === 'informations' ? theme.palette.primary.dark : theme.palette.primary.light,
                                 '&:hover': {
@@ -124,6 +142,7 @@ export default function Profile() {
                             color='primary'
                             onClick={() => setActiveTab('challenges')}
                             sx={{
+                                width: '250px',
                                 ml: 2,
                                 color: 'white',
                                 background: activeTab === 'challenges' ? theme.palette.primary.dark : theme.palette.primary.light,
@@ -162,7 +181,8 @@ export default function Profile() {
                                                 />
                                                 <Box>
                                                     <Typography variant='h5'>{userData.username}</Typography>
-                                                    <Typography variant='body1'>Rank: {userData.ranking}</Typography>
+                                                    <Typography
+                                                        variant='body1'>Rank: {userData.ranking === 0 ? "---" : userData.ranking}</Typography>
                                                     <Typography variant='body1'>Points: {userData.points}</Typography>
                                                 </Box>
                                             </Box>

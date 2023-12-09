@@ -15,8 +15,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Autocomplete from '@mui/lab/Autocomplete';
-import { useAuth } from '../../contexts/AuthContext.jsx';
-import Challenges from '../Challenges.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import Challenges from '../components/Challenges.jsx';
 
 function AllChallenges() {
     const [selectedTitle, setSelectedTitle] = useState('');
@@ -107,7 +107,12 @@ function AllChallenges() {
         return (
             <Container component="main" maxWidth="lg">
                 <CssBaseline />
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    height: 'calc(100vh - 90px)' // Header height
+                }}>
                     <Box m={10}>
                         <LinearProgress />
                     </Box>
@@ -150,6 +155,7 @@ function AllChallenges() {
                     </Grid>
                     <Grid item xs={12} style={{ marginTop: 20 }}>
                         <Button
+                            color='inherit'
                             ref={sortButtonRef}
                             variant={isSortButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {
@@ -187,6 +193,7 @@ function AllChallenges() {
                             }}>Popularity</MenuItem>
                         </Menu>
                         <Button
+                            color='inherit'
                             ref={difficultyButtonRef}
                             variant={isDifficultyButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {
@@ -229,6 +236,7 @@ function AllChallenges() {
                             }}>Hard</MenuItem>
                         </Menu>
                         <Button
+                            color='inherit'
                             ref={ratingButtonRef}
                             variant={isRatingButtonClicked ? "contained" : "outlined"}
                             onClick={(event) => {

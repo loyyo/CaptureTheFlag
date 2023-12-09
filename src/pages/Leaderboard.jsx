@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { CssBaseline, Container, Grid, Box, Typography, LinearProgress } from '@mui/material';
 
-import Table from '../Table.jsx';
-import YourRank from '../YourRank.jsx';
+import Table from '../components/Table.jsx';
+import YourRank from '../components/YourRank.jsx';
 
 export default function Leaderboard() {
 	const { getAllUsersData, allUsersData, currentUserData, getProfile } = useAuth();

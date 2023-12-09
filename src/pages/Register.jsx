@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { LockOutlined as LockOutlinedIcon, Close as CloseIcon } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function SignUp() {
 	const navigate = useNavigate();
@@ -34,31 +34,36 @@ export default function SignUp() {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 
-	const regex = /^[\p{Number}\p{Letter}_\-]{5,15}$/;
-	const regexpw = /^(?=.*\p{Letter})(?=.*\p{Number})[\p{Number}\p{Letter}\p{ASCII}]{6,}$/;
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-			passwordRef.current.value = '';
-			passwordConfirmationRef.current.value = '';
 			return setError('Passwords do not match');
 		}
 
+		if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
+			return setError('Username must be between 5 and 15 characters');
+		}
+
+		if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
+			return setError('Please enter a valid email address');
+		}
+
+		if (passwordRef.current.value.length < 6) {
+			return setError('Password must be at least 6 characters long');
+		}
+
 		try {
-			setError('');
 			setLoading(true);
-			usernameRef.current.value = usernameRef.current.value.slice(0, 15);
+			setError('');
 			await signup(emailRef.current.value, passwordRef.current.value, usernameRef.current.value);
 			setSuccess(true);
 			navigate('/profile');
 		} catch {
-			passwordRef.current.value = '';
-			passwordConfirmationRef.current.value = '';
 			setError('Failed to create an account');
+		} finally {
+			setLoading(false);
 		}
-		setLoading(false);
 	};
 
 	return (
@@ -117,10 +122,6 @@ export default function SignUp() {
 									name='username'
 									autoComplete='username'
 									inputRef={usernameRef}
-									inputProps={{
-										pattern: regex.source,
-										title: `Użyj od 5 do 15 znaków. Dozwolone znaki specjalne to '-' oraz '_'`,
-									}}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -146,10 +147,6 @@ export default function SignUp() {
 									id='password'
 									autoComplete='current-password'
 									inputRef={passwordRef}
-									inputProps={{
-										pattern: regexpw.source,
-										title: 'Użyj minimum 6 znaków, przynajmniej jednej litery oraz jednej cyfry.',
-									}}
 								/>
 							</Grid>
 							<Grid item xs={12}>
