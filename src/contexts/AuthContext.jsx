@@ -110,6 +110,21 @@ function AuthProvider({children}) {
         }
     }, [currentUser]);
 
+    const currentPassword = useCallback(async (password) => {
+        try {
+            const user = auth.currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(
+                user.email,
+                password
+            );
+            await user.reauthenticateWithCredential(credential);
+            return true;
+        } catch (error) {
+            console.error('Error during password verification: ', error);
+            return false;
+        }
+    }, []);
+
     const getAllUsersData = useCallback(async () => {
         let Data = [];
 
@@ -551,7 +566,8 @@ function AuthProvider({children}) {
             updateChallenge,
             deleteChallenge,
             challengeStats,
-            getChallengeStats
+            getChallengeStats,
+            currentPassword
         }),
         [
             currentUser,
@@ -585,7 +601,8 @@ function AuthProvider({children}) {
             updateChallenge,
             deleteChallenge,
             challengeStats,
-            getChallengeStats
+            getChallengeStats,
+            currentPassword
         ]
     );
 

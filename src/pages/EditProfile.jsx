@@ -30,6 +30,7 @@ export default function EditProfile() {
     const bioRef = useRef();
     const usernameRef = useRef();
     const passwordRef = useRef();
+    const currentPasswordRef = useRef();
     const passwordConfirmationRef = useRef();
 
     const {
@@ -41,6 +42,7 @@ export default function EditProfile() {
         updateUsername,
         updateBio,
         updateAvatar,
+        currentPassword
     } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -48,8 +50,13 @@ export default function EditProfile() {
     const [file, setFile] = useState([]);
     const [image, setImage] = useState();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+
+        if (!currentPasswordRef.current.value) {
+            setError("Please enter your current password");
+            return;
+        }
 
         if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
             setError("Username must be between 5 and 15 characters");
@@ -74,6 +81,14 @@ export default function EditProfile() {
         if (bioRef.current.value.length > 300) {
             setError("Biography must be less than 300 characters");
             return;
+        }
+
+        if (currentPasswordRef.current.value) {
+            const isPasswordCorrect = await currentPassword(currentPasswordRef.current.value);
+            if (!isPasswordCorrect) {
+                setError("Current password is incorrect");
+                return;
+            }
         }
 
         const promises = [];
@@ -266,7 +281,8 @@ export default function EditProfile() {
                                     type="password"
                                     id="currentPassword"
                                     autoComplete="current-password"
-                                    inputRef={passwordRef}
+                                    inputRef={currentPasswordRef}
+                                    required
                                     sx={{mb: 2}}
                                 />
                                 <TextField
