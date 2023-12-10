@@ -1,12 +1,13 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
-import SignIn from './Login.jsx'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import SignIn from './Login.jsx';
 import '@testing-library/jest-dom';
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
+const mockLogin = jest.fn();
 jest.mock('../contexts/AuthContext.jsx', () => ({
     useAuth: () => ({
-        login: jest.fn()
+        login: mockLogin
     })
 }));
 jest.mock('react-router-dom', () => ({
@@ -15,7 +16,8 @@ jest.mock('react-router-dom', () => ({
 
 describe('SignIn Component', () => {
     beforeEach(() => {
-        render(<SignIn/>, {wrapper: BrowserRouter});
+        render(<SignIn />, { wrapper: BrowserRouter });
+        mockLogin.mockClear();
     });
 
     test('renders SignIn component', () => {
@@ -35,4 +37,32 @@ describe('SignIn Component', () => {
         fireEvent.click(screen.getByRole('button', {name: /sign in/i}));
     });
 
+    test('correct user login', async () => {
+        mockLogin.mockResolvedValueOnce();
+        fireEvent.change(screen.getByLabelText(/email/i), {target: {value: 'test123@gmail.com'}});
+        fireEvent.change(screen.getByLabelText(/password/i), {target: {value: 'test123'}});
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', {name: /sign in/i}));
+        });
+        await waitFor(() => expect(mockLogin).toHaveBeenCalledWith('test123@gmail.com', 'test123'));
+    });
+
+    test('user login incorrect', async () => {
+        mockLogin.mockRejectedValueOnce(new Error('Failed to sign in'));
+        fireEvent.change(screen.getByLabelText(/email/i), {target: {value: 'wrongemail@example.com'}});
+        fireEvent.change(screen.getByLabelText(/password/i), {target: {value: 'wrongpassword'}});
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', {name: /sign in/i}));
+        });
+        await waitFor(() => expect(screen.getByText('Failed to sign in')).toBeInTheDocument());
+    });
+
+    test('an attempt to log in without completing one of the fields', async () => {
+        fireEvent.change(screen.getByLabelText(/email/i), {target: {value: ''}});
+        fireEvent.change(screen.getByLabelText(/password/i), {target: {value: 'test123'}});
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', {name: /sign in/i}));
+        });
+        expect(mockLogin).not.toHaveBeenCalled();
+    });
 });
