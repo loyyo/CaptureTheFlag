@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
     FormControl,
     Container,
@@ -83,7 +83,7 @@ export default function EditChallenge() {
             setImage(challengeData.image);
             setFile(challengeData.image);
         }
-    }, [singleChallengeData, challengeURL]);
+    }, [singleChallengeData, challengeURL, currentUserData, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

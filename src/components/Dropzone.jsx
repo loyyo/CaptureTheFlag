@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { IconButton } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
+import PropTypes from "prop-types";
 
-const Dropzone = ({ image, setImage, file, setFile }) => {
+const Dropzone = ({ image, setImage, setFile }) => {
 	const onDrop = useCallback((acceptedFiles) => {
 		setImage(URL.createObjectURL(acceptedFiles[0]));
 		setFile(acceptedFiles[0]);
@@ -47,6 +48,12 @@ const Dropzone = ({ image, setImage, file, setFile }) => {
 			)}
 		</div>
 	);
+};
+
+Dropzone.propTypes = {
+	image: PropTypes.string,
+	setImage: PropTypes.func.isRequired,
+	setFile: PropTypes.func,
 };
 
 export default Dropzone;

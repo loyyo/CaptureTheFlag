@@ -1,5 +1,4 @@
-import React, {useRef, useCallback, useState, useEffect} from "react";
-import {useTheme} from "@mui/material/styles";
+import {useRef, useState, useEffect} from "react";
 import {
     CssBaseline,
     Container,
@@ -17,14 +16,12 @@ import {
     Paper
 } from "@mui/material";
 import {useAuth} from "../contexts/AuthContext.jsx";
-import {Close as CloseIcon, Delete as DeleteIcon} from "@mui/icons-material";
-import {useDropzone} from "react-dropzone";
+import {Close as CloseIcon} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import Dropzone from '../components/Dropzone';
 
 export default function EditProfile() {
     const navigate = useNavigate();
-    const theme = useTheme();
 
     const emailRef = useRef();
     const bioRef = useRef();

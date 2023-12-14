@@ -19,14 +19,12 @@ import Dropzone from '../components/Dropzone';
 
 export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData, getAllChallengesData} = useAuth();
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
     const navigate = useNavigate();
     const challengeRef = useRef();
     const descriptionRef = useRef();
-    const difficultyRef = useRef({value: "easy"});
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [image, setImage] = useState();
     const [file, setFile] = useState();
@@ -38,6 +36,7 @@ export default function AddChallenge() {
                 getProfile();
             }
         }, 100);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = async (e) => {
@@ -46,17 +45,16 @@ export default function AddChallenge() {
         try {
             setError("");
             setSuccess("");
-            setLoading(true);
 
             const challenge = challengeRef.current?.value;
             const description = descriptionRef.current?.value;
-            const difficulty = difficultyRef.current.value || "easy";
+            const difficultyValue = difficulty || "easy";
 
             const redirectUrl = await addChallenge(
                 currentUserData.userID,
                 challenge,
                 description,
-                difficulty,
+                difficultyValue,
                 correctAnswer,
                 file
             );
@@ -67,8 +65,6 @@ export default function AddChallenge() {
         } finally {
             getAllChallengesData();
         }
-
-        setLoading(false);
     };
 
     const handleCancel = () => {
@@ -126,7 +122,7 @@ export default function AddChallenge() {
                                         id="difficulty-select"
                                         value={difficulty}
                                         label="Difficulty"
-                                        onChange={(e) => (difficultyRef.current.value = e.target.value)}
+                                        onChange={(e) => setDifficulty(e.target.value)}
                                     >
                                         <MenuItem value="easy">Easy</MenuItem>
                                         <MenuItem value="medium">Medium</MenuItem>

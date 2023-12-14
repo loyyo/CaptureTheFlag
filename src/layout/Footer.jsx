@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, Box, Typography, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { useState, useEffect, useMemo } from 'react';
+import { Box, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { Person as PersonIcon, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -12,17 +12,16 @@ const Footer = () => {
 	const { currentUser } = useAuth();
 	const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
 
-	const navigationItems = [
+	const navigationItems = useMemo(() => [
 		{ label: 'Challenges', icon: FlagIcon, path: '/challenges' },
 		{ label: 'Leaderboard', icon: EqualizerIcon, path: '/leaderboard' },
 		{ label: 'Profile', icon: PersonIcon, path: '/profile' },
-	];
+	], []);
 
 	useEffect(() => {
-		// Set the selected location based on the current pathname
 		const currentNavItem = navigationItems.find(item => item.path === pathname);
 		setSelectedLocation(currentNavItem ? currentNavItem.path : '');
-	}, [pathname]);
+	}, [pathname, navigationItems]);
 
 	const handleNavigationChange = (path) => {
 		navigate(path);

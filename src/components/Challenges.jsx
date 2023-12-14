@@ -1,4 +1,3 @@
-import React from 'react';
 import {useTheme} from '@mui/material/styles';
 import {Grid, Box, Typography, Button, Paper, Checkbox} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
