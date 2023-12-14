@@ -31,10 +31,10 @@ export default function Home() {
 						<Paper variant='outlined'>
 							<Box m={3}>
 								<Typography variant='h4' className='header-text'>
-									Welcome to Capture The Flag!
+									Welcome to Brainplex!
 								</Typography>
 								<Typography variant='h5' className='description'>
-									CaptureTheFlag is a platform that enables people to learn, practice, and compete
+									Brainplex is a platform that enables people to learn, practice, and compete
 									in the field of geography, specifically world&apos;s flags.
 								</Typography>
 								<Typography variant='h5' className='header-text-dark'>

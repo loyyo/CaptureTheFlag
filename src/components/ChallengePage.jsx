@@ -246,7 +246,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                                     <TextField
                                                         error={success}
                                                         helperText={success ? 'Your page will refresh in a few seconds...' : ''}
-                                                        value='Congratulations! You have captured the flag!'
+                                                        value='Congratulations!'
                                                         variant='outlined'
                                                         fullWidth
                                                         className={classes.input}

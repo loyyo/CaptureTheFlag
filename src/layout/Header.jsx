@@ -54,7 +54,7 @@ const Header = () => {
 					<Box sx={{ flexGrow: 1 }}>
 						<Button onClick={() => navigateTo('/challenges')}>
 							<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
-								Capture The Flag
+								Brainplex
 							</Typography>
 						</Button>
 					</Box>
