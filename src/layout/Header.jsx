@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, useMediaQuery } from '@mui/material'; // Corrected import
 import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu, Box } from '@mui/material';
-import {AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon, Add as AddIcon} from '@mui/icons-material';
+import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon, Add as AddIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Correctly using useMediaQuery
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 
@@ -31,21 +32,22 @@ const Header = () => {
 	const handleCloseMenu = () => setAnchorEl(null);
 
 	const renderMenuItems = () => {
-		if (currentUser === null) {
-			return [
-				<MenuItem key="login" onClick={() => navigateTo('/login')}>Login</MenuItem>,
-				<MenuItem key="register" onClick={() => navigateTo('/register')}>Sign Up</MenuItem>
-			];
-		}
-		return [
+		const items = currentUser === null ? [
+			<MenuItem key="login" onClick={() => navigateTo('/login')}>Login</MenuItem>,
+			<MenuItem key="register" onClick={() => navigateTo('/register')}>Sign Up</MenuItem>
+		] : [
 			<MenuItem key="profile" onClick={() => navigateTo('/profile')}>Profile</MenuItem>,
 			<MenuItem key="settings" onClick={() => navigateTo('/profile/settings')}>Settings</MenuItem>,
 			<MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
-			<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>,
 			<MenuItem key="mode" onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
 		];
-	};
 
+		if (!isMobile) {
+			items.push(<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>);
+		}
+
+		return items;
+	};
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -58,7 +60,7 @@ const Header = () => {
 							</Typography>
 						</Button>
 					</Box>
-					{currentUser && (
+					{!isMobile && currentUser && (
 						<>
 							<Button onClick={() => navigateTo('/challenge/add')} sx={{ marginRight: theme.spacing(-1 ) }}>
 								<AddIcon sx={{ color: 'white' }} />
@@ -98,7 +100,6 @@ const Header = () => {
 			</AppBar>
 			<Box sx={{ mt: '90px' }}></Box>
 		</Box>
-
 	);
 };
 
