@@ -11,7 +11,8 @@ import {
     Button,
     Menu,
     MenuItem,
-    Paper
+    Paper,
+    useMediaQuery
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -34,6 +35,7 @@ function AllChallenges() {
 
     const {getAllChallengesData, allChallengesData, getProfile, currentUserData} = useAuth();
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // useMediaQuery hook called at the top level
 
     const sortButtonRef = useRef(null);
     const difficultyButtonRef = useRef(null);
@@ -164,6 +166,7 @@ function AllChallenges() {
                                     setSortMenuAnchorEl(event.currentTarget);
                                     setIsSortButtonClicked(true);
                                 }}
+                                fullWidth={isMobile}
                             >
                                 {displaySortLabel()} <ArrowDropDownIcon/>
                             </Button>
@@ -202,6 +205,7 @@ function AllChallenges() {
                                     setDifficultyFilterMenuAnchorEl(event.currentTarget);
                                     setIsDifficultyButtonClicked(true);
                                 }}
+                                fullWidth={isMobile}
                             >
                                 {displayDifficultyLabel()} <ArrowDropDownIcon/>
                             </Button>
@@ -245,6 +249,7 @@ function AllChallenges() {
                                     setRatingFilterMenuAnchorEl(event.currentTarget);
                                     setIsRatingButtonClicked(true);
                                 }}
+                                fullWidth={isMobile}
                             >
                                 {displayRatingLabel()} <ArrowDropDownIcon/>
                             </Button>
