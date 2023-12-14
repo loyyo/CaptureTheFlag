@@ -63,8 +63,18 @@ export default function UserProfile() {
         };
 
         fetchUserData();
-    }, [userID, thisUserData, currentUserData, allChallengesData, allUsersData, getUserProfile, getAllChallengesData, getChallengeStats]);
-
+    }, [
+        userID,
+        thisUserData,
+        currentUserData,
+        allChallengesData,
+        allUsersData,
+        getUserProfile,
+        getAllChallengesData,
+        getChallengeStats,
+        getAllUsersData,
+        getProfile
+    ]);
     if (!thisUserData || !userData || !userData.totalChallenges) {
         return (
             <Container component="main" maxWidth="lg">

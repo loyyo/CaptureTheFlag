@@ -263,7 +263,7 @@ function AuthProvider({children}) {
         return userIndex + 1;
     };
 
-    const getChallengeStats = async (userID, email) => {
+    const getChallengeStats = useCallback(async (userID, email) => {
         const userDataSnapshot = await db.collection('users').doc(email).get();
         if (!userDataSnapshot.exists) {
             console.error('User data not found');
@@ -306,7 +306,7 @@ function AuthProvider({children}) {
         const ranking = calculateRanking(allUsersData, userID);
 
         return {...challengeStats, ranking};
-    };
+    }, [allUsersData]);
 
 
     const getUserProfile = useCallback(
@@ -418,7 +418,7 @@ function AuthProvider({children}) {
         } catch (error) {
             console.error('Error adding document: ', error);
         }
-    }, [storageRef, db]);
+    }, []);
 
     const updateChallenge = useCallback(async (challengeID, {title, description, difficulty, correctAnswer, image}) => {
         try {
@@ -477,7 +477,7 @@ function AuthProvider({children}) {
         } catch (error) {
             console.error('Error updating document: ', error);
         }
-    }, [storageRef, db]);
+    }, []);
 
     const deleteChallenge = useCallback(async (challengeURL) => {
         try {
@@ -487,7 +487,7 @@ function AuthProvider({children}) {
         } catch (error) {
             console.error('Error deleting challenge: ', error);
         }
-    }, [db]);
+    }, []);
 
     const calculatePoints = (difficulty) => {
         switch (difficulty) {
@@ -613,5 +613,4 @@ AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export {useAuth, AuthProvider};

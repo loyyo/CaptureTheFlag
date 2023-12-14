@@ -70,8 +70,15 @@ export default function Profile() {
         };
 
         loadData().then(() => setUsersDataLoaded(true));
-    }, [currentUserData, allChallengesData, getProfile, getAllChallengesData, getChallengeStats]);
-
+    }, [
+        currentUserData,
+        allChallengesData,
+        allUsersData.length,
+        getProfile,
+        getAllChallengesData,
+        getAllUsersData,
+        getChallengeStats
+    ]);
     if (!usersDataLoaded) {
         return (
             <Container component='main' maxWidth='lg'>
