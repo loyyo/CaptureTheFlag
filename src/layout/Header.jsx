@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme, useMediaQuery } from '@mui/material'; // Corrected import
 import { Typography, Button, IconButton, AppBar, Toolbar, MenuItem, Menu, Box } from '@mui/material';
 import { AccountCircle, Flag as FlagIcon, Equalizer as EqualizerIcon, Add as AddIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'; // import useLocation
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Header = () => {
 	const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Correctly using useMediaQuery
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
+	const location = useLocation(); // Get the current location
+	const [currentPage, setCurrentPage] = useState('');
 
 	const isMenuOpen = Boolean(anchorEl);
 
@@ -31,6 +34,10 @@ const Header = () => {
 	const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
 	const handleCloseMenu = () => setAnchorEl(null);
 
+	useEffect(() => {
+		setCurrentPage(location.pathname);
+	}, [location]);
+
 	const renderMenuItems = () => {
 		const items = currentUser === null ? [
 			<MenuItem key="login" onClick={() => navigateTo('/login')}>Login</MenuItem>,
@@ -48,43 +55,65 @@ const Header = () => {
 
 		return items;
 	};
+	const isActive = (path) => currentPage === path;
+
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar color="primary" position="fixed">
 				<Toolbar>
-					<Box sx={{ flexGrow: 1 }}>
-						<Button onClick={() => navigateTo('/challenges')}>
-							<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
-								Brainplex
-							</Typography>
-						</Button>
-					</Box>
-					{!isMobile && currentUser && (
-						<>
-							<Button onClick={() => navigateTo('/challenge/add')} sx={{ marginRight: theme.spacing(-1 ) }}>
-								<AddIcon sx={{ color: 'white' }} />
+					{/* Brainplex Logo/Button */}
+					<Button onClick={() => navigateTo('/challenges')}>
+						<Typography variant="subtitle2" sx={{ color: 'white', '&:hover': { textDecoration: 'none' } }}>
+							Brainplex
+						</Typography>
+					</Button>
+
+					{/* Center Links for Desktop View */}
+					{!isMobile && (
+						<Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+							<Button
+								onClick={() => navigateTo('/challenges')}
+								sx={{ color: isActive('/challenges') ? theme.palette.secondary.main : 'white' }}
+							>
+								Challenges
 							</Button>
-							<Button onClick={() => navigateTo('/challenges')}>
-								<FlagIcon sx={{ color: 'white' }} />
+							{currentUser && (
+								<Button
+									onClick={() => navigateTo('/challenge/add')}
+									sx={{ color: isActive('/challenge/add') ? theme.palette.secondary.main : 'white' }}
+								>
+									Create
+								</Button>
+							)}
+							<Button
+								onClick={() => navigateTo('/leaderboard')}
+								sx={{ color: isActive('/leaderboard') ? theme.palette.secondary.main : 'white' }}
+							>
+								Leaderboard
 							</Button>
-							<Button onClick={() => navigateTo('/leaderboard')} sx={{
-								marginLeft: theme.spacing(-0.5),
-								marginRight: theme.spacing(0.5),
-							}}>
-								<EqualizerIcon sx={{ color: 'white' }} />
+							<Button
+								onClick={() => navigateTo('/chat')}
+								sx={{ color: isActive('/chat') ? theme.palette.secondary.main : 'white' }}
+							>
+								Chat
 							</Button>
-						</>
+						</Box>
 					)}
-					<IconButton
-						aria-label="account of current user"
-						aria-controls="menu-appbar"
-						aria-haspopup="true"
-						onClick={handleOpenMenu}
-						color="inherit"
-					>
-						<AccountCircle sx={{ color: 'white' }} />
-					</IconButton>
+
+					{/* Profile Icon/Button, always on the right */}
+					<Box sx={{ marginLeft: isMobile ? 'auto' : 0 }}>
+						<IconButton
+							aria-label="account of current user"
+							aria-controls="menu-appbar"
+							aria-haspopup="true"
+							onClick={handleOpenMenu}
+							color="inherit"
+						>
+							<AccountCircle sx={{ color: 'white' }} />
+						</IconButton>
+					</Box>
+
 					<Menu
 						id="menu-appbar"
 						anchorEl={anchorEl}
