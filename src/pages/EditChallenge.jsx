@@ -187,7 +187,7 @@ export default function EditChallenge() {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={5}>
-                                    <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
+                                    <Box>
                                         <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
                                     </Box>
                                 </Grid>
