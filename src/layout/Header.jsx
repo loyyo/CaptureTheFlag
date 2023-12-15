@@ -42,7 +42,7 @@ const Header = () => {
 			backgroundColor: theme.palette.action.hover,
 		},
 	};
-	
+
 	const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
 	const handleCloseMenu = () => setAnchorEl(null);
 
@@ -60,10 +60,6 @@ const Header = () => {
 			<MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
 			<MenuItem key="mode" onClick={switchDarkMode}>{darkMode === 'true' ? 'Light Mode' : 'Dark Mode'}</MenuItem>
 		];
-
-		if (!isMobile) {
-			items.push(<MenuItem key="chat" onClick={() => navigateTo('/chat')}>Chat</MenuItem>);
-		}
 
 		return items;
 	};
