@@ -37,14 +37,14 @@ export default function Leaderboard() {
 			<Paper elevation={3} sx={{ mt: 5, mb: isMobile ? 5 : 1, p: 2 }}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
-						<Typography variant='h4' className='header-text'>
+						<Typography variant='h4' align="center">
 							Your Ranking
 						</Typography>
 						<YourRank currentUserData={currentUserData} allUsersData={allUsersData} />
 					</Grid>
-					<Box mt={1} mb={1} />
+					<Box mt={2} mb={2} />
 					<Grid item xs={12}>
-						<Typography variant='h4' className='header-text'>
+						<Typography variant='h4' align="center">
 							Leaderboard
 						</Typography>
 						<Table allUsersData={allUsersData} />
