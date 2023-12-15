@@ -31,6 +31,18 @@ const Header = () => {
 		navigate(path);
 	};
 
+	const activeButtonStyle = {
+		color: theme.palette.primary.dark,
+		backgroundColor: 'white',
+		borderTopLeftRadius: theme.shape.borderRadius,
+		borderTopRightRadius: theme.shape.borderRadius,
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0,
+		'&:hover': {
+			backgroundColor: theme.palette.action.hover,
+		},
+	};
+	
 	const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
 	const handleCloseMenu = () => setAnchorEl(null);
 
@@ -74,27 +86,27 @@ const Header = () => {
 						<Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
 							<Button
 								onClick={() => navigateTo('/challenges')}
-								sx={{ color: isActive('/challenges') ? theme.palette.secondary.main : 'white' }}
+								sx={isActive('/challenges') ? activeButtonStyle : { color: 'white' }}
 							>
 								Challenges
 							</Button>
 							{currentUser && (
 								<Button
 									onClick={() => navigateTo('/challenge/add')}
-									sx={{ color: isActive('/challenge/add') ? theme.palette.secondary.main : 'white' }}
+									sx={isActive('/challenge/add') ? activeButtonStyle : { color: 'white' }}
 								>
 									Create
 								</Button>
 							)}
 							<Button
 								onClick={() => navigateTo('/leaderboard')}
-								sx={{ color: isActive('/leaderboard') ? theme.palette.secondary.main : 'white' }}
+								sx={isActive('/leaderboard') ? activeButtonStyle : { color: 'white' }}
 							>
 								Leaderboard
 							</Button>
 							<Button
 								onClick={() => navigateTo('/chat')}
-								sx={{ color: isActive('/chat') ? theme.palette.secondary.main : 'white' }}
+								sx={isActive('/chat') ? activeButtonStyle : { color: 'white' }}
 							>
 								Chat
 							</Button>
