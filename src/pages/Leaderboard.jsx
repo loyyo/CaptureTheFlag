@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext.jsx';
-import { CssBaseline, Container, Grid, Box, Typography, LinearProgress } from '@mui/material';
+import { CssBaseline, Container, Grid, Box, Typography, LinearProgress, Paper, useMediaQuery } from '@mui/material';
 
 import Table from '../components/Table.jsx';
 import YourRank from '../components/YourRank.jsx';
 
 export default function Leaderboard() {
 	const { getAllUsersData, allUsersData, currentUserData, getProfile } = useAuth();
+	const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
 	useEffect(() => {
 		if (allUsersData.length === 0) {
@@ -33,7 +34,7 @@ export default function Leaderboard() {
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<Box mt={5} mb={5}>
+			<Paper elevation={3} sx={{ mt: 5, mb: isMobile ? 5 : 1, p: 2 }}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
 						<Typography variant='h4' className='header-text'>
@@ -49,7 +50,7 @@ export default function Leaderboard() {
 						<Table allUsersData={allUsersData} />
 					</Grid>
 				</Grid>
-			</Box>
+			</Paper>
 		</Container>
 	);
 }

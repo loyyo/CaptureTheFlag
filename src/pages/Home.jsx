@@ -30,16 +30,16 @@ export default function Home() {
 					>
 						<Paper variant='outlined'>
 							<Box m={3}>
-								<Typography variant='h4' className='header-text'>
+								<Typography variant='h4' align="center">
 									Welcome to Brainplex!
 								</Typography>
-								<Typography variant='h5' className='description'>
-									Brainplex is a platform that enables people to learn, practice, and compete
-									in the field of geography, specifically world&apos;s flags.
-								</Typography>
-								<Typography variant='h5' className='header-text-dark'>
-									JOIN AND CATCH&apos;EM ALL!
-								</Typography>
+
+								<Paper variant='outlined' sx={{ mt: 2, p: 2 }}>
+									<Typography variant='h5' align="center">
+										Brainplex is a platform that enables people to learn, practice, and compete
+										in the field of geography, specifically world&apos;s flags.
+									</Typography>
+								</Paper>
 							</Box>
 							<Divider variant='middle' />
 							<Grid justifyContent='center' container spacing={3}>

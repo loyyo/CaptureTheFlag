@@ -13,12 +13,13 @@ import {
 	Avatar,
 	IconButton,
 	Box,
+	useMediaQuery
 } from '@mui/material';
 import {
 	FirstPage as FirstPageIcon,
 	KeyboardArrowLeft,
 	KeyboardArrowRight,
-	LastPage as LastPageIcon,
+	LastPage as LastPageIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -89,24 +90,14 @@ export default function StickyHeadTable({ allUsersData }) {
 	const navigate = useNavigate();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
 	const columns = [
-		{
-			id: 'rank',
-			label: '#Rank',
-			minWidth: 75,
-			align: 'center',
-			format: (value) => value.toLocaleString('en-US'),
-		},
-		{ id: 'avatar', align: 'center', minWidth: 75 },
-		{ id: 'username', label: 'Username', align: 'left', minWidth: 175 },
-		{
-			id: 'points',
-			label: 'Points',
-			align: 'center',
-			minWidth: 175,
-			format: (value) => value.toLocaleString('en-US'),
-		},
+		{ id: 'rank', label: '#Rank', minWidth: isMobile ? 50 : 75, align: 'center' },
+		{ id: 'avatar', label: '', minWidth: isMobile ? 50 : 75, align: 'center' },
+		{ id: 'username', label: 'Username', minWidth: isMobile ? 100 : 175, align: 'left' },
+		{ id: 'points', label: 'Points', minWidth: isMobile ? 100 : 175, align: 'center' },
 	];
 
 	const rows = allUsersData;
@@ -121,7 +112,7 @@ export default function StickyHeadTable({ allUsersData }) {
 	};
 
 	return (
-		<Paper sx={{ width: '100%' }}>
+		<Paper sx={{ width: '100%', overflowX: 'auto' }}> {/* Enable horizontal scrolling */}
 			<TableContainer sx={{ maxHeight: 500 }}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
