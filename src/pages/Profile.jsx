@@ -16,7 +16,7 @@ import {
     Checkbox,
     LinearProgress,
     Button,
-    useMediaQuery,
+    useMediaQuery
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
@@ -35,6 +35,8 @@ export default function Profile() {
         getAllUsersData
     } = useAuth();
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     const [activeTab, setActiveTab] = useState('informations');
 
     const [userData, setUserData] = useState(null);
@@ -45,6 +47,7 @@ export default function Profile() {
 
     const isInformationsTabActive = activeTab === 'informations';
     const isChallengesTabActive = activeTab === 'challenges';
+    const hasUserCreatedChallenges = userCreatedChallenges.length > 0;
 
 
     useEffect(() => {
@@ -124,7 +127,7 @@ export default function Profile() {
     }
 
     return (
-        <Container component='main' maxWidth='lg' sx={{mt: 2}}>
+        <Container component="main" maxWidth="lg" sx={{ mt:2, mb: isMobile ? 8 : 0 }}>
             <CssBaseline/>
             <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
@@ -178,7 +181,7 @@ export default function Profile() {
                 </Box>
 
                 <Grid>
-                    {activeTab === 'informations' && (
+                    {isInformationsTabActive && (
                         <Grid container spacing={1} alignItems="stretch">
                             {/* Avatar, bio i opis */}
                             <Grid item xs={12} md={6}>
@@ -365,9 +368,17 @@ export default function Profile() {
                     )}
 
                     {/* Zakładka "Your Challenges" */}
-                    {activeTab === 'challenges' && (
+                    {isChallengesTabActive && (
                         <Grid item xs={12} md={12}>
-                            <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
+                            {hasUserCreatedChallenges ? (
+                                <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
+                            ) : (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <Typography variant='h6' sx={{ mt: 2 }}>
+                                        No challenges
+                                    </Typography>
+                                </Box>
+                            )}
                         </Grid>
                     )}
                 </Grid>

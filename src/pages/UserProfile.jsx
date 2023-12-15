@@ -13,7 +13,7 @@ import {
     Typography,
     LinearProgress,
     Button,
-    useMediaQuery,
+    useMediaQuery
 } from '@mui/material';
 import Challenges from '../components/Challenges.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -33,12 +33,14 @@ export default function UserProfile() {
     } = useAuth();
     const [activeTab, setActiveTab] = useState('informations');
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [userData, setUserData] = useState(null);
     const userCreatedChallenges = thisUserData ? allChallengesData.filter(challenge => thisUserData.userID === challenge.userID) : [];
 
     const isInformationsTabActive = activeTab === 'informations';
     const isChallengesTabActive = activeTab === 'challenges';
+    const hasUserCreatedChallenges = userCreatedChallenges.length > 0;
 
     useEffect(() => {
         if (!currentUserData) {
@@ -99,7 +101,7 @@ export default function UserProfile() {
     const calculatePercentage = (solved, total) => (solved / total) * 100;
 
     return (
-        <Container component='main' maxWidth='lg' sx={{mt: 2}}>
+        <Container component="main" maxWidth="lg" sx={{ mt:2, mb: isMobile ? 8 : 0 }}>
             <CssBaseline/>
             <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
@@ -153,7 +155,7 @@ export default function UserProfile() {
                 </Box>
 
                 <Grid>
-                    {activeTab === 'informations' && (
+                    {isInformationsTabActive && (
                         <Grid container spacing={1} alignItems="stretch">
                             {/* Avatar, bio i opis */}
                             <Grid item xs={12} md={6}>
@@ -343,9 +345,17 @@ export default function UserProfile() {
                     )}
 
                     {/* Zakładka "Your Challenges" */}
-                    {activeTab === 'challenges' && (
+                    {isChallengesTabActive && (
                         <Grid item xs={12} md={12}>
-                            <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
+                            {hasUserCreatedChallenges ? (
+                                <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
+                            ) : (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <Typography variant='h6' sx={{ mt: 2 }}>
+                                        No challenges
+                                    </Typography>
+                                </Box>
+                            )}
                         </Grid>
                     )}
                 </Grid>

@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {
     CssBaseline,
     Container,
@@ -13,7 +13,9 @@ import {
     Alert,
     AlertTitle,
     Divider,
-    Paper
+    Paper,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
 import {useAuth} from "../contexts/AuthContext.jsx";
 import {Close as CloseIcon} from "@mui/icons-material";
@@ -46,6 +48,8 @@ export default function EditProfile() {
     const [success, setSuccess] = useState(false);
     const [file, setFile] = useState([]);
     const [image, setImage] = useState();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -172,7 +176,7 @@ export default function EditProfile() {
     }
 
     return (
-        <Container component="main" maxWidth="lg">
+        <Container component="main" maxWidth="lg" sx={{ mb: isMobile ? 8 : 0 }}>
             <CssBaseline/>
             <Box
                 mt={5}
@@ -321,8 +325,8 @@ export default function EditProfile() {
                         </Grid>
 
                         {/* Buttons */}
-                        <Box sx={{width: '100%', mt: 3, display: 'flex', justifyContent: 'center'}}>
-                            <Button onClick={handleCancel} variant="outlined" sx={{mr: 2}}>
+                        <Box sx={{ width: '100%', mt: 3, display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'center' }}>
+                            <Button onClick={handleCancel} variant="outlined" sx={{ mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2 }}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" disabled={loading}>
