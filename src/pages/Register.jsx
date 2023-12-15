@@ -14,15 +14,17 @@ import {
     Link,
     Alert,
     AlertTitle,
-    Paper
+    Paper,
+    useMediaQuery
 } from '@mui/material';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {LockOutlined as LockOutlinedIcon, Close as CloseIcon} from '@mui/icons-material';
+import {Close as CloseIcon} from '@mui/icons-material';
 import {useAuth} from '../contexts/AuthContext.jsx';
 
 export default function SignUp() {
     const navigate = useNavigate();
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const usernameRef = useRef();
     const emailRef = useRef();
@@ -70,122 +72,127 @@ export default function SignUp() {
     return (
         <Container component='main' maxWidth='xs'>
             <CssBaseline/>
-            <Paper elevation={3} sx={{padding: theme.spacing(3), width: '100%', mt: 3, mb: 3}}>
-                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Avatar sx={{margin: theme.spacing(1), backgroundColor: theme.palette.primary.main}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography component='h1' variant='h5'>
-                        Sign up
-                    </Typography>
-                    <Box mt={3} sx={{width: '100%'}}>
-                        <form onSubmit={handleSubmit}>
-                            {error && (
-                                <Box mt={-1} mb={2}>
-                                    <Alert variant='outlined' severity='error'>
-                                        <AlertTitle>An error occured:</AlertTitle>
-                                        {error}
-                                    </Alert>
-                                </Box>
-                            )}
-                            {success && (
-                                <Box mt={-1} mb={2}>
-                                    <Collapse in={success}>
-                                        <Alert
-                                            variant='outlined'
-                                            severity='success'
-                                            action={
-                                                <IconButton
-                                                    aria-label='close'
-                                                    color='inherit'
-                                                    size='small'
-                                                    onClick={() => {
-                                                        setSuccess(false);
-                                                    }}
-                                                >
-                                                    <CloseIcon fontSize='inherit'/>
-                                                </IconButton>
-                                            }
-                                        >
-                                            <AlertTitle>Success!</AlertTitle>
-                                            You have created your profile. Redirecting...
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: isMobile ? 'center' : 'flex-start',
+                height: isMobile ? 'calc(100vh - 90px)' : 'auto',
+                mt: isMobile ? 0 : 8
+            }}>
+                <Paper elevation={3} sx={{padding: theme.spacing(3), width: '100%', mt: 3, mb: 3}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <Typography component='h1' variant='h4'>
+                            Sign up
+                        </Typography>
+                        <Box mt={3} sx={{width: '100%'}}>
+                            <form onSubmit={handleSubmit}>
+                                {error && (
+                                    <Box mt={-1} mb={2}>
+                                        <Alert variant='outlined' severity='error'>
+                                            <AlertTitle>An error occured:</AlertTitle>
+                                            {error}
                                         </Alert>
-                                    </Collapse>
-                                </Box>
-                            )}
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant='outlined'
-                                        required
-                                        fullWidth
-                                        id='username'
-                                        label='Username'
-                                        name='username'
-                                        autoComplete='username'
-                                        inputRef={usernameRef}
-                                    />
+                                    </Box>
+                                )}
+                                {success && (
+                                    <Box mt={-1} mb={2}>
+                                        <Collapse in={success}>
+                                            <Alert
+                                                variant='outlined'
+                                                severity='success'
+                                                action={
+                                                    <IconButton
+                                                        aria-label='close'
+                                                        color='inherit'
+                                                        size='small'
+                                                        onClick={() => {
+                                                            setSuccess(false);
+                                                        }}
+                                                    >
+                                                        <CloseIcon fontSize='inherit'/>
+                                                    </IconButton>
+                                                }
+                                            >
+                                                <AlertTitle>Success!</AlertTitle>
+                                                You have created your profile. Redirecting...
+                                            </Alert>
+                                        </Collapse>
+                                    </Box>
+                                )}
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant='outlined'
+                                            required
+                                            fullWidth
+                                            id='username'
+                                            label='Username'
+                                            name='username'
+                                            autoComplete='username'
+                                            inputRef={usernameRef}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant='outlined'
+                                            required
+                                            fullWidth
+                                            id='email'
+                                            label='Email Address'
+                                            name='email'
+                                            autoComplete='email'
+                                            inputRef={emailRef}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant='outlined'
+                                            required
+                                            fullWidth
+                                            name='password'
+                                            label='Password'
+                                            type='password'
+                                            id='password'
+                                            autoComplete='current-password'
+                                            inputRef={passwordRef}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant='outlined'
+                                            required
+                                            fullWidth
+                                            name='passwordConfirmation'
+                                            label='Password Confirmation'
+                                            type='password'
+                                            id='passwordConfirmation'
+                                            autoComplete='current-password'
+                                            inputRef={passwordConfirmationRef}
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant='outlined'
-                                        required
-                                        fullWidth
-                                        id='email'
-                                        label='Email Address'
-                                        name='email'
-                                        autoComplete='email'
-                                        inputRef={emailRef}
-                                    />
+                                <Button
+                                    type='submit'
+                                    fullWidth
+                                    variant='contained'
+                                    color='primary'
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
+                                    disabled={loading}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Grid container justifyContent='flex-end'>
+                                    <Grid item>
+                                        <Link underline='hover' component={RouterLink} to='/login'>
+                                            Already have an account? Sign in
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant='outlined'
-                                        required
-                                        fullWidth
-                                        name='password'
-                                        label='Password'
-                                        type='password'
-                                        id='password'
-                                        autoComplete='current-password'
-                                        inputRef={passwordRef}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant='outlined'
-                                        required
-                                        fullWidth
-                                        name='passwordConfirmation'
-                                        label='Password Confirmation'
-                                        type='password'
-                                        id='passwordConfirmation'
-                                        autoComplete='current-password'
-                                        inputRef={passwordConfirmationRef}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button
-                                type='submit'
-                                fullWidth
-                                variant='contained'
-                                color='primary'
-                                sx={{margin: theme.spacing(3, 0, 2)}}
-                                disabled={loading}
-                            >
-                                Sign Up
-                            </Button>
-                            <Grid container justifyContent='flex-end'>
-                                <Grid item>
-                                    <Link underline='hover' component={RouterLink} to='/login'>
-                                        Already have an account? Sign in
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </form>
+                            </form>
+                        </Box>
                     </Box>
-                </Box>
-            </Paper>
+                </Paper>
+            </Box>
         </Container>
     );
 }

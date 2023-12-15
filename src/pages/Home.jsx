@@ -8,36 +8,37 @@ import {
 	Divider,
 	Paper,
 	Button,
+	useMediaQuery
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
 	const navigate = useNavigate();
 	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	return (
 		<Container maxWidth='md'>
 			<CssBaseline />
 			<Grid container spacing={5}>
 				<Grid item xs={12}>
-					<Box
-						mt={5}
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
+					<Box sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: isMobile ? 'center' : 'flex-start',
+						height: isMobile ? 'calc(100vh - 90px)' : 'auto',
+						mt: isMobile ? 0 : 8
+					}}>
 						<Paper variant='outlined'>
 							<Box m={3}>
 								<Typography variant='h4' align="center">
-									Welcome to Brainplex!
+									Welcome to Brainplex
 								</Typography>
 
 								<Paper variant='outlined' sx={{ mt: 2, p: 2 }}>
 									<Typography variant='h5' align="center">
-										Brainplex is a platform that enables people to learn, practice, and compete
-										in the field of geography, specifically world&apos;s flags.
+										Brainplex is a platform that enables people to learn,
+										practice {!isMobile && <br/>} and compete in the various different fields.
 									</Typography>
 								</Paper>
 							</Box>
