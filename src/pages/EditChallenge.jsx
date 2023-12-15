@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     FormControl,
     Container,
@@ -20,21 +20,13 @@ import {
     MenuItem,
     Paper
 } from '@mui/material';
-import {useAuth} from '../contexts/AuthContext.jsx';
-import {useParams, useNavigate} from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { useParams, useNavigate } from 'react-router-dom';
 import Dropzone from '../components/Dropzone';
 
 export default function EditChallenge() {
-    const {
-        getSingleChallengeData,
-        updateChallenge,
-        deleteChallenge,
-        singleChallengeData,
-        getProfile,
-        currentUserData,
-        getAllChallengesData
-    } = useAuth();
-    const {challengeURL} = useParams();
+    const { getSingleChallengeData, updateChallenge, deleteChallenge, singleChallengeData, getProfile, currentUserData, getAllChallengesData } = useAuth();
+    const { challengeURL } = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -164,7 +156,7 @@ export default function EditChallenge() {
                     }}>
                         <Typography component="h1" variant="h5">Edit Challenge</Typography>
                         <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
-                            <Grid container spacing={2}>
+                            <Grid container spacing={2} >
                                 <Grid item xs={12}>
                                     <TextField
                                         required
@@ -179,7 +171,7 @@ export default function EditChallenge() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={7}>
+                                <Grid item xs={12} sm={7}>
                                     <TextField
                                         required
                                         fullWidth
@@ -194,7 +186,7 @@ export default function EditChallenge() {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={5}>
+                                <Grid item xs={12} sm={5}>
                                     <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
                                         <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
                                     </Box>
