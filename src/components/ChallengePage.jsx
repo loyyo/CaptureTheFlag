@@ -128,7 +128,7 @@ export default function ChallengePage({challenge, currentUser}) {
 
     return (
         <Grid container direction='column'>
-            <Paper elevation={3} sx={{ backgroundColor: 'light', borderRadius: '4px', mt: 1 }}>
+            <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
                 {/* Title */}
                 <Grid item xs={12}>
                     <Typography variant='h4' align="center">
@@ -138,7 +138,7 @@ export default function ChallengePage({challenge, currentUser}) {
 
                 {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                 <Grid item xs={12}>
-                    <Paper sx={{ backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1 }}>
+                    <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
                         {/* Description */}
                         <Typography variant='h5' align="center">
                             {challenge.description}
@@ -146,14 +146,14 @@ export default function ChallengePage({challenge, currentUser}) {
                         <Divider sx={{marginY: 2}}/>
 
                         {/* Difficulty, Points, and Rating */}
-                        <Box display="flex" justifyContent="space-evenly">
-                            <Typography variant='h6'>
-                                Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
-                            </Typography>
-                            <Typography variant='h6'>
-                                Points: {challenge.points}
-                            </Typography>
-                            <Box>
+                        {isMobile ? (
+                            <Box display="flex" flexDirection="column" alignItems="center">
+                                <Typography variant='h6'>
+                                    Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
+                                </Typography>
+                                <Typography variant='h6'>
+                                    Points: {challenge.points}
+                                </Typography>
                                 <Rating
                                     emptySymbol='fa fa-star-o fa-2x'
                                     fullSymbol='fa fa-star fa-2x'
@@ -162,15 +162,31 @@ export default function ChallengePage({challenge, currentUser}) {
                                     readonly
                                 />
                             </Box>
-                        </Box>
+                        ) : (
+                            <Box display="flex" justifyContent="space-evenly">
+                                <Typography variant='h6'>
+                                    Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
+                                </Typography>
+                                <Typography variant='h6'>
+                                    Points: {challenge.points}
+                                </Typography>
+                                <Rating
+                                    emptySymbol='fa fa-star-o fa-2x'
+                                    fullSymbol='fa fa-star fa-2x'
+                                    fractions={100}
+                                    initialRating={getInitialRating(challenge)}
+                                    readonly
+                                />
+                            </Box>
+                        )}
                         <Divider sx={{marginY: 2}}/>
 
                         {/* Image */}
                         {challenge.image && (
                             <Box onClick={handleImageClick}
-                                 sx={{ cursor: 'pointer', display: 'flex', justifyContent: 'center' }}>
+                                 sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center'}}>
                                 <img alt={`image-${challenge.url}`} src={challenge.image}
-                                     style={{ maxWidth: '100%', maxHeight: '500px' }}/>
+                                     style={{maxWidth: '100%', maxHeight: '500px'}}/>
                             </Box>
                         )}
                     </Paper>
@@ -206,7 +222,15 @@ export default function ChallengePage({challenge, currentUser}) {
                             </Grid>
                         ) : (
                             <Grid item xs={12}>
-                                <Paper sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
+                                <Paper sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    backgroundColor: 'light',
+                                    borderRadius: '4px',
+                                    padding: 2,
+                                    margin: 1
+                                }}>
                                     {!success ? (
                                         <TextField
                                             error={error}
@@ -252,9 +276,9 @@ export default function ChallengePage({challenge, currentUser}) {
                 {/* Rating Section */}
                 {currentUser.challenges[challenge.url] && (
                     <Grid item xs={12}>
-                        <Paper sx={{ backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1 }}>
+                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
                             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                                <Typography variant='h6' align="center" sx={{ marginBottom: 1 }}>
+                                <Typography variant='h6' align="center" sx={{marginBottom: 1}}>
                                     Rate This Challenge:
                                 </Typography>
                                 <Rating
