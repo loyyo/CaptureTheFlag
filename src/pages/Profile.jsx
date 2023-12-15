@@ -43,6 +43,10 @@ export default function Profile() {
 
     const [usersDataLoaded, setUsersDataLoaded] = useState(false);
 
+    const isInformationsTabActive = activeTab === 'informations';
+    const isChallengesTabActive = activeTab === 'challenges';
+
+
     useEffect(() => {
         const loadData = async () => {
             if (!currentUserData) {
@@ -129,37 +133,18 @@ export default function Profile() {
                         Profile
                     </Typography>
                     <Box sx={{display: 'flex', justifyContent: 'center', mt: 1}}>
-                        <Button
-                            variant={activeTab === 'informations' ? 'contained' : 'outlined'}
-                            color='primary'
-                            onClick={() => setActiveTab('informations')}
-                            sx={{
-                                width: '250px',
-                                color: 'white',
-                                background: activeTab === 'informations' ? theme.palette.primary.dark : theme.palette.primary.light,
-                                '&:hover': {
-                                    backgroundColor: theme.palette.primary.dark,
-                                },
-                            }}
-                        >
-                            Informations
-                        </Button>
-                        <Button
-                            variant={activeTab === 'challenges' ? 'contained' : 'outlined'}
-                            color='primary'
-                            onClick={() => setActiveTab('challenges')}
-                            sx={{
-                                width: '250px',
-                                ml: 2,
-                                color: 'white',
-                                background: activeTab === 'challenges' ? theme.palette.primary.dark : theme.palette.primary.light,
-                                '&:hover': {
-                                    backgroundColor: theme.palette.primary.dark,
-                                },
-                            }}
-                        >
-                            Your Challenges
-                        </Button>
+                        <Box sx={{width: '250px', textAlign: 'center', cursor: 'pointer', padding: '8px', position: 'relative'}} onClick={() => setActiveTab('informations')}>
+                            <Typography>
+                                Informations
+                            </Typography>
+                            {isInformationsTabActive && <Box sx={{height: '4px', backgroundColor: theme.palette.primary.main, position: 'absolute', bottom: 0, left: '10%', right: '10%', borderRadius: '2px'}} />}
+                        </Box>
+                        <Box sx={{width: '250px', textAlign: 'center', cursor: 'pointer', padding: '8px', ml: 2, position: 'relative'}} onClick={() => setActiveTab('challenges')}>
+                            <Typography>
+                                Your Challenges
+                            </Typography>
+                            {isChallengesTabActive && <Box sx={{height: '4px', backgroundColor: theme.palette.primary.main, position: 'absolute', bottom: 0, left: '10%', right: '10%', borderRadius: '2px'}} />}
+                        </Box>
                     </Box>
                 </Box>
 

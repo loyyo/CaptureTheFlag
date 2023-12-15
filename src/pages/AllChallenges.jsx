@@ -27,11 +27,7 @@ function AllChallenges() {
     const [ratingFilterMenuAnchorEl, setRatingFilterMenuAnchorEl] = useState(null);
     const [selectedSort, setSelectedSort] = useState('dateCreated');
     const [selectedDifficultyFilter, setSelectedDifficultyFilter] = useState('');
-    const [selectedRatingFilter, setSelectedRatingFilter] = useState('');
-
-    const [isSortButtonClicked, setIsSortButtonClicked] = useState(false);
-    const [isDifficultyButtonClicked, setIsDifficultyButtonClicked] = useState(false);
-    const [isRatingButtonClicked, setIsRatingButtonClicked] = useState(false);
+    const [selectedRatingFilter, setSelectedRatingFilter] = useState(0);
 
     const {getAllChallengesData, allChallengesData, getProfile, currentUserData} = useAuth();
     const theme = useTheme();
@@ -127,8 +123,14 @@ function AllChallenges() {
     return (
         <Container maxWidth="lg">
             <CssBaseline />
-            <Paper elevation={7} sx={{ padding: 2, borderRadius: '4px' }}>
-                <Box mt={5} mb={5}>
+            <Paper
+                elevation={7}
+                sx={{
+                    padding: isMobile ? 2 : '16px 16px 0px 16px',
+                    borderRadius: '4px'
+                }}
+            >
+                <Box mt={1} mb={5}>
                     <Grid container direction="column" spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant="h4" align="center">
@@ -163,10 +165,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={sortButtonRef}
-                                        variant={isSortButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedSort === 'dateCreated' ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setSortMenuAnchorEl(event.currentTarget);
-                                            setIsSortButtonClicked(true);
                                         }}
                                         fullWidth
                                     >
@@ -187,10 +188,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={difficultyButtonRef}
-                                        variant={isDifficultyButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedDifficultyFilter === '' ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setDifficultyFilterMenuAnchorEl(event.currentTarget);
-                                            setIsDifficultyButtonClicked(true);
                                         }}
                                         fullWidth
                                     >
@@ -212,10 +212,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={ratingButtonRef}
-                                        variant={isRatingButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedRatingFilter === 0 ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setRatingFilterMenuAnchorEl(event.currentTarget);
-                                            setIsRatingButtonClicked(true);
                                         }}
                                         fullWidth
                                     >
@@ -242,10 +241,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={sortButtonRef}
-                                        variant={isSortButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedSort === 'dateCreated' ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setSortMenuAnchorEl(event.currentTarget);
-                                            setIsSortButtonClicked(true);
                                         }}
                                     >
                                         {displaySortLabel()} <ArrowDropDownIcon />
@@ -265,10 +263,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={difficultyButtonRef}
-                                        variant={isDifficultyButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedDifficultyFilter === '' ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setDifficultyFilterMenuAnchorEl(event.currentTarget);
-                                            setIsDifficultyButtonClicked(true);
                                         }}
                                     >
                                         {displayDifficultyLabel()} <ArrowDropDownIcon />
@@ -289,10 +286,9 @@ function AllChallenges() {
                                     <Button
                                         color='inherit'
                                         ref={ratingButtonRef}
-                                        variant={isRatingButtonClicked ? "contained" : "outlined"}
+                                        variant={selectedRatingFilter === 0 ? "outlined" : "contained"}
                                         onClick={(event) => {
                                             setRatingFilterMenuAnchorEl(event.currentTarget);
-                                            setIsRatingButtonClicked(true);
                                         }}
                                     >
                                         {displayRatingLabel()} <ArrowDropDownIcon />

@@ -96,7 +96,7 @@ export default function AddChallenge() {
                                 />
                             </Grid>
 
-                            <Grid item xs={7}>
+                            <Grid item xs={12} sm={7}>
                                 <TextField
                                     required
                                     fullWidth
@@ -108,13 +108,13 @@ export default function AddChallenge() {
                                     inputRef={descriptionRef}
                                 />
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={12} sm={5}>
                                 <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
                                     <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
                                 </Box>
                             </Grid>
 
-                            <Grid item xs={5}>
+                            <Grid item xs={12} sm={5}>
                                 <FormControl fullWidth>
                                     <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
                                     <Select
@@ -130,7 +130,7 @@ export default function AddChallenge() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={7}>
+                            <Grid item xs={12} sm={7}>
                                 <TextField
                                     required
                                     fullWidth
