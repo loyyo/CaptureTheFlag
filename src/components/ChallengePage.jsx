@@ -128,27 +128,24 @@ export default function ChallengePage({challenge, currentUser}) {
 
     return (
         <Grid container direction='column'>
-            <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px'}}>
+            <Paper elevation={3} sx={{ backgroundColor: 'light', borderRadius: '4px', mt: 1 }}>
                 {/* Title */}
                 <Grid item xs={12}>
                     <Typography variant='h4' align="center">
                         {challenge.title}
                     </Typography>
-                    <Divider/>
                 </Grid>
 
-                {/* Description */}
+                {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                 <Grid item xs={12}>
-                    <Paper sx={paperStyle}>
+                    <Paper sx={{ backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1 }}>
+                        {/* Description */}
                         <Typography variant='h5' align="center">
                             {challenge.description}
                         </Typography>
-                    </Paper>
-                </Grid>
+                        <Divider sx={{marginY: 2}}/>
 
-                {/* Difficulty, Points, and Rating */}
-                <Grid item xs={12}>
-                    <Paper sx={paperStyle}>
+                        {/* Difficulty, Points, and Rating */}
                         <Box display="flex" justifyContent="space-evenly">
                             <Typography variant='h6'>
                                 Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
@@ -166,19 +163,33 @@ export default function ChallengePage({challenge, currentUser}) {
                                 />
                             </Box>
                         </Box>
+                        <Divider sx={{marginY: 2}}/>
+
+                        {/* Image */}
+                        {challenge.image && (
+                            <Box onClick={handleImageClick}
+                                 sx={{ cursor: 'pointer', display: 'flex', justifyContent: 'center' }}>
+                                <img alt={`image-${challenge.url}`} src={challenge.image}
+                                     style={{ maxWidth: '100%', maxHeight: '500px' }}/>
+                            </Box>
+                        )}
                     </Paper>
                 </Grid>
 
-                {/* Image */}
-                <Grid item xs={12}>
-                        {challenge.image && (
-                            <Box onClick={handleImageClick}
-                                 sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center'}}>
-                                <img alt={`image-${challenge.url}`} src={challenge.image}
-                                     style={{maxWidth: '100%', maxHeight: '500px'}}/>
-                            </Box>
-                        )}
-                </Grid>
+                <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="lg">
+                    <IconButton
+                        onClick={handleCloseDialog}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon/>
+                    </IconButton>
+                    <img src={challenge.image} alt={`image-${challenge.url}`} style={{width: '100%'}}/>
+                </Dialog>
 
                 {!isAuthor && (
                     <>
@@ -241,9 +252,9 @@ export default function ChallengePage({challenge, currentUser}) {
                 {/* Rating Section */}
                 {currentUser.challenges[challenge.url] && (
                     <Grid item xs={12}>
-                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                            <Box display="flex" justifyContent="center" alignItems="center">
-                                <Typography variant='h6' align="center">
+                        <Paper sx={{ backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1 }}>
+                            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                                <Typography variant='h6' align="center" sx={{ marginBottom: 1 }}>
                                     Rate This Challenge:
                                 </Typography>
                                 <Rating
