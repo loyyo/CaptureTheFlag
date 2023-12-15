@@ -185,7 +185,6 @@ export default function EditProfile() {
                 <Paper elevation={7} sx={{
                     padding: 2,
                     borderRadius: '4px',
-                    mt: 3,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center"

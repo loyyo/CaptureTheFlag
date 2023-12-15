@@ -133,17 +133,46 @@ export default function Profile() {
                         Profile
                     </Typography>
                     <Box sx={{display: 'flex', justifyContent: 'center', mt: 1}}>
-                        <Box sx={{width: '250px', textAlign: 'center', cursor: 'pointer', padding: '8px', position: 'relative'}} onClick={() => setActiveTab('informations')}>
+                        <Box sx={{
+                            width: '250px',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            padding: '8px',
+                            position: 'relative'
+                        }} onClick={() => setActiveTab('informations')}>
                             <Typography>
                                 Informations
                             </Typography>
-                            {isInformationsTabActive && <Box sx={{height: '4px', backgroundColor: theme.palette.primary.main, position: 'absolute', bottom: 0, left: '10%', right: '10%', borderRadius: '2px'}} />}
+                            {isInformationsTabActive && <Box sx={{
+                                height: '4px',
+                                backgroundColor: theme.palette.primary.main,
+                                position: 'absolute',
+                                bottom: 0,
+                                left: '10%',
+                                right: '10%',
+                                borderRadius: '2px'
+                            }}/>}
                         </Box>
-                        <Box sx={{width: '250px', textAlign: 'center', cursor: 'pointer', padding: '8px', ml: 2, position: 'relative'}} onClick={() => setActiveTab('challenges')}>
+                        <Box sx={{
+                            width: '250px',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            padding: '8px',
+                            ml: 2,
+                            position: 'relative'
+                        }} onClick={() => setActiveTab('challenges')}>
                             <Typography>
                                 Your Challenges
                             </Typography>
-                            {isChallengesTabActive && <Box sx={{height: '4px', backgroundColor: theme.palette.primary.main, position: 'absolute', bottom: 0, left: '10%', right: '10%', borderRadius: '2px'}} />}
+                            {isChallengesTabActive && <Box sx={{
+                                height: '4px',
+                                backgroundColor: theme.palette.primary.main,
+                                position: 'absolute',
+                                bottom: 0,
+                                left: '10%',
+                                right: '10%',
+                                borderRadius: '2px'
+                            }}/>}
                         </Box>
                     </Box>
                 </Box>
