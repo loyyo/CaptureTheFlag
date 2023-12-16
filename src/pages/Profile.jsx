@@ -127,7 +127,11 @@ export default function Profile() {
     }
 
     return (
-        <Container component="main" maxWidth="lg" sx={{ mt:2, mb: isMobile ? 8 : 0 }}>
+        <Container component="main" maxWidth="lg" sx={{
+            mt: 2,
+            mb: isMobile ? 100 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+        }}>
             <CssBaseline/>
             <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
@@ -371,10 +375,16 @@ export default function Profile() {
                     {isChallengesTabActive && (
                         <Grid item xs={12} md={12}>
                             {hasUserCreatedChallenges ? (
-                                <Challenges allChallengesData={userCreatedChallenges} currentUserData={currentUserData}/>
+                                <Challenges allChallengesData={userCreatedChallenges}
+                                            currentUserData={currentUserData}/>
                             ) : (
-                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                    <Typography variant='h6' sx={{ mt: 2 }}>
+                                <Box sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100%'
+                                }}>
+                                    <Typography variant='h6' sx={{mt: 2}}>
                                         No challenges
                                     </Typography>
                                 </Box>

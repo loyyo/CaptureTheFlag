@@ -101,7 +101,11 @@ export default function UserProfile() {
     const calculatePercentage = (solved, total) => (solved / total) * 100;
 
     return (
-        <Container component="main" maxWidth="lg" sx={{ mt:2, mb: isMobile ? 8 : 0 }}>
+        <Container component="main" maxWidth="lg" sx={{
+            mt: 2,
+            mb: isMobile ? 100 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+        }}>
             <CssBaseline/>
             <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}

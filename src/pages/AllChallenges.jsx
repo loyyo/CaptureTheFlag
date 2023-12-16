@@ -122,12 +122,13 @@ function AllChallenges() {
 
     return (
         <Container maxWidth="lg">
-            <CssBaseline />
+            <CssBaseline/>
             <Paper
                 elevation={7}
                 sx={{
                     padding: isMobile ? 2 : '16px 16px 0px 16px',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
+                    mb: isMobile ? 8 : 0,
                 }}
             >
                 <Box mt={1} mb={5}>
@@ -149,7 +150,7 @@ function AllChallenges() {
                                         fullWidth
                                         InputProps={{
                                             ...params.InputProps,
-                                            startAdornment: <SearchIcon />,
+                                            startAdornment: <SearchIcon/>,
                                             endAdornment: null,
                                         }}
                                     />
@@ -171,7 +172,7 @@ function AllChallenges() {
                                         }}
                                         fullWidth
                                     >
-                                        {displaySortLabel()} <ArrowDropDownIcon />
+                                        {displaySortLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={sortMenuAnchorEl}
@@ -180,7 +181,8 @@ function AllChallenges() {
                                         onClose={() => setSortMenuAnchorEl(null)}
                                     >
                                         <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-                                        <MenuItem onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
+                                        <MenuItem
+                                            onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
                                         <MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
                                     </Menu>
                                 </Grid>
@@ -194,7 +196,7 @@ function AllChallenges() {
                                         }}
                                         fullWidth
                                     >
-                                        {displayDifficultyLabel()} <ArrowDropDownIcon />
+                                        {displayDifficultyLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={difficultyFilterMenuAnchorEl}
@@ -204,7 +206,8 @@ function AllChallenges() {
                                     >
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-                                        <MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
+                                        <MenuItem
+                                            onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
                                     </Menu>
                                 </Grid>
@@ -218,7 +221,7 @@ function AllChallenges() {
                                         }}
                                         fullWidth
                                     >
-                                        {displayRatingLabel()} <ArrowDropDownIcon />
+                                        {displayRatingLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={ratingFilterMenuAnchorEl}
@@ -246,7 +249,7 @@ function AllChallenges() {
                                             setSortMenuAnchorEl(event.currentTarget);
                                         }}
                                     >
-                                        {displaySortLabel()} <ArrowDropDownIcon />
+                                        {displaySortLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={sortMenuAnchorEl}
@@ -255,7 +258,8 @@ function AllChallenges() {
                                         onClose={() => setSortMenuAnchorEl(null)}
                                     >
                                         <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-                                        <MenuItem onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
+                                        <MenuItem
+                                            onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
                                         <MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
                                     </Menu>
                                 </Grid>
@@ -268,7 +272,7 @@ function AllChallenges() {
                                             setDifficultyFilterMenuAnchorEl(event.currentTarget);
                                         }}
                                     >
-                                        {displayDifficultyLabel()} <ArrowDropDownIcon />
+                                        {displayDifficultyLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={difficultyFilterMenuAnchorEl}
@@ -278,7 +282,8 @@ function AllChallenges() {
                                     >
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-                                        <MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
+                                        <MenuItem
+                                            onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
                                     </Menu>
                                 </Grid>
@@ -291,7 +296,7 @@ function AllChallenges() {
                                             setRatingFilterMenuAnchorEl(event.currentTarget);
                                         }}
                                     >
-                                        {displayRatingLabel()} <ArrowDropDownIcon />
+                                        {displayRatingLabel()} <ArrowDropDownIcon/>
                                     </Button>
                                     <Menu
                                         anchorEl={ratingFilterMenuAnchorEl}
@@ -310,7 +315,7 @@ function AllChallenges() {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.paper, mt: 2 }}>
+                            <Box sx={{flexGrow: 1, backgroundColor: theme.palette.background.paper, mt: 2}}>
                                 <Challenges
                                     allChallengesData={sortedAndFilteredChallenges}
                                     currentUserData={currentUserData}

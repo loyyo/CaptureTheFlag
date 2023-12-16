@@ -72,7 +72,13 @@ const Header = () => {
 
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar color="primary" position="fixed">
+            <AppBar
+                color="primary"
+                position="fixed"
+                sx={{
+                    boxShadow: 'none',
+                }}
+            >
                 <Toolbar>
                     {/* Brainplex Logo/Button */}
                     <Button onClick={() => navigateTo('/challenges')}>
@@ -149,7 +155,10 @@ const Header = () => {
                     </Menu>
                 </Toolbar>
             </AppBar>
-            <Box sx={{mt: '90px'}}></Box>
+            <Box sx={{
+                mt: '90px',
+                backgroundColor: theme.palette.primary.main
+            }}></Box>
         </Box>
     );
 };

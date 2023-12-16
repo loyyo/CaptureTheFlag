@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
 import {createTheme, ThemeProvider, styled, useTheme} from '@mui/material/styles';
-import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton} from '@mui/material';
+import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton, Container} from '@mui/material';
 import {useMediaQuery} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from 'react-router-dom';
@@ -127,175 +127,181 @@ export default function ChallengePage({challenge, currentUser}) {
     };
 
     return (
-        <Grid container direction='column'>
-            <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
-                {/* Title */}
-                <Grid item xs={12}>
-                    <Typography variant='h4' align="center">
-                        {challenge.title}
-                    </Typography>
-                </Grid>
-
-                {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
-                <Grid item xs={12}>
-                    <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                        {/* Description */}
-                        <Typography variant='h5' align="center">
-                            {challenge.description}
+        <Container component="main" maxWidth="lg" sx={{
+            mt: 2,
+            mb: isMobile ? 100 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 130px)'
+        }}>
+            <Grid container direction='column'>
+                <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
+                    {/* Title */}
+                    <Grid item xs={12}>
+                        <Typography variant='h4' align="center">
+                            {challenge.title}
                         </Typography>
-                        <Divider sx={{marginY: 2}}/>
+                    </Grid>
 
-                        {/* Difficulty, Points, and Rating */}
-                        {isMobile ? (
-                            <Box display="flex" flexDirection="column" alignItems="center">
-                                <Typography variant='h6'>
-                                    Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
-                                </Typography>
-                                <Typography variant='h6'>
-                                    Points: {challenge.points}
-                                </Typography>
-                                <Rating
-                                    emptySymbol='fa fa-star-o fa-2x'
-                                    fullSymbol='fa fa-star fa-2x'
-                                    fractions={100}
-                                    initialRating={getInitialRating(challenge)}
-                                    readonly
-                                />
-                            </Box>
-                        ) : (
-                            <Box display="flex" justifyContent="space-evenly">
-                                <Typography variant='h6'>
-                                    Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
-                                </Typography>
-                                <Typography variant='h6'>
-                                    Points: {challenge.points}
-                                </Typography>
-                                <Rating
-                                    emptySymbol='fa fa-star-o fa-2x'
-                                    fullSymbol='fa fa-star fa-2x'
-                                    fractions={100}
-                                    initialRating={getInitialRating(challenge)}
-                                    readonly
-                                />
-                            </Box>
-                        )}
-                        <Divider sx={{marginY: 2}}/>
-
-                        {/* Image */}
-                        {challenge.image && (
-                            <Box onClick={handleImageClick}
-                                 sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center'}}>
-                                <img alt={`image-${challenge.url}`} src={challenge.image}
-                                     style={{maxWidth: '100%', maxHeight: '500px'}}/>
-                            </Box>
-                        )}
-                    </Paper>
-                </Grid>
-
-                <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="lg">
-                    <IconButton
-                        onClick={handleCloseDialog}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            top: 8,
-                            color: (theme) => theme.palette.grey[500],
-                        }}
-                    >
-                        <CloseIcon/>
-                    </IconButton>
-                    <img src={challenge.image} alt={`image-${challenge.url}`} style={{width: '100%'}}/>
-                </Dialog>
-
-                {!isAuthor && (
-                    <>
-                        {currentUser.challenges[challenge.url] ? (
-                            <Grid item xs={12}>
-                                <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                                    <Typography variant='h6' align="center">
-                                        {challenge.ratings[currentUser.userID]
-                                            ? "You've already done & rated this challenge. You can change your vote anytime."
-                                            : "Good Job! You've successfully completed this challenge. You can now rate it."
-                                        }
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                        ) : (
-                            <Grid item xs={12}>
-                                <Paper sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    backgroundColor: 'light',
-                                    borderRadius: '4px',
-                                    padding: 2,
-                                    margin: 1
-                                }}>
-                                    {!success ? (
-                                        <TextField
-                                            error={error}
-                                            helperText={error ? 'Unfortunately, that is not the correct answer. Try again!' : ''}
-                                            inputRef={keyRef}
-                                            placeholder='Enter the answer here'
-                                            variant='outlined'
-                                            fullWidth
-                                            onKeyUp={e => e.key === 'Enter' && checkKey()}
-                                        />
-                                    ) : (
-                                        <Typography variant='h6' align="center">
-                                            Congratulations! Your page will refresh in a few seconds...
-                                        </Typography>
-                                    )}
-                                    <Button
-                                        type='button'
-                                        variant='contained'
-                                        color='primary'
-                                        disabled={loading || success}
-                                        onClick={checkKey}
-                                    >
-                                        Submit Answer
-                                    </Button>
-                                </Paper>
-                            </Grid>
-                        )}
-                    </>
-                )}
-
-
-                {/* Author's View */}
-                {isAuthor && (
+                    {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                     <Grid item xs={12}>
                         <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                            <Typography variant='h6' align="center">
-                                As the author of this challenge, you cannot respond to it.
+                            {/* Description */}
+                            <Typography variant='h5' align="center">
+                                {challenge.description}
                             </Typography>
-                        </Paper>
-                    </Grid>
-                )}
+                            <Divider sx={{marginY: 2}}/>
 
-                {/* Rating Section */}
-                {currentUser.challenges[challenge.url] && (
-                    <Grid item xs={12}>
-                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                                <Typography variant='h6' align="center" sx={{marginBottom: 1}}>
-                                    Rate This Challenge:
-                                </Typography>
-                                <Rating
-                                    emptySymbol='fa fa-star-o fa-2x'
-                                    fullSymbol='fa fa-star fa-2x'
-                                    fractions={2}
-                                    initialRating={
-                                        challenge.ratings[currentUser.userID] ? challenge.ratings[currentUser.userID] : 0
-                                    }
-                                    onClick={handleRating}
-                                />
-                            </Box>
+                            {/* Difficulty, Points, and Rating */}
+                            {isMobile ? (
+                                <Box display="flex" flexDirection="column" alignItems="center">
+                                    <Typography variant='h6'>
+                                        Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        Points: {challenge.points}
+                                    </Typography>
+                                    <Rating
+                                        emptySymbol='fa fa-star-o fa-2x'
+                                        fullSymbol='fa fa-star fa-2x'
+                                        fractions={100}
+                                        initialRating={getInitialRating(challenge)}
+                                        readonly
+                                    />
+                                </Box>
+                            ) : (
+                                <Box display="flex" justifyContent="space-evenly">
+                                    <Typography variant='h6'>
+                                        Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        Points: {challenge.points}
+                                    </Typography>
+                                    <Rating
+                                        emptySymbol='fa fa-star-o fa-2x'
+                                        fullSymbol='fa fa-star fa-2x'
+                                        fractions={100}
+                                        initialRating={getInitialRating(challenge)}
+                                        readonly
+                                    />
+                                </Box>
+                            )}
+                            <Divider sx={{marginY: 2}}/>
+
+                            {/* Image */}
+                            {challenge.image && (
+                                <Box onClick={handleImageClick}
+                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center'}}>
+                                    <img alt={`image-${challenge.url}`} src={challenge.image}
+                                         style={{maxWidth: '100%', maxHeight: '500px'}}/>
+                                </Box>
+                            )}
                         </Paper>
                     </Grid>
-                )}
-            </Paper>
-        </Grid>
+
+                    <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="lg">
+                        <IconButton
+                            onClick={handleCloseDialog}
+                            sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                color: (theme) => theme.palette.grey[500],
+                            }}
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+                        <img src={challenge.image} alt={`image-${challenge.url}`} style={{width: '100%'}}/>
+                    </Dialog>
+
+                    {!isAuthor && (
+                        <>
+                            {currentUser.challenges[challenge.url] ? (
+                                <Grid item xs={12}>
+                                    <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
+                                        <Typography variant='h6' align="center">
+                                            {challenge.ratings[currentUser.userID]
+                                                ? "You've already done & rated this challenge. You can change your vote anytime."
+                                                : "Good Job! You've successfully completed this challenge. You can now rate it."
+                                            }
+                                        </Typography>
+                                    </Paper>
+                                </Grid>
+                            ) : (
+                                <Grid item xs={12}>
+                                    <Paper sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        backgroundColor: 'light',
+                                        borderRadius: '4px',
+                                        padding: 2,
+                                        margin: 1
+                                    }}>
+                                        {!success ? (
+                                            <TextField
+                                                error={error}
+                                                helperText={error ? 'Unfortunately, that is not the correct answer. Try again!' : ''}
+                                                inputRef={keyRef}
+                                                placeholder='Enter the answer here'
+                                                variant='outlined'
+                                                fullWidth
+                                                onKeyUp={e => e.key === 'Enter' && checkKey()}
+                                            />
+                                        ) : (
+                                            <Typography variant='h6' align="center">
+                                                Congratulations! Your page will refresh in a few seconds...
+                                            </Typography>
+                                        )}
+                                        <Button
+                                            type='button'
+                                            variant='contained'
+                                            color='primary'
+                                            disabled={loading || success}
+                                            onClick={checkKey}
+                                        >
+                                            Submit Answer
+                                        </Button>
+                                    </Paper>
+                                </Grid>
+                            )}
+                        </>
+                    )}
+
+
+                    {/* Author's View */}
+                    {isAuthor && (
+                        <Grid item xs={12}>
+                            <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
+                                <Typography variant='h6' align="center">
+                                    As the author of this challenge, you cannot respond to it.
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
+
+                    {/* Rating Section */}
+                    {currentUser.challenges[challenge.url] && (
+                        <Grid item xs={12}>
+                            <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
+                                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                                    <Typography variant='h6' align="center" sx={{marginBottom: 1}}>
+                                        Rate This Challenge:
+                                    </Typography>
+                                    <Rating
+                                        emptySymbol='fa fa-star-o fa-2x'
+                                        fullSymbol='fa fa-star fa-2x'
+                                        fractions={2}
+                                        initialRating={
+                                            challenge.ratings[currentUser.userID] ? challenge.ratings[currentUser.userID] : 0
+                                        }
+                                        onClick={handleRating}
+                                    />
+                                </Box>
+                            </Paper>
+                        </Grid>
+                    )}
+                </Paper>
+            </Grid>
+        </Container>
     );
 }
 

@@ -108,9 +108,9 @@ export default function GlobalChat() {
     }
 
     return (
-        <StyledContainer maxWidth='lg'>
+        <StyledContainer maxWidth='lg' sx={{height: 'calc(100vh - 90px)'}}>
             <CssBaseline/>
-            <Paper elevation={3} sx={{ padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3 }}>
+            <Paper elevation={3} sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
                 <Box mb={5}>
                     <Grid container direction='column'>
                         <Grid item xs={12}>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {
     FormControl,
     Container,
@@ -18,15 +18,24 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    Paper
+    Paper, useMediaQuery
 } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext.jsx';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useAuth} from '../contexts/AuthContext.jsx';
+import {useParams, useNavigate} from 'react-router-dom';
 import Dropzone from '../components/Dropzone';
+import {useTheme} from "@mui/material/styles";
 
 export default function EditChallenge() {
-    const { getSingleChallengeData, updateChallenge, deleteChallenge, singleChallengeData, getProfile, currentUserData, getAllChallengesData } = useAuth();
-    const { challengeURL } = useParams();
+    const {
+        getSingleChallengeData,
+        updateChallenge,
+        deleteChallenge,
+        singleChallengeData,
+        getProfile,
+        currentUserData,
+        getAllChallengesData
+    } = useAuth();
+    const {challengeURL} = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -41,6 +50,9 @@ export default function EditChallenge() {
     const [correctAnswer, setCorrectAnswer] = useState('');
     const [image, setImage] = useState();
     const [file, setFile] = useState(null);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         if (!currentUserData) {
@@ -144,7 +156,10 @@ export default function EditChallenge() {
         );
     } else {
         return (
-            <Container component="main" maxWidth="md">
+            <Container component="main" maxWidth="md" sx={{
+                mb: isMobile ? 30 : 0,
+                height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+            }}>
                 <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <Paper elevation={7} sx={{
                         padding: 2,
@@ -154,9 +169,9 @@ export default function EditChallenge() {
                         flexDirection: "column",
                         alignItems: "center"
                     }}>
-                        <Typography component="h1" variant="h5">Edit Challenge</Typography>
+                        <Typography component="h1" variant="h4">Edit Challenge</Typography>
                         <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
-                            <Grid container spacing={2} >
+                            <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
                                         required

@@ -37,10 +37,6 @@
     border-radius: 2.5rem;
 }
 
-.App-leaderboard {
-    overflow-x: hidden;
-}
-
 .header {
     position: fixed;
     top: 0;

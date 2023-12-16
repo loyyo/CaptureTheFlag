@@ -176,7 +176,11 @@ export default function EditProfile() {
     }
 
     return (
-        <Container component="main" maxWidth="lg" sx={{ mb: isMobile ? 8 : 0 }}>
+        <Container component="main" maxWidth="lg" sx={{
+            mt: 2,
+            mb: isMobile ? 8 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+        }}>
             <CssBaseline/>
             <Box
                 mt={5}
@@ -325,8 +329,15 @@ export default function EditProfile() {
                         </Grid>
 
                         {/* Buttons */}
-                        <Box sx={{ width: '100%', mt: 3, display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'center' }}>
-                            <Button onClick={handleCancel} variant="outlined" sx={{ mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2 }}>
+                        <Box sx={{
+                            width: '100%',
+                            mt: 3,
+                            display: 'flex',
+                            flexDirection: isMobile ? 'column' : 'row',
+                            justifyContent: 'center'
+                        }}>
+                            <Button onClick={handleCancel} variant="outlined"
+                                    sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" disabled={loading}>

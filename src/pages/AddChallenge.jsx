@@ -72,7 +72,7 @@ export default function AddChallenge() {
     };
 
     return (
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="md" sx={{height: 'calc(100vh - 90px)'}}>
             <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <Paper elevation={7} sx={{
                     padding: 2,
