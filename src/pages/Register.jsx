@@ -70,7 +70,11 @@ export default function SignUp() {
     };
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <Container component="main" maxWidth="xs" sx={{
+            mt: 2,
+            mb: isMobile ? 8 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+        }}>
             <CssBaseline/>
             <Box sx={{
                 display: 'flex',

@@ -4,16 +4,10 @@ import {
     CssBaseline,
     Paper,
     Container,
-    Divider,
     Grid,
-    ImageList,
     Box,
     Avatar,
     Typography,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Checkbox,
     LinearProgress,
     Button,
     useMediaQuery
@@ -127,7 +121,7 @@ export default function Profile() {
     }
 
     return (
-        <Container component="main" maxWidth="lg" sx={{
+        <Container component="main" maxWidth="md" sx={{
             mt: 2,
             mb: isMobile ? 100 : 0,
             height: isMobile ? 'auto' : 'calc(100vh - 90px)'
@@ -241,39 +235,28 @@ export default function Profile() {
                             {/* Solved challenges */}
                             <Grid item xs={12} md={7}>
                                 <Paper elevation={3} sx={{p: 2, height: '100%', mb: 2}}>
-                                    <Typography variant='h6' gutterBottom>
+                                    <Typography variant='h5' gutterBottom>
                                         Solved Challenges
                                     </Typography>
 
-                                    <Grid container spacing={2} alignItems="center">
+                                    <Grid container spacing={3} alignItems="center">
                                         {/* Koło z ilością wykonanych wyzwań */}
-                                        <Grid item>
+                                        <Grid item xs={12} md={4}> {/* Zmniejszono proporcję md do 4 */}
                                             <Box sx={{
-                                                position: 'relative',
-                                                display: 'inline-flex',
+                                                display: 'flex',
+                                                flexDirection: 'column',
                                                 justifyContent: 'center',
-                                                alignItems: 'center'
+                                                alignItems: 'center',
+                                                height: '100%'
                                             }}>
                                                 <CircularProgress
                                                     variant="determinate"
-                                                    value={100}
-                                                    size={100}
+                                                    value={calculatePercentage(calculatePercentage, userData.totalChallenges)}
+                                                    size={140}
                                                     thickness={4}
-                                                    sx={{color: theme.palette.primary.light}}
-                                                />
-                                                <CircularProgress
-                                                    variant="determinate"
-                                                    value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
-                                                    size={100}
-                                                    thickness={4}
-                                                    sx={{position: 'absolute', color: theme.palette.primary.dark}}
                                                 />
                                                 <Box
                                                     sx={{
-                                                        top: 0,
-                                                        left: 0,
-                                                        bottom: 0,
-                                                        right: 0,
                                                         position: 'absolute',
                                                         display: 'flex',
                                                         alignItems: 'center',
@@ -293,15 +276,7 @@ export default function Profile() {
                                         </Grid>
 
                                         {/* Paski postępu */}
-                                        <Grid item xs>
-
-                                            {/*może ten?*/}
-                                            {/*<Box sx={{ width: 'calc(100% - 120px)' }}> */}
-                                            {/*    <Box sx={{ mb: 1 }}>*/}
-                                            {/*        <Typography variant='body2'>{`Easy Challenges: ${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>*/}
-                                            {/*        <LinearProgress variant='determinate' value={calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)} />*/}
-                                            {/*    </Box>*/}
-                                            {/*</Box>*/}
+                                        <Grid item xs={12} md={7} sx={{marginLeft: 4}}>
 
                                             <Box>
                                                 {/* Pasek postępu dla Easy Challenges */}
@@ -309,7 +284,7 @@ export default function Profile() {
                                                     display: 'flex',
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
-                                                    marginBottom: 1
+                                                    marginBottom: 2
                                                 }}>
                                                     <Typography variant='body1'>{`Easy`}</Typography>
                                                     <Typography
@@ -324,12 +299,12 @@ export default function Profile() {
                                             </Box>
 
                                             {/* Pasek postępu dla Medium Challenges */}
-                                            <Box sx={{marginTop: 2}}>
+                                            <Box sx={{marginTop: 3}}>
                                                 <Box sx={{
                                                     display: 'flex',
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
-                                                    marginBottom: 1
+                                                    marginBottom: 2
                                                 }}>
                                                     <Typography variant='body1'>{`Medium`}</Typography>
                                                     <Typography
@@ -344,12 +319,12 @@ export default function Profile() {
                                             </Box>
 
                                             {/* Pasek postępu dla Hard Challenges */}
-                                            <Box sx={{marginTop: 2}}>
+                                            <Box sx={{marginTop: 3}}>
                                                 <Box sx={{
                                                     display: 'flex',
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
-                                                    marginBottom: 1
+                                                    marginBottom: 2
                                                 }}>
                                                     <Typography variant='body1'>{`Hard`}</Typography>
                                                     <Typography
