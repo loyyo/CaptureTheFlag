@@ -12,7 +12,7 @@ import {
     Menu,
     MenuItem,
     Paper,
-    useMediaQuery
+    useMediaQuery, Popover
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -239,8 +239,9 @@ function AllChallenges() {
                                 </Grid>
                             </>
                         ) : (
-                            <Grid item xs={12} container spacing={2}>
-                                <Grid item>
+                            <Grid item xs={12} container spacing={8}
+                                  justifyContent="space-between"> {/* Zwiększony odstęp */}
+                                <Grid item xs={12} md={4}>
                                     <Button
                                         color='inherit'
                                         ref={sortButtonRef}
@@ -248,22 +249,37 @@ function AllChallenges() {
                                         onClick={(event) => {
                                             setSortMenuAnchorEl(event.currentTarget);
                                         }}
+                                        fullWidth
+                                        sx={{justifyContent: 'space-between'}}
                                     >
-                                        {displaySortLabel()} <ArrowDropDownIcon/>
+                                        <Box sx={{flexGrow: 1, textAlign: 'left'}}>{displaySortLabel()}</Box>
+                                        <ArrowDropDownIcon/>
                                     </Button>
-                                    <Menu
-                                        anchorEl={sortMenuAnchorEl}
-                                        keepMounted
+                                    <Popover
                                         open={Boolean(sortMenuAnchorEl)}
+                                        anchorEl={sortMenuAnchorEl}
                                         onClose={() => setSortMenuAnchorEl(null)}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'left',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        PaperProps={{
+                                            style: {
+                                                width: sortButtonRef.current ? sortButtonRef.current.clientWidth : undefined,
+                                            },
+                                        }}
                                     >
                                         <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
                                         <MenuItem
                                             onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
                                         <MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
-                                    </Menu>
+                                    </Popover>
                                 </Grid>
-                                <Grid item>
+                                <Grid item xs={12} md={4}>
                                     <Button
                                         color='inherit'
                                         ref={difficultyButtonRef}
@@ -271,23 +287,38 @@ function AllChallenges() {
                                         onClick={(event) => {
                                             setDifficultyFilterMenuAnchorEl(event.currentTarget);
                                         }}
+                                        fullWidth
+                                        sx={{justifyContent: 'space-between'}}
                                     >
-                                        {displayDifficultyLabel()} <ArrowDropDownIcon/>
+                                        <Box sx={{flexGrow: 1, textAlign: 'left'}}>{displayDifficultyLabel()}</Box>
+                                        <ArrowDropDownIcon/>
                                     </Button>
-                                    <Menu
-                                        anchorEl={difficultyFilterMenuAnchorEl}
-                                        keepMounted
+                                    <Popover
                                         open={Boolean(difficultyFilterMenuAnchorEl)}
+                                        anchorEl={difficultyFilterMenuAnchorEl}
                                         onClose={() => setDifficultyFilterMenuAnchorEl(null)}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'left',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        PaperProps={{
+                                            style: {
+                                                width: difficultyButtonRef.current ? difficultyButtonRef.current.clientWidth : undefined,
+                                            },
+                                        }}
                                     >
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
                                         <MenuItem
                                             onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
                                         <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
-                                    </Menu>
+                                    </Popover>
                                 </Grid>
-                                <Grid item>
+                                <Grid item xs={12} md={4}>
                                     <Button
                                         color='inherit'
                                         ref={ratingButtonRef}
@@ -295,14 +326,29 @@ function AllChallenges() {
                                         onClick={(event) => {
                                             setRatingFilterMenuAnchorEl(event.currentTarget);
                                         }}
+                                        fullWidth
+                                        sx={{justifyContent: 'space-between'}}
                                     >
-                                        {displayRatingLabel()} <ArrowDropDownIcon/>
+                                        <Box sx={{flexGrow: 1, textAlign: 'left'}}>{displayRatingLabel()}</Box>
+                                        <ArrowDropDownIcon/>
                                     </Button>
-                                    <Menu
-                                        anchorEl={ratingFilterMenuAnchorEl}
-                                        keepMounted
+                                    <Popover
                                         open={Boolean(ratingFilterMenuAnchorEl)}
+                                        anchorEl={ratingFilterMenuAnchorEl}
                                         onClose={() => setRatingFilterMenuAnchorEl(null)}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'left',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        PaperProps={{
+                                            style: {
+                                                width: ratingButtonRef.current ? ratingButtonRef.current.clientWidth : undefined,
+                                            },
+                                        }}
                                     >
                                         <MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
                                         <MenuItem onClick={() => setSelectedRatingFilter(1)}>1+ Stars</MenuItem>
@@ -310,7 +356,7 @@ function AllChallenges() {
                                         <MenuItem onClick={() => setSelectedRatingFilter(3)}>3+ Stars</MenuItem>
                                         <MenuItem onClick={() => setSelectedRatingFilter(4)}>4+ Stars</MenuItem>
                                         <MenuItem onClick={() => setSelectedRatingFilter(5)}>5 Stars</MenuItem>
-                                    </Menu>
+                                    </Popover>
                                 </Grid>
                             </Grid>
                         )}
