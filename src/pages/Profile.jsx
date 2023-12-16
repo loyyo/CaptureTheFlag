@@ -135,7 +135,7 @@ export default function Profile() {
             <CssBaseline/>
             <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
-                <Box p={2} borderBottom={1} borderColor='grey.300'>
+                <Box p={2}>
                     <Typography variant='h4' align='center'>
                         Profile
                     </Typography>
@@ -188,60 +188,58 @@ export default function Profile() {
                     {isInformationsTabActive && (
                         <Grid container spacing={1} alignItems="stretch">
                             {/* Avatar, bio i opis */}
-                            <Grid item xs={12} md={6}>
-                                <Paper elevation={3} sx={{p: 2, height: '100%'}}>
-                                    <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
-                                        {/* Otoczka wokół avatara i informacji */}
-                                        <Paper elevation={1}
-                                               sx={{
-                                                   p: 2,
-                                                   mb: 2,
-                                                   width: '95%',
-                                                   bgcolor: theme.palette.background.paper
-                                               }}>
-                                            <Box display='flex' flexDirection='row' alignItems='center'
-                                                 sx={{width: '100%', justifyContent: 'center'}}>
-                                                <Avatar
-                                                    variant='rounded'
-                                                    alt='Profile Avatar'
-                                                    src={currentUserData.avatar}
-                                                    sx={{width: '100px', height: '100px', mr: 2}}
-                                                />
-                                                <Box>
-                                                    <Typography variant='h5'>{userData.username}</Typography>
-                                                    <Typography
-                                                        variant='body1'>Rank: {userData.ranking === 0 ? "---" : userData.ranking}</Typography>
-                                                    <Typography variant='body1'>Points: {userData.points}</Typography>
-                                                </Box>
+                            <Grid item xs={12} md={5}>
+                                <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
+                                    {/* Otoczka wokół avatara i informacji */}
+                                    <Paper elevation={1}
+                                           sx={{
+                                               p: 2,
+                                               mb: 2,
+                                               width: '95%',
+                                               bgcolor: theme.palette.background.paper
+                                           }}>
+                                        <Box display='flex' flexDirection='row' alignItems='center'
+                                             sx={{width: '100%', justifyContent: 'center'}}>
+                                            <Avatar
+                                                variant='rounded'
+                                                alt='Profile Avatar'
+                                                src={currentUserData.avatar}
+                                                sx={{width: '100px', height: '100px', mr: 2}}
+                                            />
+                                            <Box>
+                                                <Typography variant='h5'>{userData.username}</Typography>
+                                                <Typography
+                                                    variant='body1'>Rank: {userData.ranking === 0 ? "---" : userData.ranking}</Typography>
+                                                <Typography variant='body1'>Points: {userData.points}</Typography>
                                             </Box>
-                                        </Paper>
+                                        </Box>
+                                    </Paper>
 
-                                        {/* Otoczka tylko dla bio */}
-                                        <Paper elevation={1}
-                                               sx={{
-                                                   p: 2,
-                                                   mb: 2,
-                                                   width: '95%',
-                                                   bgcolor: theme.palette.background.paper
-                                               }}>
-                                            <Typography variant='body1'>{userData.bio}</Typography>
-                                        </Paper>
+                                    {/* Otoczka tylko dla bio */}
+                                    <Paper elevation={1}
+                                           sx={{
+                                               p: 2,
+                                               mb: 2,
+                                               width: '95%',
+                                               bgcolor: theme.palette.background.paper
+                                           }}>
+                                        <Typography variant='body1'>{userData.bio}</Typography>
+                                    </Paper>
 
-                                        <Button
-                                            variant='contained'
-                                            color='primary'
-                                            onClick={() => navigate('/profile/settings')}
-                                            sx={{width: '95%'}}
-                                        >
-                                            Edit Profile
-                                        </Button>
-                                    </Box>
-                                </Paper>
+                                    <Button
+                                        variant='contained'
+                                        color='primary'
+                                        onClick={() => navigate('/profile/settings')}
+                                        sx={{width: '95%'}}
+                                    >
+                                        Edit Profile
+                                    </Button>
+                                </Box>
                             </Grid>
 
 
                             {/* Solved challenges */}
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={7}>
                                 <Paper elevation={3} sx={{p: 2, height: '100%', mb: 2}}>
                                     <Typography variant='h6' gutterBottom>
                                         Solved Challenges
