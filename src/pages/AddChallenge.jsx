@@ -11,11 +11,13 @@ import {
     MenuItem,
     InputLabel,
     FormControl,
-    Paper
+    Paper,
+    useMediaQuery
 } from "@mui/material";
 import {useAuth} from "../contexts/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 import Dropzone from '../components/Dropzone';
+import {useTheme} from "@mui/material/styles";
 
 export default function AddChallenge() {
     const {addChallenge, getProfile, currentUserData, getAllChallengesData, checkForDuplicateChallenge} = useAuth();
@@ -29,6 +31,9 @@ export default function AddChallenge() {
     const [image, setImage] = useState();
     const [file, setFile] = useState();
     const [difficulty, setDifficulty] = useState("easy");
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         setTimeout(() => {
@@ -102,7 +107,7 @@ export default function AddChallenge() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} sm={7}>
+                            <Grid item xs={12} sm={7} order={isMobile ? 2 : 1}>
                                 <TextField
                                     required
                                     fullWidth
@@ -114,13 +119,20 @@ export default function AddChallenge() {
                                     inputRef={descriptionRef}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={5}>
-                                <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
-                                    <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
-                                </Box>
+
+                            <Grid item xs={12} sm={7} order={isMobile ? 3 : 4}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="correctAnswer"
+                                    label="Correct Answer"
+                                    name="correctAnswer"
+                                    value={correctAnswer}
+                                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                                />
                             </Grid>
 
-                            <Grid item xs={12} sm={5}>
+                            <Grid item xs={12} sm={5} order={isMobile ? 4 : 3}>
                                 <FormControl fullWidth>
                                     <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
                                     <Select
@@ -136,19 +148,14 @@ export default function AddChallenge() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={7}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="correctAnswer"
-                                    label="Correct Answer"
-                                    name="correctAnswer"
-                                    value={correctAnswer}
-                                    onChange={(e) => setCorrectAnswer(e.target.value)}
-                                />
+
+                            <Grid item xs={12} sm={5} order={isMobile ? 5 : 2}>
+                                <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
+                                    <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
+                                </Box>
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12} order={isMobile ? 6 : 5}>
                                 <Box sx={{display: 'flex', justifyContent: 'center', mt: 3, mb: 1}}>
                                     <Button
                                         variant="outlined"
