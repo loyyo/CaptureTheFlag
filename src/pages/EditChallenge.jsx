@@ -162,7 +162,7 @@ export default function EditChallenge() {
                 mb: isMobile ? 30 : 0,
                 height: isMobile ? 'auto' : 'calc(100vh - 90px)'
             }}>
-                <Box sx={{ mt: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <Paper elevation={7} sx={{
                         padding: 2,
                         borderRadius: '4px',
@@ -172,7 +172,7 @@ export default function EditChallenge() {
                         alignItems: "center"
                     }}>
                         <Typography component="h1" variant="h4">Edit Challenge</Typography>
-                        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -274,7 +274,25 @@ export default function EditChallenge() {
                         </Box>
                     </Paper>
                 </Box>
-                {/* Dialog Component */}
+                <Dialog
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this challenge? This action cannot be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setIsModalOpen(false)} color="secondary">No</Button>
+                        <Button onClick={handleDeleteConfirm} autoFocus color="secondary">
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         );
     }
