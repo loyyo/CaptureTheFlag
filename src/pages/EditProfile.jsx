@@ -236,97 +236,201 @@ export default function EditProfile() {
                             </Box>
                         )}
                         <Grid container spacing={3} alignItems="stretch">
-                            {/* Left Column */}
-                            {/* Left Column */}
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                    inputRef={usernameRef}
-                                    defaultValue={currentUserData.username}
-                                    sx={{mb: 2}}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    inputRef={emailRef}
-                                    defaultValue={currentUser.email}
-                                    sx={{mb: 2}}
-                                />
-                                <Dropzone
-                                    image={image}
-                                    setImage={setImage}
-                                    file={file}
-                                    setFile={setFile}
-                                />
-                            </Grid>
+                            {isMobile ? (
+                                // Mobile View
+                                <>
+                                    {/* Username */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="username"
+                                            label="Username"
+                                            name="username"
+                                            autoComplete="username"
+                                            inputRef={usernameRef}
+                                            defaultValue={currentUserData.username}
+                                        />
+                                    </Grid>
 
-                            {/* Vertical Divider */}
-                            <Grid item xs={12} md={2} sx={{display: "flex", justifyContent: "center"}}>
-                                <Divider orientation="vertical" sx={{height: "100%"}}/>
-                            </Grid>
+                                    {/* Email */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            inputRef={emailRef}
+                                            defaultValue={currentUser.email}
+                                        />
+                                    </Grid>
 
-                            {/* Right Column */}
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="currentPassword"
-                                    label="Current Password"
-                                    type="password"
-                                    id="currentPassword"
-                                    autoComplete="current-password"
-                                    inputRef={currentPasswordRef}
-                                    sx={{mb: 2}}
-                                    helperText="*Required when changing the password"
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="password"
-                                    label="New Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                    inputRef={passwordRef}
-                                    sx={{mb: 2}}
-                                    helperText="*Leave blank to keep the same"
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="passwordConfirmation"
-                                    label="Confirm New Password"
-                                    type="password"
-                                    id="passwordConfirmation"
-                                    autoComplete="new-password"
-                                    inputRef={passwordConfirmationRef}
-                                    helperText="*Leave blank to keep the same"
-                                />
-                            </Grid>
+                                    {/* Avatar */}
+                                    <Grid item xs={12}>
+                                        <Dropzone
+                                            image={image}
+                                            setImage={setImage}
+                                            file={file}
+                                            setFile={setFile}
+                                        />
+                                    </Grid>
 
-                            {/* Biography */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="biography"
-                                    label="Biography"
-                                    name="biography"
-                                    multiline
-                                    rows={4}
-                                    inputRef={bioRef}
-                                    defaultValue={currentUserData.bio}
-                                />
-                            </Grid>
+                                    {/* Biography */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="biography"
+                                            label="Biography"
+                                            name="biography"
+                                            multiline
+                                            rows={4}
+                                            inputRef={bioRef}
+                                            defaultValue={currentUserData.bio}
+                                        />
+                                    </Grid>
+
+
+                                    <Grid item xs={12}>
+                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1 }} />
+                                    </Grid>
+
+                                    {/* Password Fields */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="currentPassword"
+                                            label="Current Password"
+                                            type="password"
+                                            id="currentPassword"
+                                            autoComplete="current-password"
+                                            inputRef={currentPasswordRef}
+                                            helperText="*Required when changing the password"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="password"
+                                            label="New Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            inputRef={passwordRef}
+                                            helperText="*Leave blank to keep the same"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="passwordConfirmation"
+                                            label="Confirm New Password"
+                                            type="password"
+                                            id="passwordConfirmation"
+                                            autoComplete="new-password"
+                                            inputRef={passwordConfirmationRef}
+                                            helperText="*Leave blank to keep the same"
+                                        />
+                                    </Grid>
+                                </>
+                            ) : (
+                                // Desktop View
+                                <>
+                                    {/* Left Column: Username, Email, Avatar */}
+                                    <Grid item xs={12} md={5}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="username"
+                                            label="Username"
+                                            name="username"
+                                            autoComplete="username"
+                                            inputRef={usernameRef}
+                                            defaultValue={currentUserData.username}
+                                            sx={{mb: 2}}
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            inputRef={emailRef}
+                                            defaultValue={currentUser.email}
+                                            sx={{mb: 2}}
+                                        />
+                                        <Dropzone
+                                            image={image}
+                                            setImage={setImage}
+                                            file={file}
+                                            setFile={setFile}
+                                        />
+                                    </Grid>
+
+                                    {/* Vertical Divider (Desktop) */}
+                                    <Grid item md={2} sx={{display: "flex", justifyContent: "center"}}>
+                                        <Divider orientation="vertical" sx={{height: "100%"}}/>
+                                    </Grid>
+
+                                    {/* Right Column: Password Fields, Biography */}
+                                    <Grid item xs={12} md={5}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="currentPassword"
+                                            label="Current Password"
+                                            type="password"
+                                            id="currentPassword"
+                                            autoComplete="current-password"
+                                            inputRef={currentPasswordRef}
+                                            sx={{mb: 2}}
+                                            helperText="*Required when changing the password"
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="password"
+                                            label="New Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            inputRef={passwordRef}
+                                            sx={{mb: 2}}
+                                            helperText="*Leave blank to keep the same"
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="passwordConfirmation"
+                                            label="Confirm New Password"
+                                            type="password"
+                                            id="passwordConfirmation"
+                                            autoComplete="new-password"
+                                            inputRef={passwordConfirmationRef}
+                                            helperText="*Leave blank to keep the same"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="biography"
+                                            label="Biography"
+                                            name="biography"
+                                            multiline
+                                            rows={4}
+                                            inputRef={bioRef}
+                                            defaultValue={currentUserData.bio}
+                                        />
+                                    </Grid>
+                                </>
+                            )}
                         </Grid>
 
                         {/* Buttons */}
