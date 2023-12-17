@@ -230,7 +230,8 @@ export default function UserProfile() {
                                                 flexDirection: 'column',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
-                                                height: '100%'
+                                                height: '100%',
+                                                mt: 2
                                             }}>
                                                 <CircularProgress
                                                     variant="determinate"

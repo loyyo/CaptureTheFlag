@@ -251,11 +251,12 @@ export default function Profile() {
                                                 flexDirection: 'column',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
-                                                height: '100%'
+                                                height: '100%',
+                                                mt: 2
                                             }}>
                                                 <CircularProgress
                                                     variant="determinate"
-                                                    value={calculatePercentage(calculatePercentage, userData.totalChallenges)}
+                                                    value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
                                                     size={140}
                                                     thickness={4}
                                                 />
