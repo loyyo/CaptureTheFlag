@@ -18,7 +18,7 @@ import {useNavigate} from "react-router-dom";
 import Dropzone from '../components/Dropzone';
 
 export default function AddChallenge() {
-    const {addChallenge, getProfile, currentUserData, getAllChallengesData} = useAuth();
+    const {addChallenge, getProfile, currentUserData, getAllChallengesData, checkForDuplicateChallenge} = useAuth();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -42,11 +42,18 @@ export default function AddChallenge() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const challenge = challengeRef.current?.value;
+        const isDuplicate = await checkForDuplicateChallenge(challenge);
+
+        if (isDuplicate) {
+            setError("A challenge with this name already exists.");
+            return;
+        }
+
         try {
             setError("");
             setSuccess("");
 
-            const challenge = challengeRef.current?.value;
             const description = descriptionRef.current?.value;
             const difficultyValue = difficulty || "easy";
 

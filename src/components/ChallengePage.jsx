@@ -143,16 +143,15 @@ export default function ChallengePage({challenge, currentUser}) {
 
                     {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                     <Grid item xs={12}>
-                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
+                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', margin: 1}}>
                             {/* Description */}
-                            <Typography variant='h5' align="center">
+                            <Typography variant='h5' align="left" sx={{borderRadius: 0, borderBottom: `1px solid ${theme.palette.divider}`, width: '100%', padding: 1}}>
                                 {challenge.description}
                             </Typography>
-                            <Divider sx={{marginY: 2}}/>
 
                             {/* Difficulty, Points, and Rating */}
                             {isMobile ? (
-                                <Box display="flex" flexDirection="column" alignItems="center">
+                                <Box display="flex" flexDirection="column" alignItems="center" sx={{padding: '20px 0'}}>
                                     <Typography variant='h6'>
                                         Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
                                     </Typography>
@@ -168,7 +167,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                     />
                                 </Box>
                             ) : (
-                                <Box display="flex" justifyContent="space-evenly">
+                                <Box display="flex" justifyContent="space-evenly" sx={{padding: 1}}>
                                     <Typography variant='h6'>
                                         Difficulty: {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
                                     </Typography>
@@ -184,12 +183,11 @@ export default function ChallengePage({challenge, currentUser}) {
                                     />
                                 </Box>
                             )}
-                            <Divider sx={{marginY: 2}}/>
 
                             {/* Image */}
                             {challenge.image && (
                                 <Box onClick={handleImageClick}
-                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center'}}>
+                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: `1px solid ${theme.palette.divider}`}}>
                                     <img alt={`image-${challenge.url}`} src={challenge.image}
                                          style={{maxWidth: '100%', maxHeight: '500px'}}/>
                                 </Box>
@@ -216,27 +214,22 @@ export default function ChallengePage({challenge, currentUser}) {
                         <>
                             {currentUser.challenges[challenge.url] ? (
                                 <Grid item xs={12}>
-                                    <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
                                         <Typography variant='h6' align="center">
                                             {challenge.ratings[currentUser.userID]
                                                 ? "You've already done & rated this challenge. You can change your vote anytime."
-                                                : "Good Job! You've successfully completed this challenge. You can now rate it."
+                                                : (
+                                                    <>
+                                                        Congratulations! You won {challenge.points} points!
+                                                        <Box component="div" display="block">Did you enjoy this challenge? Leave your rating!</Box>
+                                                    </>
+                                                )
                                             }
                                         </Typography>
-                                    </Paper>
                                 </Grid>
                             ) : (
-                                <Grid item xs={12}>
-                                    <Paper sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        backgroundColor: 'light',
-                                        borderRadius: '4px',
-                                        padding: 2,
-                                        margin: 1
-                                    }}>
-                                        {!success ? (
+                                <Grid item xs={12} container spacing={2} alignItems="center" p={3}>
+                                    {!success ? (
+                                        <Grid item xs={12} lg={10}>
                                             <TextField
                                                 error={error}
                                                 helperText={error ? 'Unfortunately, that is not the correct answer. Try again!' : ''}
@@ -246,22 +239,29 @@ export default function ChallengePage({challenge, currentUser}) {
                                                 fullWidth
                                                 onKeyUp={e => e.key === 'Enter' && checkKey()}
                                             />
-                                        ) : (
+                                        </Grid>
+                                    ) : (
+                                        <Grid item xs={12}>
                                             <Typography variant='h6' align="center">
                                                 Congratulations! Your page will refresh in a few seconds...
                                             </Typography>
-                                        )}
+                                        </Grid>
+                                    )}
+                                    <Grid item xs={12} lg={2}>
                                         <Button
                                             type='button'
                                             variant='contained'
                                             color='primary'
                                             disabled={loading || success}
                                             onClick={checkKey}
+                                            sx={{padding: 1.75, color: 'white', fontSize: '1.25rem'}}
+                                            fullWidth
                                         >
-                                            Submit Answer
+                                            Submit
                                         </Button>
-                                    </Paper>
+                                    </Grid>
                                 </Grid>
+
                             )}
                         </>
                     )}
@@ -270,25 +270,23 @@ export default function ChallengePage({challenge, currentUser}) {
                     {/* Author's View */}
                     {isAuthor && (
                         <Grid item xs={12}>
-                            <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
                                 <Typography variant='h6' align="center">
                                     As the author of this challenge, you cannot respond to it.
                                 </Typography>
-                            </Paper>
                         </Grid>
                     )}
 
                     {/* Rating Section */}
                     {currentUser.challenges[challenge.url] && (
                         <Grid item xs={12}>
-                            <Paper sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2, margin: 1}}>
-                                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                                    <Typography variant='h6' align="center" sx={{marginBottom: 1}}>
-                                        Rate This Challenge:
-                                    </Typography>
+                                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" m={1}>
                                     <Rating
-                                        emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        emptySymbol={
+                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px'}}/>
+                                        }
+                                        fullSymbol={
+                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px'}}/>
+                                        }
                                         fractions={2}
                                         initialRating={
                                             challenge.ratings[currentUser.userID] ? challenge.ratings[currentUser.userID] : 0
@@ -296,7 +294,6 @@ export default function ChallengePage({challenge, currentUser}) {
                                         onClick={handleRating}
                                     />
                                 </Box>
-                            </Paper>
                         </Grid>
                     )}
                 </Paper>

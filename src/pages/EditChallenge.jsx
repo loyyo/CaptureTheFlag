@@ -33,7 +33,8 @@ export default function EditChallenge() {
         singleChallengeData,
         getProfile,
         currentUserData,
-        getAllChallengesData
+        getAllChallengesData,
+        checkForDuplicateChallenge
     } = useAuth();
     const {challengeURL} = useParams();
     const navigate = useNavigate();

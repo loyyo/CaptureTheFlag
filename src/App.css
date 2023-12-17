@@ -101,3 +101,7 @@
         border-bottom: none;
     }
 }
+
+.MuiButton-root {
+    text-transform: capitalize !important;
+}

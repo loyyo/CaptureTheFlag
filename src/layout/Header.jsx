@@ -75,15 +75,14 @@ const Header = () => {
             <Box
                 sx={{
                     boxShadow: 'none',
-                    backgroundColor: 'transparent', // Set AppBar background to transparent
-                    color: 'inherit' // Optionally set the text color
-
+                    backgroundColor: 'transparent',
+                    color: 'inherit'
                 }}
             >
                 <Toolbar>
                     {/* Brainplex Logo/Button */}
                     <Button onClick={() => navigateTo('/challenges')}>
-                        <Typography variant="subtitle2" sx={{color: 'white', '&:hover': {textDecoration: 'none'}}}>
+                        <Typography variant="subtitle2" sx={{color: 'white', fontSize: '1.25rem', '&:hover': {textDecoration: 'none'}}}>
                             Brainplex
                         </Typography>
                     </Button>
@@ -95,7 +94,8 @@ const Header = () => {
                                 onClick={() => navigateTo('/challenges')}
                                 sx={{
                                     ...isActive('/challenges') ? activeButtonStyle : {color: 'white'},
-                                    mx: 2
+                                    mx: 2,
+                                    fontSize: '1.15rem'
                                 }}
                             >
                                 Challenges
@@ -104,7 +104,8 @@ const Header = () => {
                                 onClick={() => navigateTo('/challenge/add')}
                                 sx={{
                                     ...isActive('/challenge/add') ? activeButtonStyle : {color: 'white'},
-                                    mx: 2
+                                    mx: 2,
+                                    fontSize: '1.15rem'
                                 }}
                             >
                                 Create
@@ -113,7 +114,8 @@ const Header = () => {
                                 onClick={() => navigateTo('/leaderboard')}
                                 sx={{
                                     ...isActive('/leaderboard') ? activeButtonStyle : {color: 'white'},
-                                    mx: 2
+                                    mx: 2,
+                                    fontSize: '1.15rem'
                                 }}
                             >
                                 Leaderboard
@@ -122,7 +124,8 @@ const Header = () => {
                                 onClick={() => navigateTo('/chat')}
                                 sx={{
                                     ...isActive('/chat') ? activeButtonStyle : {color: 'white'},
-                                    mx: 2
+                                    mx: 2,
+                                    fontSize: '1.15rem'
                                 }}
                             >
                                 Chat
@@ -139,7 +142,7 @@ const Header = () => {
                             onClick={handleOpenMenu}
                             color="inherit"
                         >
-                            <AccountCircle sx={{color: 'white'}}/>
+                            <AccountCircle sx={{color: 'white', fontSize: '2rem'}}/>
                         </IconButton>
                     </Box>
 

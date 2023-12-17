@@ -432,6 +432,15 @@ function AuthProvider({children}) {
         }
     }, []);
 
+    const checkForDuplicateChallenge = useCallback(async (title) => {
+        const normalizedTitle = title.trim().toLowerCase();
+        const querySnapshot = await db.collection('challenges')
+            .where('title', '==', normalizedTitle)
+            .get();
+
+        return !querySnapshot.empty;
+    }, []);
+
     const updateChallenge = useCallback(async (challengeID, {title, description, difficulty, correctAnswer, image}) => {
         try {
             let imageUrl = null;
@@ -579,7 +588,8 @@ function AuthProvider({children}) {
             deleteChallenge,
             challengeStats,
             getChallengeStats,
-            currentPassword
+            currentPassword,
+            checkForDuplicateChallenge
         }),
         [
             currentUser,
@@ -614,7 +624,8 @@ function AuthProvider({children}) {
             deleteChallenge,
             challengeStats,
             getChallengeStats,
-            currentPassword
+            currentPassword,
+            checkForDuplicateChallenge
         ]
     );
 

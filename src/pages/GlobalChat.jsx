@@ -10,7 +10,8 @@ import {
     Paper,
     Button,
     TextField,
-    LinearProgress
+    LinearProgress,
+    useMediaQuery
 } from '@mui/material';
 import ChatMessage from '../components/ChatMessage.jsx';
 import {Send as SendIcon} from '@mui/icons-material';
@@ -34,6 +35,7 @@ export default function GlobalChat() {
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const {
         getAllUsersData,
@@ -137,7 +139,7 @@ export default function GlobalChat() {
                         {currentUserData.points > 0 && (
                             <Box>
                                 <Grid item container xs={12}>
-                                    <Grid item xs={12} sm={10}>
+                                    <Grid item xs={8} sm={10}>
                                         <Box p={2}>
                                             <TextField
                                                 error={error}
@@ -152,7 +154,7 @@ export default function GlobalChat() {
                                             />
                                         </Box>
                                     </Grid>
-                                    <Grid item xs={12} sm={2}>
+                                    <Grid item xs={4} sm={2}>
                                         <Box p={1} m={2}>
                                             <Button
                                                 type='button'
@@ -163,8 +165,7 @@ export default function GlobalChat() {
                                                 sx={{color: 'white'}}
                                                 onClick={submitMessage}
                                             >
-                                                Send
-                                                <SendIcon sx={{ml: 1}}/> {/* Icon added next to the text */}
+                                                {isMobile ? <SendIcon /> : <>Send<SendIcon sx={{ml: 1}}/></>}
                                             </Button>
                                         </Box>
                                     </Grid>
