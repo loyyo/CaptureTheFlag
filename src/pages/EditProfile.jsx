@@ -54,8 +54,8 @@ export default function EditProfile() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if (!currentPasswordRef.current.value) {
-            setError("Please enter your current password");
+        if ((passwordRef.current.value || passwordConfirmationRef.current.value) && !currentPasswordRef.current.value) {
+            setError("Current password is required when changing the password.");
             return;
         }
 
@@ -270,13 +270,12 @@ export default function EditProfile() {
                             </Grid>
 
                             {/* Vertical Divider */}
-                            <Grid item xs={12} md={1}
-                                  sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <Grid item xs={12} md={2} sx={{display: "flex", justifyContent: "center"}}>
                                 <Divider orientation="vertical" sx={{height: "100%"}}/>
                             </Grid>
 
                             {/* Right Column */}
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={5}>
                                 <TextField
                                     variant="outlined"
                                     fullWidth
@@ -286,8 +285,8 @@ export default function EditProfile() {
                                     id="currentPassword"
                                     autoComplete="current-password"
                                     inputRef={currentPasswordRef}
-                                    required
                                     sx={{mb: 2}}
+                                    helperText="*Required when changing the password"
                                 />
                                 <TextField
                                     variant="outlined"
@@ -299,6 +298,7 @@ export default function EditProfile() {
                                     autoComplete="new-password"
                                     inputRef={passwordRef}
                                     sx={{mb: 2}}
+                                    helperText="*Leave blank to keep the same"
                                 />
                                 <TextField
                                     variant="outlined"
@@ -309,6 +309,7 @@ export default function EditProfile() {
                                     id="passwordConfirmation"
                                     autoComplete="new-password"
                                     inputRef={passwordConfirmationRef}
+                                    helperText="*Leave blank to keep the same"
                                 />
                             </Grid>
 
@@ -340,7 +341,8 @@ export default function EditProfile() {
                                     sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" color="primary" disabled={loading}>
+                            <Button type="submit" variant="contained"
+                                    sx={{color: 'white'}} disabled={loading}>
                                 Save Changes
                             </Button>
                         </Box>

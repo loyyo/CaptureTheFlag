@@ -142,7 +142,7 @@ export default function AddChallenge() {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Box sx={{display: 'flex', justifyContent: 'center', mt: 3, mb: 2}}>
+                                <Box sx={{display: 'flex', justifyContent: 'center', mt: 3, mb: 1}}>
                                     <Button
                                         variant="outlined"
                                         color="secondary"
@@ -154,7 +154,7 @@ export default function AddChallenge() {
                                     <Button
                                         type="submit"
                                         variant="contained"
-                                        color="primary"
+                                        sx={{color: 'white', padding: '10px 20px'}}
                                     >
                                         Add Challenge
                                     </Button>

@@ -224,7 +224,7 @@ export default function Profile() {
                                         variant='contained'
                                         color='primary'
                                         onClick={() => navigate('/profile/settings')}
-                                        sx={{width: '95%'}}
+                                        sx={{width: '95%', color: 'white'}}
                                     >
                                         Edit Profile
                                     </Button>

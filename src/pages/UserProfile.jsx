@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import Challenges from '../components/Challenges.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
+import {useNavigate} from 'react-router-dom';
 
 export default function UserProfile() {
     const {userID} = useParams();
@@ -33,6 +34,7 @@ export default function UserProfile() {
     } = useAuth();
     const [activeTab, setActiveTab] = useState('informations');
     const theme = useTheme();
+    const navigate = useNavigate();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [userData, setUserData] = useState(null);
@@ -199,15 +201,16 @@ export default function UserProfile() {
                                            }}>
                                         <Typography variant='body1'>{thisUserData.bio}</Typography>
                                     </Paper>
-
-                                    <Button
-                                        variant='contained'
-                                        color='primary'
-                                        onClick={() => navigate('/profile/settings')}
-                                        sx={{width: '95%'}}
-                                    >
-                                        Edit Profile
-                                    </Button>
+                                    {currentUserData.userID === thisUserData.userID && (
+                                        <Button
+                                            variant='contained'
+                                            color='primary'
+                                            onClick={() => navigate('/profile/settings')}
+                                            sx={{width: '95%'}}
+                                        >
+                                            Edit Profile
+                                        </Button>
+                                    )}
                                 </Box>
                             </Grid>
 

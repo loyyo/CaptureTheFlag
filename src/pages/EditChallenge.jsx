@@ -256,7 +256,7 @@ export default function EditChallenge() {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
-                                                sx={{mb: 2, width: 200}}
+                                                sx={{mb: 2, width: 200, color: 'white'}}
                                                 disabled={loading}
                                             >
                                                 SAVE

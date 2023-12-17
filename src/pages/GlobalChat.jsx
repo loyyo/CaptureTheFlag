@@ -13,6 +13,7 @@ import {
     LinearProgress
 } from '@mui/material';
 import ChatMessage from '../components/ChatMessage.jsx';
+import {Send as SendIcon} from '@mui/icons-material';
 
 const PREFIX = 'GlobalChat';
 const classes = {
@@ -113,13 +114,13 @@ export default function GlobalChat() {
             <Paper elevation={3} sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
                 <Box mb={5}>
                     <Grid container direction='column'>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sx={{marginBottom: '20px'}}>
                             <Typography variant='h4' align="center">
                                 Global Chat
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square elevation={0}>
+                            <Paper square elevation={3}>
                                 <Box p={1} className='messagesBox'>
                                     {globalMessages?.map((msg) => (
                                         <ChatMessage
@@ -136,7 +137,7 @@ export default function GlobalChat() {
                         {currentUserData.points > 0 && (
                             <Box>
                                 <Grid item container xs={12}>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} sm={10}>
                                         <Box p={2}>
                                             <TextField
                                                 error={error}
@@ -151,19 +152,19 @@ export default function GlobalChat() {
                                             />
                                         </Box>
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} sm={2}>
                                         <Box p={1} m={2}>
                                             <Button
                                                 type='button'
                                                 fullWidth
                                                 variant='contained'
-                                                color='primary'
                                                 size='large'
                                                 disabled={loading}
-                                                sx={{background: theme.palette.primary.light}}
+                                                sx={{color: 'white'}}
                                                 onClick={submitMessage}
                                             >
                                                 Send
+                                                <SendIcon sx={{ml: 1}}/> {/* Icon added next to the text */}
                                             </Button>
                                         </Box>
                                     </Grid>

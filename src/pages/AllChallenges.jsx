@@ -52,7 +52,11 @@ function AllChallenges() {
         let sortedData = [...data];
         switch (selectedSort) {
             case 'dateCreated':
-                sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                sortedData.sort((a, b) => {
+                    const dateA = new Date(a.createdAt.seconds * 1000 + a.createdAt.nanoseconds / 1000000);
+                    const dateB = new Date(b.createdAt.seconds * 1000 + b.createdAt.nanoseconds / 1000000);
+                    return dateB - dateA;
+                });
                 break;
             case 'alphabetical':
                 sortedData.sort((a, b) => a.title.localeCompare(b.title));
@@ -66,6 +70,13 @@ function AllChallenges() {
         return sortedData;
     };
 
+    const handleOpenPopover = (event, popoverSetter) => {
+        popoverSetter(event.currentTarget);
+    };
+
+    const handleClosePopover = (popoverSetter) => {
+        popoverSetter(null);
+    };
     const calculateAverageRating = (ratings) => {
         const ratingValues = Object.values(ratings).map(rating => parseInt(rating));
         const total = ratingValues.reduce((acc, curr) => acc + curr, 0);
@@ -121,19 +132,17 @@ function AllChallenges() {
     }
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" >
             <CssBaseline/>
-            <Paper
-                elevation={7}
-                sx={{
-                    padding: isMobile ? 2 : '16px 16px 0px 16px',
-                    borderRadius: '4px',
-                    mb: isMobile ? 8 : 0,
-                    mt: 2
-                }}
+            <Paper elevation={7} sx={{
+                padding: isMobile ? '16px 20px' : '16px',
+                borderRadius: '4px',
+                mb: isMobile ? 8 : 0,
+                mt: 2
+            }}
             >
                 <Box mt={1} mb={5}>
-                    <Grid container direction="column" spacing={2}>
+                    <Grid item xs={12} container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant="h4" align="center">
                                 Available Challenges
@@ -163,80 +172,87 @@ function AllChallenges() {
                         </Grid>
                         {isMobile ? (
                             <>
-                                <Grid item xs={12}>
-                                    <Button
-                                        color='inherit'
-                                        ref={sortButtonRef}
-                                        variant={selectedSort === 'dateCreated' ? "outlined" : "contained"}
-                                        onClick={(event) => {
-                                            setSortMenuAnchorEl(event.currentTarget);
-                                        }}
-                                        fullWidth
-                                    >
-                                        {displaySortLabel()} <ArrowDropDownIcon/>
-                                    </Button>
-                                    <Menu
-                                        anchorEl={sortMenuAnchorEl}
-                                        keepMounted
-                                        open={Boolean(sortMenuAnchorEl)}
-                                        onClose={() => setSortMenuAnchorEl(null)}
-                                    >
-                                        <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-                                        <MenuItem
-                                            onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
-                                        <MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
-                                    </Menu>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        color='inherit'
-                                        ref={difficultyButtonRef}
-                                        variant={selectedDifficultyFilter === '' ? "outlined" : "contained"}
-                                        onClick={(event) => {
-                                            setDifficultyFilterMenuAnchorEl(event.currentTarget);
-                                        }}
-                                        fullWidth
-                                    >
-                                        {displayDifficultyLabel()} <ArrowDropDownIcon/>
-                                    </Button>
-                                    <Menu
-                                        anchorEl={difficultyFilterMenuAnchorEl}
-                                        keepMounted
-                                        open={Boolean(difficultyFilterMenuAnchorEl)}
-                                        onClose={() => setDifficultyFilterMenuAnchorEl(null)}
-                                    >
-                                        <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
-                                        <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-                                        <MenuItem
-                                            onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
-                                        <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
-                                    </Menu>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        color='inherit'
-                                        ref={ratingButtonRef}
-                                        variant={selectedRatingFilter === 0 ? "outlined" : "contained"}
-                                        onClick={(event) => {
-                                            setRatingFilterMenuAnchorEl(event.currentTarget);
-                                        }}
-                                        fullWidth
-                                    >
-                                        {displayRatingLabel()} <ArrowDropDownIcon/>
-                                    </Button>
-                                    <Menu
-                                        anchorEl={ratingFilterMenuAnchorEl}
-                                        keepMounted
-                                        open={Boolean(ratingFilterMenuAnchorEl)}
-                                        onClose={() => setRatingFilterMenuAnchorEl(null)}
-                                    >
-                                        <MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
-                                        <MenuItem onClick={() => setSelectedRatingFilter(1)}>1+ Stars</MenuItem>
-                                        <MenuItem onClick={() => setSelectedRatingFilter(2)}>2+ Stars</MenuItem>
-                                        <MenuItem onClick={() => setSelectedRatingFilter(3)}>3+ Stars</MenuItem>
-                                        <MenuItem onClick={() => setSelectedRatingFilter(4)}>4+ Stars</MenuItem>
-                                        <MenuItem onClick={() => setSelectedRatingFilter(5)}>5 Stars</MenuItem>
-                                    </Menu>
+                                <Grid item xs={12} container spacing={2}>
+                                    {/* Sort Button */}
+                                    <Grid item xs={12}>
+                                        <Button
+                                            color='inherit'
+                                            ref={sortButtonRef}
+                                            variant={selectedSort === 'dateCreated' ? "outlined" : "contained"}
+                                            onClick={(event) => handleOpenPopover(event, setSortMenuAnchorEl)}
+                                            fullWidth
+                                        >
+                                            {displaySortLabel()} <ArrowDropDownIcon/>
+                                        </Button>
+                                        <Popover
+                                            anchorEl={sortMenuAnchorEl}
+                                            open={Boolean(sortMenuAnchorEl)}
+                                            onClose={() => handleClosePopover(setSortMenuAnchorEl)}
+                                            anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                                            transformOrigin={{vertical: 'top', horizontal: 'left'}}
+                                        >
+                                            <MenuItem onClick={() => setSelectedSort('dateCreated')}>Date
+                                                Created</MenuItem>
+                                            <MenuItem
+                                                onClick={() => setSelectedSort('alphabetical')}>Alphabetical</MenuItem>
+                                            <MenuItem
+                                                onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
+                                        </Popover>
+                                    </Grid>
+
+                                    {/* Difficulty Button */}
+                                    <Grid item xs={12}>
+                                        <Button
+                                            color='inherit'
+                                            ref={difficultyButtonRef}
+                                            variant={selectedDifficultyFilter === '' ? "outlined" : "contained"}
+                                            onClick={(event) => handleOpenPopover(event, setDifficultyFilterMenuAnchorEl)}
+                                            fullWidth
+                                        >
+                                            {displayDifficultyLabel()} <ArrowDropDownIcon/>
+                                        </Button>
+                                        <Popover
+                                            anchorEl={difficultyFilterMenuAnchorEl}
+                                            open={Boolean(difficultyFilterMenuAnchorEl)}
+                                            onClose={() => handleClosePopover(setDifficultyFilterMenuAnchorEl)}
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                        >
+                                            {/* Popover content for difficulty */}
+                                            <MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
+                                            <MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
+                                            <MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>Medium</MenuItem>
+                                            <MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
+                                        </Popover>
+                                    </Grid>
+
+                                    {/* Rating Button */}
+                                    <Grid item xs={12}>
+                                        <Button
+                                            color='inherit'
+                                            ref={ratingButtonRef}
+                                            variant={selectedRatingFilter === 0 ? "outlined" : "contained"}
+                                            onClick={(event) => handleOpenPopover(event, setRatingFilterMenuAnchorEl)}
+                                            fullWidth
+                                        >
+                                            {displayRatingLabel()} <ArrowDropDownIcon/>
+                                        </Button>
+                                        <Popover
+                                            anchorEl={ratingFilterMenuAnchorEl}
+                                            open={Boolean(ratingFilterMenuAnchorEl)}
+                                            onClose={() => handleClosePopover(setRatingFilterMenuAnchorEl)}
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                        >
+                                            {/* Popover content for rating */}
+                                            <MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
+                                            <MenuItem onClick={() => setSelectedRatingFilter(1)}>1+ Stars</MenuItem>
+                                            <MenuItem onClick={() => setSelectedRatingFilter(2)}>2+ Stars</MenuItem>
+                                            <MenuItem onClick={() => setSelectedRatingFilter(3)}>3+ Stars</MenuItem>
+                                            <MenuItem onClick={() => setSelectedRatingFilter(4)}>4+ Stars</MenuItem>
+                                            <MenuItem onClick={() => setSelectedRatingFilter(5)}>5 Stars</MenuItem>
+                                        </Popover>
+                                    </Grid>
                                 </Grid>
                             </>
                         ) : (
@@ -362,13 +378,14 @@ function AllChallenges() {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            <Box sx={{flexGrow: 1, backgroundColor: theme.palette.background.paper, mt: 2}}>
+                            <Box sx={{ flexGrow: 1, mt: 2, width: '100%' }}>
                                 <Challenges
                                     allChallengesData={sortedAndFilteredChallenges}
                                     currentUserData={currentUserData}
                                 />
                             </Box>
                         </Grid>
+
                     </Grid>
                 </Box>
             </Paper>

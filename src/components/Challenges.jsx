@@ -38,7 +38,7 @@ export default function Challenges({allChallengesData, currentUserData}) {
     return (
         <Grid container justifyContent="center">
             {allChallengesData.map((challenge) => (
-                <Grid item xs={12} sm={6} md={3.5} key={challenge.url} sx={{marginRight: '30px', marginBottom: '10px'}}>
+                <Grid item xs={12} sm={6} md={4} key={challenge.url}>
                     <Box m={1}>
                         <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px'}}>
                             <Box sx={{padding: '15px 0 0 0'}}>
@@ -147,6 +147,7 @@ export default function Challenges({allChallengesData, currentUserData}) {
                                                 borderTopLeftRadius: 0,
                                                 borderTopRightRadius: 0,
                                                 borderBottomLeftRadius: 0,
+                                                color: 'white',
                                                 borderLeft: `1px solid ${theme.palette.divider}`,
                                                 backgroundColor: theme.palette.primary.main,
                                                 '&:hover': {

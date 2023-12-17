@@ -44,7 +44,7 @@ export default function Leaderboard() {
                     </Grid>
                     <Box mt={2} mb={2}/>
                     <Grid item xs={12}>
-                        <Typography variant='h4' align="center">
+                        <Typography variant='h4' align="center" marginBottom={2}>
                             Leaderboard
                         </Typography>
                         <Table allUsersData={allUsersData}/>
