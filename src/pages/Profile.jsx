@@ -235,7 +235,11 @@ export default function Profile() {
                             {/* Solved challenges */}
                             <Grid item xs={12} md={7}>
                                 <Paper elevation={3} sx={{p: 2, height: '100%', mb: 2}}>
-                                    <Typography variant='h5' gutterBottom>
+                                    <Typography
+                                        variant='h5'
+                                        gutterBottom
+                                        align={isMobile ? 'center' : 'left'}
+                                    >
                                         Solved Challenges
                                     </Typography>
 

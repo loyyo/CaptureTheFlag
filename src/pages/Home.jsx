@@ -18,7 +18,11 @@ export default function Home() {
 	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	return (
-		<Container maxWidth='md'>
+		<Container component="main" maxWidth="md" sx={{
+			mt: 2,
+			mb: isMobile ? 8 : 0,
+			height: isMobile ? 'auto' : 'calc(100vh - 40px)'
+		}}>
 			<CssBaseline />
 			<Grid container spacing={5}>
 				<Grid item xs={12}>
@@ -51,7 +55,7 @@ export default function Home() {
 										variant='contained'
 										color='primary'
 										size='large'
-										sx={{ margin: theme.spacing(2.5, 0, 2.5) }}
+										sx={{ margin: theme.spacing(2.5, 0, 2.5), color: 'white', }}
 										onClick={() => {
 											navigate('/register');
 										}}
@@ -67,7 +71,6 @@ export default function Home() {
 										size='large'
 										sx={{
 											margin: theme.spacing(2.5, 0, 2.5),
-											backgroundColor: theme.palette.primary.light,
 											color: 'white',
 											'&:hover': {
 												backgroundColor: theme.palette.primary.dark,
