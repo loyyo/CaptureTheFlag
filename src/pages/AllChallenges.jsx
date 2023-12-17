@@ -378,7 +378,7 @@ function AllChallenges() {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            <Box sx={{ flexGrow: 1, mt: 2, width: '100%' }}>
+                            <Box sx={{ flexGrow: 1, width: '100%' }}>
                                 <Challenges
                                     allChallengesData={sortedAndFilteredChallenges}
                                     currentUserData={currentUserData}
