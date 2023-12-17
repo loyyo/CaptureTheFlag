@@ -129,6 +129,7 @@ function AllChallenges() {
                     padding: isMobile ? 2 : '16px 16px 0px 16px',
                     borderRadius: '4px',
                     mb: isMobile ? 8 : 0,
+                    mt: 2
                 }}
             >
                 <Box mt={1} mb={5}>
@@ -373,7 +374,6 @@ function AllChallenges() {
             </Paper>
         </Container>
     );
-
 
 }
 

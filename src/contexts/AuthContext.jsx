@@ -145,18 +145,30 @@ function AuthProvider({children}) {
     }, []);
 
     const getAllChallengesData = useCallback(async () => {
-        let Data = [];
+        let challengeData = [];
+        let userDataMap = {};
 
         try {
-            const querySnapshot = await db.collection('challenges').get();
-            querySnapshot.forEach((doc) => {
-                Data.push(doc.data());
+            const usersSnapshot = await db.collection('users').get();
+            usersSnapshot.forEach((doc) => {
+                let userData = doc.data();
+                userDataMap[userData.userID] = userData.username;
             });
-            setAllChallengesData(Data);
+
+            const challengeSnapshot = await db.collection('challenges').get();
+            challengeSnapshot.forEach((doc) => {
+                let challenge = doc.data();
+
+                challenge.username = userDataMap[challenge.userID] || 'Unknown';
+                challengeData.push(challenge);
+            });
+
+            setAllChallengesData(challengeData);
         } catch (error) {
             console.error('Error getting documents:', error);
         }
     }, []);
+
 
 
     const getSingleChallengeData = useCallback(

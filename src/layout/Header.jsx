@@ -72,11 +72,12 @@ const Header = () => {
 
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar
-                color="primary"
-                position="fixed"
+            <Box
                 sx={{
                     boxShadow: 'none',
+                    backgroundColor: 'transparent', // Set AppBar background to transparent
+                    color: 'inherit' // Optionally set the text color
+
                 }}
             >
                 <Toolbar>
@@ -154,11 +155,7 @@ const Header = () => {
                         {renderMenuItems()}
                     </Menu>
                 </Toolbar>
-            </AppBar>
-            <Box sx={{
-                mt: '90px',
-                backgroundColor: theme.palette.primary.main
-            }}></Box>
+            </Box>
         </Box>
     );
 };

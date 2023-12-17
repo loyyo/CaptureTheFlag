@@ -33,7 +33,7 @@ function App() {
             mode: prefersDarkMode ? "dark" : "light",
             primary: {
                 light: prefersDarkMode ? "#3f4fa3" : "#FFFFFF",
-                main: prefersDarkMode ? "#2c387e" : "#A3A8E4",
+                main: prefersDarkMode ? "#40376F" : "#A3A8E4",
                 dark: prefersDarkMode ? "#212c6f" : "#252028",
             },
         },

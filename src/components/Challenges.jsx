@@ -36,14 +36,14 @@ export default function Challenges({allChallengesData, currentUserData}) {
 
 
     return (
-        <Grid container>
+        <Grid container justifyContent="center">
             {allChallengesData.map((challenge) => (
-                <Grid item xs={12} sm={6} md={4} key={challenge.url}>
+                <Grid item xs={12} sm={6} md={3.5} key={challenge.url} sx={{marginRight: '30px', marginBottom: '10px'}}>
                     <Box m={1}>
                         <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px'}}>
-                            <Box p={2}>
+                            <Box sx={{padding: '15px 0 0 0'}}>
                                 {/* Title */}
-                                <Typography variant='h5' align="center" className="ellipsis">
+                                <Typography variant='h5' align="left" className="ellipsis" sx={{marginLeft: '20px'}}>
                                     {challenge.title}
                                     {currentUserData.challenges[challenge.url] && (
                                         <Checkbox
@@ -57,40 +57,80 @@ export default function Challenges({allChallengesData, currentUserData}) {
                                 </Typography>
 
                                 {/* Difficulty and Popularity */}
-                                <Box display="flex" justifyContent="space-evenly">
+                                <Box display="flex" justifyContent="flex-start" alignItems="center"
+                                     sx={{marginLeft: '20px', marginTop: '8px'}}>
                                     <Typography variant='h6'>
                                         {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
                                     </Typography>
+                                    <span style={{
+                                        height: '8px',
+                                        width: '8px',
+                                        backgroundColor: theme.palette.primary.main,
+                                        borderRadius: '50%',
+                                        display: 'inline-block',
+                                        margin: '0 10px',
+                                        verticalAlign: 'middle'
+                                    }}></span>
                                     <Typography variant='h6'>
                                         Popularity: {challenge.completedBy}
                                     </Typography>
                                 </Box>
 
-                                {/* Created At */}
-                                <Typography variant='h6' align="center">
-                                    {getDaysAgo(challenge.createdAt)} days ago
-                                </Typography>
+                                {/* username and createdAt */}
+                                <Box display="flex" justifyContent="flex-start" alignItems="center"
+                                     sx={{marginLeft: '20px', marginBottom: '15px'}}>
+                                    <Typography variant='h6'>
+                                        {challenge.username}
+                                    </Typography>
+                                    <span style={{
+                                        height: '8px',
+                                        width: '8px',
+                                        backgroundColor: theme.palette.primary.main,
+                                        borderRadius: '50%',
+                                        display: 'inline-block',
+                                        margin: '0 10px',
+                                        verticalAlign: 'middle'
+                                    }}></span>
+                                    <Typography variant='h6'>
+                                        {getDaysAgo(challenge.createdAt)} days ago
+                                    </Typography>
+                                </Box>
 
                                 {/* Rating Stars */}
-                                <Box my={1} align="center">
+                                <Box my={1} align="center" sx={{marginBottom: '10px'}}>
                                     <Rating
-                                        emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        emptySymbol={
+                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px'}}/>
+                                        }
+                                        fullSymbol={
+                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px'}}/>
+                                        }
                                         fractions={100}
                                         initialRating={getInitialRating(challenge)}
                                         readonly
                                     />
                                 </Box>
 
-                                {/* Horizontal Line */}
-                                <Divider sx={{marginY: 2}}/>
-
                                 {/* View/Edit Buttons */}
-                                <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Box sx={{
+                                    display: 'flex',
+                                    borderTop: `1px solid ${theme.palette.divider}`,
+                                    p: 0, // Remove padding
+                                    m: 0 // Remove margin
+                                }}>
                                     <Button
                                         variant='outlined'
                                         color='inherit'
-                                        sx={{margin: 1, width: '100%'}}
+                                        sx={{
+                                            width: '50%',
+                                            flexGrow: 1,
+                                            m: 0,
+                                            border: 'none',
+                                            backgroundColor: 'light',
+                                            '&:hover': {
+                                                backgroundColor: 'light',
+                                            }
+                                        }}
                                         onClick={() => navigate(`/challenges/${challenge.url}`)}
                                     >
                                         View
@@ -100,9 +140,18 @@ export default function Challenges({allChallengesData, currentUserData}) {
                                             variant='outlined'
                                             color='inherit'
                                             sx={{
-                                                margin: 1,
-                                                width: '100%',
-                                                // background: theme.palette.primary.light
+                                                width: '50%',
+                                                flexGrow: 1,
+                                                m: 0,
+                                                border: 'none',
+                                                borderTopLeftRadius: 0,
+                                                borderTopRightRadius: 0,
+                                                borderBottomLeftRadius: 0,
+                                                borderLeft: `1px solid ${theme.palette.divider}`,
+                                                backgroundColor: theme.palette.primary.main,
+                                                '&:hover': {
+                                                    backgroundColor: 'light',
+                                                }
                                             }}
                                             onClick={() => navigate(`/challenges/${challenge.url}/edit`)}
                                         >
@@ -110,6 +159,8 @@ export default function Challenges({allChallengesData, currentUserData}) {
                                         </Button>
                                     )}
                                 </Box>
+
+
                             </Box>
                         </Paper>
                     </Box>
