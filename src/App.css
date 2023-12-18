@@ -1,49 +1,57 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border-radius: 4px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	border-radius: 4px;
+}
+
+.App {
+	height: 100%;
+}
+
+.test-app {
+	min-height: 85vh;
 }
 
 .messagesBox {
-    height: 50vh;
-    overflow-y: scroll;
+	height: 50vh;
+	overflow-y: scroll;
 }
 
 .messages {
-    display: flex;
-    align-items: center;
-    overflow-wrap: break-word;
+	display: flex;
+	align-items: center;
+	overflow-wrap: break-word;
 }
 
 .sent {
-    flex-direction: row-reverse;
+	flex-direction: row-reverse;
 }
 
 .sent .message {
-    color: white;
-    background: #0b93f6;
-    align-self: flex-end;
+	color: white;
+	background: #0b93f6;
+	align-self: flex-end;
 }
 
 .received .message {
-    background: #e5e5ea;
-    color: black;
+	background: #e5e5ea;
+	color: black;
 }
 
 .message {
-    max-width: 64vw;
-    padding: 10px 20px;
-    border-radius: 2.5rem;
+	max-width: 64vw;
+	padding: 10px 20px;
+	border-radius: 2.5rem;
 }
 
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #fff; /* lub inny kolor tła */
-    z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #fff; /* lub inny kolor tła */
+	z-index: 1000;
 }
 
 .header-text,
@@ -53,33 +61,33 @@
 .header-text-light-right,
 .description,
 .ratings {
-    color: white;
-    border: solid;
-    border-width: 0.01rem;
-    border-color: white;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 5rem;
+	color: white;
+	border: solid;
+	border-width: 0.01rem;
+	border-color: white;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 5rem;
 }
 
 .description {
-    border-top: none;
-    border-bottom: none;
-    border-width: 0.01rem;
-    border-color: white;
+	border-top: none;
+	border-bottom: none;
+	border-width: 0.01rem;
+	border-color: white;
 }
 
 .header-text-gold,
 .ratings {
-    color: gold;
+	color: gold;
 }
 
 .ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .progress-bar {
@@ -96,12 +104,12 @@
 }
 
 @media (max-width: 600px) {
-    .header-text-light {
-        border-right: none;
-        border-bottom: none;
-    }
+	.header-text-light {
+		border-right: none;
+		border-bottom: none;
+	}
 }
 
 .MuiButton-root {
-    text-transform: capitalize !important;
+	text-transform: capitalize !important;
 }
