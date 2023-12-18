@@ -115,9 +115,9 @@ export default function SignIn() {
                                             Forgot password?
                                         </Link>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item xs align="right">
                                         <Link underline='hover' component={RouterLink} to='/register'>
-                                            Don&apos;t have an account? Sign Up
+                                            Don't have an account? Sign Up
                                         </Link>
                                     </Grid>
                                 </Grid>
