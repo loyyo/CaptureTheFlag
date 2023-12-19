@@ -123,7 +123,6 @@ export default function EditProfile() {
                     setSuccess(true);
                     setTimeout(() => {
                         navigate("/profile");
-                        navigate(0);
                     }, 1000);
                 } else {
                     setError(`You haven't changed any values`);
@@ -135,6 +134,7 @@ export default function EditProfile() {
                 }
             })
             .finally(() => {
+                getProfile();
                 setLoading(false);
             });
     }

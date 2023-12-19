@@ -31,14 +31,13 @@ const Header = () => {
 
 	const isMenuOpen = Boolean(anchorEl);
 
-	const handleLogout = async () => {
-		try {
-			await logout();
-			navigate(0);
-		} catch (error) {
-			console.error('Failed to log out:', error);
-		}
-	};
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error('Failed to log out:', error);
+        }
+    };
 
 	const navigateTo = (path) => {
 		handleCloseMenu();

@@ -45,8 +45,8 @@ function AuthProvider({children}) {
 
     const logout = useCallback(async () => {
         await auth.signOut();
-        setCurrentUserData([]);
-        setCurrentUser([]);
+        setCurrentUserData(null);
+        setCurrentUser(null);
         setAllChallengesData([]);
     }, []);
 
