@@ -12,8 +12,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
-//TODO: Custom error page
-
 export default function ErrorPage() {
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -34,7 +32,7 @@ export default function ErrorPage() {
 				<Grid container>
 					<Grid item xs={1} />
 					<Grid item xs={10}>
-						<Paper variant='outlined'>
+						<Paper variant='outlined' sx={{border: '2px solid #252028'}}>
 							<Box mb={3} mt={3} mr={5} ml={5}>
 								<Typography variant='h5' gutterBottom>
 									Error

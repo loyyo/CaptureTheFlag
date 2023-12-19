@@ -43,7 +43,7 @@ export default function Leaderboard() {
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<Paper elevation={3} sx={{ mt: 5, mb: isMobile ? 5 : 1, p: 2 }}>
+			<Paper elevation={0} sx={{ mt: 5, mb: isMobile ? 5 : 1, p: 2 }}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
 						<Typography variant='h4' align='center'>

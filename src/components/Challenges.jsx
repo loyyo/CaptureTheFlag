@@ -43,7 +43,6 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 			{allChallengesData.map((challenge) => (
 				<Grid item xs={12} sm={6} md={4} key={challenge.url}>
 					<Box m={1}>
-						{/* <Paper elevation={3} sx={{ backgroundColor: 'light', borderRadius: '4px' }}> */}
 						<Paper
 							variant='outlined'
 							sx={{ backgroundColor: 'light', borderRadius: '4px', border: '2px solid #252028' }}

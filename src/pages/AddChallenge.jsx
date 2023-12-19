@@ -93,7 +93,7 @@ export default function AddChallenge() {
 		<Container component='main' maxWidth='md'>
 			<Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<Paper
-					elevation={7}
+					elevation={0}
 					sx={{
 						padding: 2,
 						borderRadius: '4px',

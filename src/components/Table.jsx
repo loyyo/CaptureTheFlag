@@ -112,7 +112,7 @@ export default function StickyHeadTable({ allUsersData }) {
 	};
 
 	return (
-		<Paper elevation={5} sx={{ width: '100%', overflowX: 'auto' }}> {/* Enable horizontal scrolling */}
+		<Paper elevation={0} sx={{ width: '100%', overflowX: 'auto', border: '2px solid #252028' }}> {/* Enable horizontal scrolling */}
 			<TableContainer sx={{ maxHeight: 500 }}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
@@ -121,7 +121,7 @@ export default function StickyHeadTable({ allUsersData }) {
 								<TableCell
 									key={column.id}
 									align={column.align}
-									style={{ minWidth: column.minWidth }}
+									style={{ minWidth: column.minWidth, borderBottom: '2px solid #252028' }}
 								>
 									{column.label}
 								</TableCell>

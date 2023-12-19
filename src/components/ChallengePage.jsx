@@ -119,13 +119,6 @@ export default function ChallengePage({challenge, currentUser}) {
         }
     }, [error]);
 
-    const paperStyle = {
-        backgroundColor: 'light',
-        borderRadius: '4px',
-        padding: 2,
-        margin: 1,
-    };
-
     return (
         <Container component="main" maxWidth="lg" sx={{
             mt: 2,
@@ -133,7 +126,7 @@ export default function ChallengePage({challenge, currentUser}) {
             height: isMobile ? 'auto' : 'calc(100vh - 130px)'
         }}>
             <Grid container direction='column'>
-                <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
+                <Paper elevation={0} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
                     {/* Title */}
                     <Grid item xs={12}>
                         <Typography variant='h4' align="center">
@@ -143,9 +136,9 @@ export default function ChallengePage({challenge, currentUser}) {
 
                     {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                     <Grid item xs={12}>
-                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', margin: 1}}>
+                        <Paper variant='outlined' sx={{backgroundColor: 'light', borderRadius: '4px', margin: 1, border: '2px solid #252028'}}>
                             {/* Description */}
-                            <Typography variant='h5' align="left" sx={{borderRadius: 0, borderBottom: `1px solid ${theme.palette.divider}`, width: '100%', padding: 1}}>
+                            <Typography variant='h5' align="left" sx={{borderRadius: 0, borderBottom: '2px solid #252028', width: '100%', padding: 1}}>
                                 {challenge.description}
                             </Typography>
 

@@ -163,7 +163,7 @@ export default function EditChallenge() {
                 height: isMobile ? 'auto' : 'calc(100vh - 90px)'
             }}>
                 <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Paper elevation={7} sx={{
+                    <Paper elevation={0} sx={{
                         padding: 2,
                         borderRadius: '4px',
                         mt: 3,
