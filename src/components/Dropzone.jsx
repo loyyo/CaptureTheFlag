@@ -27,7 +27,7 @@ const Dropzone = ({ image, setImage, setFile }) => {
 		<div
 			{...getRootProps()}
 			style={{
-				border: "2px dashed #ccc",
+				border: "2px dashed #252028",
 				padding: "20px",
 				textAlign: "center",
 				position: "relative",

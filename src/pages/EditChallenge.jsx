@@ -185,6 +185,20 @@ export default function EditChallenge() {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
+                                        inputProps={{
+                                            maxLength: 25
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
+                                        }}
                                     />
                                 </Grid>
 
@@ -200,6 +214,17 @@ export default function EditChallenge() {
                                         inputRef={descriptionRef}
                                         InputLabelProps={{
                                             shrink: true,
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
                                         }}
                                     />
                                 </Grid>
@@ -219,6 +244,23 @@ export default function EditChallenge() {
                                             value={difficulty}
                                             label="Difficulty"
                                             onChange={(e) => setDifficulty(e.target.value)}
+                                            sx={{
+                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '3px',
+                                                },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '& .MuiSelect-select': {
+                                                    backgroundColor: 'transparent',
+                                                }
+                                            }}
                                         >
                                             <MenuItem value="easy">Easy</MenuItem>
                                             <MenuItem value="medium">Medium</MenuItem>
@@ -226,7 +268,6 @@ export default function EditChallenge() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-
                                 <Grid item xs={12} sm={7} order={isMobile ? 3 : 4}>
                                     <TextField
                                         required
@@ -238,6 +279,17 @@ export default function EditChallenge() {
                                         onChange={(e) => setCorrectAnswer(e.target.value)}
                                         InputLabelProps={{
                                             shrink: true,
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
                                         }}
                                     />
                                 </Grid>

@@ -2,15 +2,6 @@ import {useTheme} from '@mui/material/styles';
 import {
     Grid,
     Typography,
-    Button,
-    Paper,
-    Avatar,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';

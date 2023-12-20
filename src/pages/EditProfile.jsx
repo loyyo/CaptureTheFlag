@@ -250,6 +250,17 @@ export default function EditProfile() {
                                             autoComplete="username"
                                             inputRef={usernameRef}
                                             defaultValue={currentUserData.username}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
@@ -264,6 +275,17 @@ export default function EditProfile() {
                                             autoComplete="email"
                                             inputRef={emailRef}
                                             defaultValue={currentUser.email}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
@@ -289,12 +311,23 @@ export default function EditProfile() {
                                             rows={4}
                                             inputRef={bioRef}
                                             defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
 
                                     <Grid item xs={12}>
-                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1 }} />
+                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1, border: '1px solid #252028' }} />
                                     </Grid>
 
                                     {/* Password Fields */}
@@ -309,6 +342,17 @@ export default function EditProfile() {
                                             autoComplete="current-password"
                                             inputRef={currentPasswordRef}
                                             helperText="*Required when changing the password"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -322,6 +366,17 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -335,6 +390,18 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordConfirmationRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                 </>
@@ -352,7 +419,18 @@ export default function EditProfile() {
                                             autoComplete="username"
                                             inputRef={usernameRef}
                                             defaultValue={currentUserData.username}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                         <TextField
                                             variant="outlined"
@@ -363,7 +441,18 @@ export default function EditProfile() {
                                             autoComplete="email"
                                             inputRef={emailRef}
                                             defaultValue={currentUser.email}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                         <Dropzone
                                             image={image}
@@ -389,7 +478,18 @@ export default function EditProfile() {
                                             id="currentPassword"
                                             autoComplete="current-password"
                                             inputRef={currentPasswordRef}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                             helperText="*Required when changing the password"
                                         />
                                         <TextField
@@ -401,7 +501,18 @@ export default function EditProfile() {
                                             id="password"
                                             autoComplete="new-password"
                                             inputRef={passwordRef}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                             helperText="*Leave blank to keep the same"
                                         />
                                         <TextField
@@ -414,6 +525,17 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordConfirmationRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -427,6 +549,17 @@ export default function EditProfile() {
                                             rows={4}
                                             inputRef={bioRef}
                                             defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                 </>

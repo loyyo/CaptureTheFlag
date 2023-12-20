@@ -23,7 +23,8 @@ const classes = {
 const StyledContainer = styled(Container)(({theme}) => ({
     [`& .${classes.input}`]: {
         '&::placeholder': {
-            textAlign: 'center',
+            textAlign: 'left',
+            opacity: 1,
         },
         color: '',
     },
@@ -113,7 +114,7 @@ export default function GlobalChat() {
     return (
         <StyledContainer maxWidth='lg' sx={{height: 'calc(100vh - 90px)'}}>
             <CssBaseline/>
-            <Paper elevation={3} sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
+            <Paper sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
                 <Box mb={5}>
                     <Grid container direction='column'>
                         <Grid item xs={12} sx={{marginBottom: '20px'}}>
@@ -122,7 +123,7 @@ export default function GlobalChat() {
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square elevation={3}>
+                            <Paper square sx={{border: '2px solid #252028'}}>
                                 <Box p={1} className='messagesBox'>
                                     {globalMessages?.map((msg) => (
                                         <ChatMessage

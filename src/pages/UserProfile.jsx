@@ -109,7 +109,7 @@ export default function UserProfile() {
             height: isMobile ? 'auto' : 'calc(100vh - 90px)'
         }}>
             <CssBaseline/>
-            <Paper elevation={7} sx={{padding: 2, borderRadius: '4px'}}>
+            <Paper elevation={0} sx={{padding: 2, borderRadius: '4px'}}>
                 {/* Nagłówek strony i przyciski zakładek */}
                 <Box p={2}>
                     <Typography variant='h4' align='center'>
@@ -167,13 +167,17 @@ export default function UserProfile() {
                             <Grid item xs={12} md={5}>
                                 <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
                                     {/* Otoczka wokół avatara i informacji */}
-                                    <Paper elevation={1}
-                                           sx={{
-                                               p: 2,
-                                               mb: 2,
-                                               width: '95%',
-                                               bgcolor: theme.palette.background.paper
-                                           }}>
+                                    <Paper
+                                        variant='outlined'
+                                        // elevation={1}
+                                        sx={{
+                                            p: 2,
+                                            mb: 2,
+                                            width: '95%',
+                                            bgcolor: theme.palette.background.paper,
+                                            border: '2px solid #252028',
+                                        }}
+                                    >
                                         <Box display='flex' flexDirection='row' alignItems='center'
                                              sx={{width: '100%', justifyContent: 'center'}}>
                                             <Avatar
@@ -192,13 +196,16 @@ export default function UserProfile() {
                                     </Paper>
 
                                     {/* Otoczka tylko dla bio */}
-                                    <Paper elevation={1}
-                                           sx={{
-                                               p: 2,
-                                               mb: 2,
-                                               width: '95%',
-                                               bgcolor: theme.palette.background.paper
-                                           }}>
+                                    <Paper
+                                        variant='outlined'
+                                        sx={{
+                                            p: 2,
+                                            mb: 2,
+                                            width: '95%',
+                                            bgcolor: theme.palette.background.paper,
+                                            border: '2px solid #252028',
+                                        }}
+                                    >
                                         <Typography variant='body1'>{thisUserData.bio}</Typography>
                                     </Paper>
                                     {currentUserData.userID === thisUserData.userID && (
@@ -206,7 +213,7 @@ export default function UserProfile() {
                                             variant='contained'
                                             color='primary'
                                             onClick={() => navigate('/profile/settings')}
-                                            sx={{width: '95%'}}
+                                            sx={{width: '95%', color: 'white'}}
                                         >
                                             Edit Profile
                                         </Button>
@@ -217,7 +224,10 @@ export default function UserProfile() {
 
                             {/* Solved challenges */}
                             <Grid item xs={12} md={7}>
-                                <Paper elevation={3} sx={{p: 2, height: '100%', mb: 2}}>
+                                <Paper
+                                    variant='outlined'
+                                    sx={{p: 2, height: '100%', mb: 2, border: '2px solid #252028'}}
+                                >
                                     <Typography variant='h5' gutterBottom>
                                         Solved Challenges
                                     </Typography>

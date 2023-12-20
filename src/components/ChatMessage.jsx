@@ -1,9 +1,10 @@
 import { Grid, Box, Typography, Avatar } from '@mui/material';
 import PropTypes from 'prop-types';
+import {useTheme} from "@mui/material/styles";
 
 export default function ChatMessage({ message, currentUserData, allUsersData }) {
 	const messageClass = currentUserData.userID === message.userID ? 'sent' : 'received';
-
+    const theme = useTheme();
 	const avatarSrc = () => {
 		let link = '';
 		allUsersData.forEach((e) => {
@@ -42,7 +43,8 @@ export default function ChatMessage({ message, currentUserData, allUsersData }) 
 						</Grid>
 					</Grid>
 				)}
-				{messageClass === 'sent' && <Typography className='message'>{message.text}</Typography>}
+                {messageClass === 'sent' && <Typography className='message'
+                                                        sx={{backgroundColor: theme.palette.primary.main}}>{message.text}</Typography>}
 			</Box>
 		</Box>
 	);

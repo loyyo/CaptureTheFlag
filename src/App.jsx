@@ -90,6 +90,7 @@ function App() {
 					style={{
 						backgroundColor: theme.palette.primary.main,
 						overflowX: 'hidden',
+						borderRadius: 0
 					}}
 				>
 					<Header />

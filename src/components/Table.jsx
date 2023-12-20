@@ -121,7 +121,7 @@ export default function StickyHeadTable({ allUsersData }) {
 								<TableCell
 									key={column.id}
 									align={column.align}
-									style={{ minWidth: column.minWidth, borderBottom: '2px solid #252028' }}
+									style={{ minWidth: column.minWidth, borderBottom: '2px solid #252028', borderRadius: 0 }}
 								>
 									{column.label}
 								</TableCell>
@@ -139,6 +139,12 @@ export default function StickyHeadTable({ allUsersData }) {
 									}}
 									tabIndex={-1}
 									key={row.userID}
+									sx={{
+										'& > *': {
+											borderBottom: '2px solid #252028',
+											borderRadius: 0
+										}
+									}}
 								>
 									{columns.map((column) => {
 										const value = row[column.id];

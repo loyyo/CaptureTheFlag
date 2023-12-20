@@ -115,6 +115,20 @@ export default function AddChallenge() {
 									label='Challenge Name'
 									name='challenge'
 									inputRef={challengeRef}
+									inputProps={{
+										maxLength: 25
+									}}
+									sx={{
+										'& .MuiOutlinedInput-root': {
+											'& fieldset': {
+												borderColor: '#252028',
+												borderWidth: '2px',
+											},
+											'&:hover fieldset': {
+												borderWidth: '3px',
+											},
+										}
+									}}
 								/>
 							</Grid>
 
@@ -128,6 +142,17 @@ export default function AddChallenge() {
 									multiline
 									rows={4}
 									inputRef={descriptionRef}
+									sx={{
+										'& .MuiOutlinedInput-root': {
+											'& fieldset': {
+												borderColor: '#252028',
+												borderWidth: '2px',
+											},
+											'&:hover fieldset': {
+												borderWidth: '3px',
+											},
+										}
+									}}
 								/>
 							</Grid>
 
@@ -140,6 +165,17 @@ export default function AddChallenge() {
 									name='correctAnswer'
 									value={correctAnswer}
 									onChange={(e) => setCorrectAnswer(e.target.value)}
+									sx={{
+										'& .MuiOutlinedInput-root': {
+											'& fieldset': {
+												borderColor: '#252028',
+												borderWidth: '2px',
+											},
+											'&:hover fieldset': {
+												borderWidth: '3px',
+											},
+										}
+									}}
 								/>
 							</Grid>
 
@@ -152,6 +188,23 @@ export default function AddChallenge() {
 										value={difficulty}
 										label='Difficulty'
 										onChange={(e) => setDifficulty(e.target.value)}
+										sx={{
+											'& .MuiOutlinedInput-notchedOutline': {
+												borderColor: '#252028',
+												borderWidth: '2px',
+											},
+											'&:hover .MuiOutlinedInput-notchedOutline': {
+												borderColor: '#252028',
+												borderWidth: '3px',
+											},
+											'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+												borderColor: '#252028',
+												borderWidth: '2px',
+											},
+											'& .MuiSelect-select': {
+												backgroundColor: 'transparent',
+											}
+										}}
 									>
 										<MenuItem value='easy'>Easy</MenuItem>
 										<MenuItem value='medium'>Medium</MenuItem>

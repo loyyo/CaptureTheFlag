@@ -135,10 +135,6 @@ export default function Profile() {
         >
             <CssBaseline/>
             <Paper elevation={0} sx={{padding: 2, borderRadius: '4px'}}>
-                {/* <Paper
-				variant='outlined'
-				sx={{ padding: 2, borderRadius: '4px', border: '2px solid #252028' }}
-			> */}
                 {/* Nagłówek strony i przyciski zakładek */}
                 <Box p={2}>
                     <Typography variant='h4' align='center'>
@@ -242,7 +238,6 @@ export default function Profile() {
                                     {/* Otoczka tylko dla bio */}
                                     <Paper
                                         variant='outlined'
-                                        // elevation={1}
                                         sx={{
                                             p: 2,
                                             mb: 2,

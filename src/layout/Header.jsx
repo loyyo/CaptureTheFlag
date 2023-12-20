@@ -12,18 +12,15 @@ import {
 } from '@mui/material';
 import {
 	AccountCircle,
-	Flag as FlagIcon,
-	Equalizer as EqualizerIcon,
-	Add as AddIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom'; // import useLocation
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Correctly using useMediaQuery
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 	const location = useLocation(); // Get the current location
@@ -51,6 +48,7 @@ const Header = () => {
 		borderTopRightRadius: theme.shape.borderRadius,
 		borderBottomLeftRadius: 0,
 		borderBottomRightRadius: 0,
+		borderBottom: '2px solid #252028',
 		'&:hover': {
 			backgroundColor: theme.palette.action.hover,
 		},

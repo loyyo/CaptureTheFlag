@@ -1,34 +1,12 @@
 import {useState, useRef, useEffect} from 'react';
-import {createTheme, ThemeProvider, styled, useTheme} from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton, Container} from '@mui/material';
 import {useMediaQuery} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
-import {green} from '@mui/material/colors';
 import PropTypes from 'prop-types';
 import Rating from 'react-rating';
-
-const PREFIX = 'ChallengePage';
-const classes = {
-    input: `${PREFIX}-input`,
-};
-const StyledGrid = styled(Grid)(({theme}) => ({
-    [`& .${classes.input}`]: {
-        '&::placeholder': {
-            color: 'white',
-            textAlign: 'center',
-        },
-        color: 'white',
-        background: theme.palette.primary.light,
-    },
-}));
-
-const successTheme = createTheme({
-    palette: {
-        error: green,
-    },
-});
 
 export default function ChallengePage({challenge, currentUser}) {
     const [error, setError] = useState(false);
@@ -40,7 +18,7 @@ export default function ChallengePage({challenge, currentUser}) {
     const isAuthor = currentUser.userID === challenge.userID;
 
     const navigate = useNavigate();
-    const {doChallenge, rateChallenge} = useAuth();
+    const {doChallenge, rateChallenge, getAllChallengesData, getSingleChallengeData, getProfile} = useAuth();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleImageClick = () => {
@@ -50,7 +28,6 @@ export default function ChallengePage({challenge, currentUser}) {
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
-
 
     const checkKey = async () => {
         if (loading) {
@@ -71,20 +48,14 @@ export default function ChallengePage({challenge, currentUser}) {
                 );
                 setSuccess(true);
                 setTimeout(() => {
-                    // navigate('/challenges');
-                    navigate(0);
+                    navigate('/challenges');
+                    getProfile();
                 }, 2000);
             } catch {
                 setError(true);
                 setSuccess(false);
             }
             setLoading(false);
-        }
-    };
-
-    const kliknietyEnter = (e) => {
-        if (e.key === 'Enter') {
-            checkKey();
         }
     };
 
@@ -104,8 +75,9 @@ export default function ChallengePage({challenge, currentUser}) {
     const handleRating = async (value) => {
         try {
             await rateChallenge(value, challenge.url, currentUser.userID);
+            getAllChallengesData();
+            getSingleChallengeData(challenge.url);
             navigate('/challenges');
-            navigate(0);
         } catch {
             console.error('Something bad happened :(');
         }
@@ -180,7 +152,7 @@ export default function ChallengePage({challenge, currentUser}) {
                             {/* Image */}
                             {challenge.image && (
                                 <Box onClick={handleImageClick}
-                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: `1px solid ${theme.palette.divider}`}}>
+                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: '2px solid #252028'}}>
                                     <img alt={`image-${challenge.url}`} src={challenge.image}
                                          style={{maxWidth: '100%', maxHeight: '500px'}}/>
                                 </Box>
@@ -240,19 +212,22 @@ export default function ChallengePage({challenge, currentUser}) {
                                             </Typography>
                                         </Grid>
                                     )}
-                                    <Grid item xs={12} lg={2}>
-                                        <Button
-                                            type='button'
-                                            variant='contained'
-                                            color='primary'
-                                            disabled={loading || success}
-                                            onClick={checkKey}
-                                            sx={{padding: 1.75, color: 'white', fontSize: '1.25rem'}}
-                                            fullWidth
-                                        >
-                                            Submit
-                                        </Button>
-                                    </Grid>
+                                    {!success && (
+                                        <Grid item xs={12} lg={2}>
+                                            <Button
+                                                type='button'
+                                                variant='contained'
+                                                color='primary'
+                                                disabled={loading || success}
+                                                onClick={checkKey}
+                                                sx={{padding: 1.75, color: 'white', fontSize: '1.25rem'}}
+                                                fullWidth
+                                            >
+                                                Submit
+                                            </Button>
+                                        </Grid>
+                                    )}
+
                                 </Grid>
 
                             )}
