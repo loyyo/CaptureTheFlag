@@ -144,6 +144,15 @@ export default function StickyHeadTable({allUsersData}) {
                                 >
                                     {columns.map((column) => {
                                         const value = row[column.id];
+                                        if (column.id === 'rank') {
+                                            return (
+                                                <TableCell key={column.id} align={column.align}
+                                                           sx={{borderBottom: '2px solid #252028', borderRadius: 0}}
+                                                >
+                                                    {index + 1}
+                                                </TableCell>
+                                            );
+                                        }
                                         if (column.id === 'avatar') {
                                             return (
                                                 <TableCell key={column.id} align={column.align}

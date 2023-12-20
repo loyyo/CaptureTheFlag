@@ -234,14 +234,14 @@ export default function UserProfile() {
 
                                     <Grid container spacing={3} alignItems="center">
                                         {/* Koło z ilością wykonanych wyzwań */}
-                                        <Grid item xs={12} md={4}> {/* Zmniejszono proporcję md do 4 */}
+                                        <Grid item xs={12} md={4}>
                                             <Box sx={{
                                                 display: 'flex',
                                                 flexDirection: 'column',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 height: '100%',
-                                                mt: 2
+                                                mt: isMobile ? 0 : 2,
                                             }}>
                                                 <CircularProgress
                                                     variant="determinate"
@@ -270,73 +270,75 @@ export default function UserProfile() {
                                         </Grid>
 
                                         {/* Paski postępu */}
-                                        <Grid item xs={12} md={7} sx={{marginLeft: 4}}>
+                                        <Grid item xs={12} md={7} sx={{
+                                                marginLeft: isMobile ? 0 : 4
+                                            }} >
 
-                                            <Box>
-                                                {/* Pasek postępu dla Easy Challenges */}
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    marginBottom: 2
-                                                }}>
-                                                    <Typography variant='body1'>{`Easy`}</Typography>
-                                                    <Typography
-                                                        variant='body1'>{`${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>
-                                                </Box>
-                                                <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{
-                                                        width: `${calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)}%`,
-                                                        backgroundColor: theme.palette.primary.main
-                                                    }}></div>
-                                                </div>
-                                            </Box>
+                                            < Box >
+                                            {/* Pasek postępu dla Easy Challenges */}
+                                            <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            marginBottom: 2
+                                        }}>
+                                            <Typography variant='body1'>{`Easy`}</Typography>
+                                            <Typography
+                                                variant='body1'>{`${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>
+                                        </Box>
+                                        <div className='progress-bar'>
+                                            <div className='progress-fill' style={{
+                                                width: `${calculatePercentage(userData.solvedEasyChallenges, userData.totalEasyChallenges)}%`,
+                                                backgroundColor: theme.palette.primary.main
+                                            }}></div>
+                                        </div>
+                                    </Box>
 
-                                            {/* Pasek postępu dla Medium Challenges */}
-                                            <Box sx={{marginTop: 3}}>
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    marginBottom: 2
-                                                }}>
-                                                    <Typography variant='body1'>{`Medium`}</Typography>
-                                                    <Typography
-                                                        variant='body1'>{`${userData.solvedMediumChallenges}/${userData.totalMediumChallenges}`}</Typography>
-                                                </Box>
-                                                <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{
-                                                        width: `${calculatePercentage(userData.solvedMediumChallenges, userData.totalMediumChallenges)}%`,
-                                                        backgroundColor: theme.palette.primary.main
-                                                    }}></div>
-                                                </div>
-                                            </Box>
+                                    {/* Pasek postępu dla Medium Challenges */}
+                                    <Box sx={{marginTop: 3}}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            marginBottom: 2
+                                        }}>
+                                            <Typography variant='body1'>{`Medium`}</Typography>
+                                            <Typography
+                                                variant='body1'>{`${userData.solvedMediumChallenges}/${userData.totalMediumChallenges}`}</Typography>
+                                        </Box>
+                                        <div className='progress-bar'>
+                                            <div className='progress-fill' style={{
+                                                width: `${calculatePercentage(userData.solvedMediumChallenges, userData.totalMediumChallenges)}%`,
+                                                backgroundColor: theme.palette.primary.main
+                                            }}></div>
+                                        </div>
+                                    </Box>
 
-                                            {/* Pasek postępu dla Hard Challenges */}
-                                            <Box sx={{marginTop: 3}}>
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    marginBottom: 2
-                                                }}>
-                                                    <Typography variant='body1'>{`Hard`}</Typography>
-                                                    <Typography
-                                                        variant='body1'>{`${userData.solvedHardChallenges}/${userData.totalHardChallenges}`}</Typography>
-                                                </Box>
-                                                <div className='progress-bar'>
-                                                    <div className='progress-fill' style={{
-                                                        width: `${calculatePercentage(userData.solvedHardChallenges, userData.totalHardChallenges)}%`,
-                                                        backgroundColor: theme.palette.primary.main
-                                                    }}></div>
-                                                </div>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
+                                    {/* Pasek postępu dla Hard Challenges */}
+                                    <Box sx={{marginTop: 3}}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            marginBottom: 2
+                                        }}>
+                                            <Typography variant='body1'>{`Hard`}</Typography>
+                                            <Typography
+                                                variant='body1'>{`${userData.solvedHardChallenges}/${userData.totalHardChallenges}`}</Typography>
+                                        </Box>
+                                        <div className='progress-bar'>
+                                            <div className='progress-fill' style={{
+                                                width: `${calculatePercentage(userData.solvedHardChallenges, userData.totalHardChallenges)}%`,
+                                                backgroundColor: theme.palette.primary.main
+                                            }}></div>
+                                        </div>
+                                    </Box>
                             </Grid>
                         </Grid>
-                    )}
+                        </Paper>
+                        </Grid>
+                        </Grid>
+                        )}
 
                     {/* Zakładka "Your Challenges" */}
                     {isChallengesTabActive && (

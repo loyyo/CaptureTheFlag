@@ -274,8 +274,6 @@ export default function Profile() {
                                     <Grid container spacing={3} alignItems='center'>
                                         {/* Koło z ilością wykonanych wyzwań */}
                                         <Grid item xs={12} md={4}>
-                                            {' '}
-                                            {/* Zmniejszono proporcję md do 4 */}
                                             <Box
                                                 sx={{
                                                     display: 'flex',
@@ -283,7 +281,7 @@ export default function Profile() {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     height: '100%',
-                                                    mt: 2,
+                                                    mt: isMobile ? 0 : 2,
                                                 }}
                                             >
                                                 <CircularProgress
@@ -325,7 +323,9 @@ export default function Profile() {
                                         </Grid>
 
                                         {/* Paski postępu */}
-                                        <Grid item xs={12} md={7} sx={{marginLeft: 4}}>
+                                        <Grid item xs={12} md={7} sx={{
+                                            marginLeft: isMobile ? 0 : 4,
+                                        }}>
                                             <Box>
                                                 {/* Pasek postępu dla Easy Challenges */}
                                                 <Box
