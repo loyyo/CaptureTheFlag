@@ -3,8 +3,11 @@ import { useDropzone } from "react-dropzone";
 import { IconButton } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import PropTypes from "prop-types";
+import {useTheme} from "@mui/material/styles";
 
 const Dropzone = ({ image, setImage, setFile }) => {
+	const theme = useTheme();
+
 	const onDrop = useCallback((acceptedFiles) => {
 		setImage(URL.createObjectURL(acceptedFiles[0]));
 		setFile(acceptedFiles[0]);
@@ -28,6 +31,7 @@ const Dropzone = ({ image, setImage, setFile }) => {
 			{...getRootProps()}
 			style={{
 				border: "2px dashed #252028",
+				backgroundColor: theme.palette.mode === 'dark' ? '#252028' : '',
 				padding: "20px",
 				textAlign: "center",
 				position: "relative",

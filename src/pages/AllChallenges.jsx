@@ -9,7 +9,6 @@ import {
 	LinearProgress,
 	TextField,
 	Button,
-	Menu,
 	MenuItem,
 	Paper,
 	useMediaQuery,

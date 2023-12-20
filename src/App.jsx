@@ -95,8 +95,7 @@ function App() {
             MuiTextField: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: prefersDarkMode ? '#2b2836' : '',
-                        '& .MuiOutlinedInput-root': {
+                        '& .MuiInputBase-root': {
                             backgroundColor: prefersDarkMode ? '#2b2836' : '',
                         },
                     },
@@ -105,22 +104,17 @@ function App() {
             MuiFormControl: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: prefersDarkMode ? '#2b2836' : '',
-                        '& .MuiOutlinedInput-root': {
+                        '& .MuiInputBase-root': {
                             backgroundColor: prefersDarkMode ? '#2b2836' : '',
                         },
                     },
                 },
             },
-            MuiInput: {
+            MuiMenuItem: {
                 styleOverrides: {
                     root: {
-                        // Styl dla korzenia komponentu input
-                        backgroundColor: prefersDarkMode ? 'red' : '',
-                    },
-                    input: {
-                        // Styl dla elementu input wewnątrz komponentu
-                        color: prefersDarkMode ? 'white' : '', // Jeśli potrzebujesz zmienić kolor tekstu
+                        backgroundColor: prefersDarkMode ? '#2b2836' : 'inherit',
+                        color: prefersDarkMode ? 'white' : 'black',
                     },
                 },
             },
