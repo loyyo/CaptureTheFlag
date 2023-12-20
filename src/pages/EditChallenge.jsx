@@ -298,8 +298,8 @@ export default function EditChallenge() {
                                     <Grid container spacing={2} justifyContent="center">
                                         <Grid item>
                                             <Button
-                                                variant="contained"
-                                                color="secondary"
+                                                variant='outlined'
+                                                color='secondary'
                                                 onClick={handleDelete}
                                                 disabled={loading}
                                                 sx={{mb: 2, width: 100}}
@@ -312,7 +312,7 @@ export default function EditChallenge() {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
-                                                sx={{mb: 2, width: 200, color: 'white'}}
+                                                sx={{mb: 2, width: 150}}
                                                 disabled={loading}
                                             >
                                                 SAVE

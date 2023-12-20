@@ -574,12 +574,13 @@ export default function EditProfile() {
                             flexDirection: isMobile ? 'column' : 'row',
                             justifyContent: 'center'
                         }}>
-                            <Button onClick={handleCancel} variant="outlined"
+                            <Button onClick={handleCancel}
+                                    variant='outlined'
+                                    color='secondary'
                                     sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained"
-                                    sx={{color: 'white'}} disabled={loading}>
+                            <Button type="submit" variant="contained" disabled={loading}>
                                 Save Changes
                             </Button>
                         </Box>

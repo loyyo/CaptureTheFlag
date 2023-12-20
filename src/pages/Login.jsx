@@ -4,7 +4,6 @@ import {
     TextField,
     CssBaseline,
     Button,
-    Avatar,
     Grid,
     Typography,
     Container,
@@ -104,7 +103,7 @@ export default function SignIn() {
                                     fullWidth
                                     variant='contained'
                                     color='primary'
-                                    sx={{margin: theme.spacing(3, 0, 2), color: 'white'}}
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
                                     disabled={loading}
                                 >
                                     Sign In

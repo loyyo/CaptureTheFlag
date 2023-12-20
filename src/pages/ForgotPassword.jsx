@@ -1,6 +1,5 @@
 import {useRef, useState} from 'react';
 import {
-    Avatar,
     Button,
     Box,
     Container,
@@ -121,7 +120,7 @@ export default function ForgotPassword() {
                                     fullWidth
                                     variant='contained'
                                     color='primary'
-                                    sx={{margin: theme.spacing(3, 0, 2), color: 'white'}}
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
                                     disabled={loading}
                                 >
                                     Reset Password

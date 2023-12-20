@@ -163,7 +163,6 @@ export default function GlobalChat() {
                                                 variant='contained'
                                                 size='large'
                                                 disabled={loading}
-                                                sx={{color: 'white'}}
                                                 onClick={submitMessage}
                                             >
                                                 {isMobile ? <SendIcon /> : <>Send<SendIcon sx={{ml: 1}}/></>}

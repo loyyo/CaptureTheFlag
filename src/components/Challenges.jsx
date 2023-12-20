@@ -140,16 +140,12 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 								>
 									<Button
 										variant='outlined'
-										color='inherit'
+										color='secondary'
 										sx={{
 											width: '50%',
 											flexGrow: 1,
 											m: 0,
 											border: 'none',
-											backgroundColor: 'light',
-											'&:hover': {
-												backgroundColor: 'light',
-											},
 										}}
 										onClick={() => navigate(`/challenges/${challenge.url}`)}
 									>
@@ -157,8 +153,8 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 									</Button>
 									{currentUserData.userID === challenge.userID && (
 										<Button
-											variant='outlined'
-											color='inherit'
+											variant='contained'
+											color="primary"
 											sx={{
 												width: '50%',
 												flexGrow: 1,
@@ -167,12 +163,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 												borderTopLeftRadius: 0,
 												borderTopRightRadius: 0,
 												borderBottomLeftRadius: 0,
-												color: 'white',
 												borderLeft: `2px solid #252028`,
-												backgroundColor: theme.palette.primary.main,
-												'&:hover': {
-													backgroundColor: 'light',
-												},
 											}}
 											onClick={() => navigate(`/challenges/${challenge.url}/edit`)}
 										>

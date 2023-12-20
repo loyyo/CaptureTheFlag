@@ -232,7 +232,8 @@ export default function AddChallenge() {
 									<Button
 										type='submit'
 										variant='contained'
-										sx={{ color: 'white', padding: '10px 20px' }}
+										color="primary"
+										sx={{ padding: '10px 20px' }}
 									>
 										Add Challenge
 									</Button>

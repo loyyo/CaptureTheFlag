@@ -5,7 +5,6 @@ import {
     Grid,
     CssBaseline,
     Button,
-    Avatar,
     Collapse,
     Container,
     Typography,
@@ -180,7 +179,7 @@ export default function SignUp() {
                                     fullWidth
                                     variant='contained'
                                     color='primary'
-                                    sx={{margin: theme.spacing(3, 0, 2), color: 'white'}}
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
                                     disabled={loading}
                                 >
                                     Sign Up

@@ -211,9 +211,9 @@ export default function UserProfile() {
                                     {currentUserData.userID === thisUserData.userID && (
                                         <Button
                                             variant='contained'
-                                            color='primary'
+                                            color="primary"
                                             onClick={() => navigate('/profile/settings')}
-                                            sx={{width: '95%', color: 'white'}}
+                                            sx={{width: '95%'}}
                                         >
                                             Edit Profile
                                         </Button>
