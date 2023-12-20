@@ -208,6 +208,11 @@ function AllChallenges() {
 										onClose={() => handleClosePopover(setSortMenuAnchorEl)}
 										anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+										PaperProps={{
+											style: {
+												width: sortButtonRef.current ? sortButtonRef.current.offsetWidth : undefined
+											}
+										}}
 									>
 										<MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
 										<MenuItem onClick={() => setSelectedSort('alphabetical')}>
@@ -234,6 +239,11 @@ function AllChallenges() {
 										onClose={() => handleClosePopover(setDifficultyFilterMenuAnchorEl)}
 										anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+										PaperProps={{
+											style: {
+												width: difficultyButtonRef.current ? difficultyButtonRef.current.offsetWidth : undefined
+											}
+										}}
 									>
 										{/* Popover content for difficulty */}
 										<MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
@@ -262,6 +272,11 @@ function AllChallenges() {
 										onClose={() => handleClosePopover(setRatingFilterMenuAnchorEl)}
 										anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+										PaperProps={{
+											style: {
+												width: difficultyButtonRef.current ? difficultyButtonRef.current.offsetWidth : undefined
+											}
+										}}
 									>
 										{/* Popover content for rating */}
 										<MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
