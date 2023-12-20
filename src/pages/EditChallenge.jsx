@@ -294,7 +294,7 @@ export default function EditChallenge() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} order={isMobile ? 6 : 5}>
+                                <Grid item xs={12} order={isMobile ? 6 : 5} sx={{mt: 2}}>
                                     <Grid container spacing={2} justifyContent="center">
                                         <Grid item>
                                             <Button
@@ -302,7 +302,7 @@ export default function EditChallenge() {
                                                 color='secondary'
                                                 onClick={handleDelete}
                                                 disabled={loading}
-                                                sx={{mb: 2, width: 100}}
+                                                sx={{mb: 1, width: 100}}
                                             >
                                                 DELETE
                                             </Button>
@@ -312,7 +312,7 @@ export default function EditChallenge() {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
-                                                sx={{mb: 2, width: 150}}
+                                                sx={{mb: 1, width: 150}}
                                                 disabled={loading}
                                             >
                                                 SAVE

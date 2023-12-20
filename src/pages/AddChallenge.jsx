@@ -220,7 +220,7 @@ export default function AddChallenge() {
 							</Grid>
 
 							<Grid item xs={12} order={isMobile ? 6 : 5}>
-								<Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 1 }}>
+								<Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 1 }}>
 									<Button
 										variant='outlined'
 										color='secondary'
