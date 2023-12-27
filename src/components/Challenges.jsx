@@ -119,7 +119,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 										emptySymbol={
 											<span className='fa fa-star-o fa-2x' style={{ margin: '0 8px' }} />
 										}
-										fullSymbol={<span className='fa fa-star fa-2x' style={{ margin: '0 8px' }} />}
+										fullSymbol={<span className='fa fa-star fa-2x' style={{ margin: '0 8px', color: theme.palette.primary.main }} />}
 										fractions={100}
 										initialRating={getInitialRating(challenge)}
 										readonly

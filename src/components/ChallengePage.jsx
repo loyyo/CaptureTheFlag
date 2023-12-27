@@ -125,7 +125,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                     </Typography>
                                     <Rating
                                         emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        fullSymbol={<span className='fa fa-star fa-2x' style={{color: theme.palette.primary.main}} />}
                                         fractions={100}
                                         initialRating={getInitialRating(challenge)}
                                         readonly
@@ -141,7 +141,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                     </Typography>
                                     <Rating
                                         emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        fullSymbol={<span className='fa fa-star fa-2x' style={{color: theme.palette.primary.main}} />}
                                         fractions={100}
                                         initialRating={getInitialRating(challenge)}
                                         readonly
@@ -250,10 +250,10 @@ export default function ChallengePage({challenge, currentUser}) {
                                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" m={1}>
                                     <Rating
                                         emptySymbol={
-                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px'}}/>
+                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px', }}/>
                                         }
                                         fullSymbol={
-                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px'}}/>
+                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px', color: theme.palette.primary.main}}/>
                                         }
                                         fractions={2}
                                         initialRating={

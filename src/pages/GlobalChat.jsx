@@ -137,56 +137,49 @@ export default function GlobalChat() {
                                 </Box>
                             </Paper>
                         </Grid>
-                        {currentUserData.points > 0 && (
-                            <Grid item container xs={12} sx={{ padding: isMobile ? 1 : 2}}>
-                                <Grid item xs={8} sm={10}>
-                                    <Box p={1}>
-                                        <TextField
-                                            error={error}
-                                            helperText={error ? 'Użyj mniej niż 1000 znaków!' : ''}
-                                            inputRef={messageRef}
-                                            placeholder='Type your message'
-                                            variant='outlined'
-                                            fullWidth
-                                            className={classes.input}
-                                            InputProps={{classes: {input: classes.input}}}
-                                            onKeyUp={kliknietyEnter}
-                                        />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={4} sm={2}>
-                                    <Box
-                                        p={1}
+                        <Grid item container xs={12} sx={{padding: isMobile ? 1 : 2}}>
+                            <Grid item xs={8} sm={10}>
+                                <Box p={1}>
+                                    <TextField
+                                        error={error}
+                                        helperText={error ? 'Użyj mniej niż 1000 znaków!' : ''}
+                                        inputRef={messageRef}
+                                        placeholder='Type your message'
+                                        variant='outlined'
+                                        fullWidth
+                                        className={classes.input}
+                                        InputProps={{classes: {input: classes.input}}}
+                                        onKeyUp={kliknietyEnter}
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid item xs={4} sm={2}>
+                                <Box
+                                    p={1}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        height: '100%'
+                                    }}
+                                >
+                                    <Button
+                                        type='button'
+                                        fullWidth
+                                        variant='contained'
+                                        size='large'
+                                        disabled={loading}
+                                        onClick={submitMessage}
                                         sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            height: '100%'
+                                            width: '80%',
+                                            height: isMobile ? 'auto' : '120%',
                                         }}
                                     >
-                                        <Button
-                                            type='button'
-                                            fullWidth
-                                            variant='contained'
-                                            size='large'
-                                            disabled={loading}
-                                            onClick={submitMessage}
-                                            sx={{
-                                                    width: '80%',
-                                                    height: isMobile ? 'auto' : '120%',
-                                                }}
-                                        >
-                                            {isMobile ? <SendIcon /> : <>Send<SendIcon sx={{ml: 1}}/></>}
-                                        </Button>
-                                    </Box>
-                                </Grid>
+                                        {isMobile ? <SendIcon/> : <>Send<SendIcon sx={{ml: 1}}/></>}
+                                    </Button>
+                                </Box>
                             </Grid>
-                        )}
-                        {currentUserData.points === 0 && (
-                            <Typography variant='h5' className='header-text-dark'>
-                                Chat will be available after capturing your first flag (｡◕‿◕｡)
-                            </Typography>
-                        )}
+                        </Grid>
                     </Grid>
                 </Box>
             </Paper>

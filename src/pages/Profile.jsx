@@ -291,7 +291,7 @@ export default function Profile() {
                                                     value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
                                                     size={140}
                                                     thickness={4}
-                                                    sx={{position: 'absolute', color: theme.palette.primary.dark}}
+                                                    sx={{position: 'absolute', color: theme.palette.primary.main}}
                                                 />
                                                 <Box
                                                     sx={{
