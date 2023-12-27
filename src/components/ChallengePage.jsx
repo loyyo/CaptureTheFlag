@@ -46,11 +46,8 @@ export default function ChallengePage({challenge, currentUser}) {
                     currentUser.email,
                     currentUser.points
                 );
+                getProfile();
                 setSuccess(true);
-                setTimeout(() => {
-                    navigate('/challenges');
-                    getProfile();
-                }, 2000);
             } catch {
                 setError(true);
                 setSuccess(false);
@@ -77,6 +74,7 @@ export default function ChallengePage({challenge, currentUser}) {
             await rateChallenge(value, challenge.url, currentUser.userID);
             getAllChallengesData();
             getSingleChallengeData(challenge.url);
+            getAllChallengesData();
             navigate('/challenges');
         } catch {
             console.error('Something bad happened :(');

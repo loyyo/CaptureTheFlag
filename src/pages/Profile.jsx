@@ -121,7 +121,7 @@ export default function Profile() {
     return (
         <Container
             component='main'
-            maxWidth='md'
+            maxWidth='lg'
             sx={{
                 mt: 2,
                 mb: isMobile ? 100 : 0,

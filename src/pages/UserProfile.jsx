@@ -103,7 +103,7 @@ export default function UserProfile() {
     const calculatePercentage = (solved, total) => (solved / total) * 100;
 
     return (
-        <Container component="main" maxWidth="md" sx={{
+        <Container component="main" maxWidth="lg" sx={{
             mt: 2,
             mb: isMobile ? 100 : 0,
             height: isMobile ? 'auto' : 'calc(100vh - 90px)'
@@ -245,9 +245,17 @@ export default function UserProfile() {
                                             }}>
                                                 <CircularProgress
                                                     variant="determinate"
+                                                    value={100}
+                                                    size={140}
+                                                    thickness={4}
+                                                    sx={{color: '#ccc'}}
+                                                />
+                                                <CircularProgress
+                                                    variant="determinate"
                                                     value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
                                                     size={140}
                                                     thickness={4}
+                                                    sx={{position: 'absolute', color: theme.palette.primary.main}}
                                                 />
                                                 <Box
                                                     sx={{
