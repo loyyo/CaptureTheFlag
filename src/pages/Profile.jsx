@@ -84,16 +84,11 @@ export default function Profile() {
     if (!usersDataLoaded) {
         return (
             <Container component='main' maxWidth='lg'>
-                <CssBaseline/>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100vh',
-                    }}
-                >
-                    <Typography variant='h4'>Loading...</Typography>
+                <CssBaseline />
+                <Box sx={{ width: '100%' }}>
+                    <Box m={10}>
+                        <LinearProgress />
+                    </Box>
                 </Box>
             </Container>
         );
