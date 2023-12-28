@@ -31,7 +31,15 @@ export default function Leaderboard() {
 		return (
 			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<Box sx={{ width: '100%' }}>
+				<Box
+					sx={{
+						mt: 2,
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						height: 'calc(100vh - 90px)', // Header height
+					}}
+				>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
@@ -43,7 +51,7 @@ export default function Leaderboard() {
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<Paper elevation={0} sx={{ mt: 5, mb: isMobile ? 5 : 1, p: isMobile ? '10px 0' : 3 }}>
+			<Paper elevation={0} sx={{ mt: 2, mb: isMobile ? 5 : 1, p: isMobile ? '10px 0' : 3 }}>
 				<Grid container direction='column'>
 					<Grid item xs={12}>
 						<Typography variant='h4' align='center'>
@@ -51,9 +59,8 @@ export default function Leaderboard() {
 						</Typography>
 						<YourRank currentUserData={currentUserData} allUsersData={allUsersData} />
 					</Grid>
-					<Box mt={2} mb={1} />
 					<Grid item xs={12}>
-						<Typography variant='h4' align='center' marginBottom={2}>
+						<Typography variant='h4' align='center' marginBottom={1}>
 							Leaderboard
 						</Typography>
 						<Table allUsersData={allUsersData} />

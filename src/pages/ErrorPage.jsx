@@ -21,7 +21,7 @@ export default function ErrorPage() {
 		<Container maxWidth='lg'>
 			<CssBaseline />
 			<Box
-				mt={15}
+				mt={2}
 				mb={5}
 				sx={{
 					display: 'flex',
@@ -32,7 +32,7 @@ export default function ErrorPage() {
 				<Grid container>
 					<Grid item xs={1} />
 					<Grid item xs={10}>
-						<Paper variant='outlined' sx={{border: '2px solid #252028'}}>
+						<Paper variant='outlined' sx={{ border: '2px solid #252028' }}>
 							<Box mb={3} mt={3} mr={5} ml={5}>
 								<Typography variant='h5' gutterBottom>
 									Error

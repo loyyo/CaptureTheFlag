@@ -155,6 +155,14 @@ export default function EditProfile() {
 	};
 
 	useEffect(() => {
+		if (error !== '') {
+			setTimeout(() => {
+				setError('');
+			}, 5000);
+		}
+	}, [error]);
+
+	useEffect(() => {
 		if (!currentUserData) {
 			getProfile();
 		}
@@ -172,10 +180,11 @@ export default function EditProfile() {
 				<CssBaseline />
 				<Box
 					sx={{
+						mt: 2,
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',
-						height: 'calc(100vh - 90px)',
+						height: 'calc(100vh - 90px)', // Header height
 					}}
 				>
 					<Box m={10}>
@@ -191,14 +200,12 @@ export default function EditProfile() {
 			component='main'
 			maxWidth='lg'
 			sx={{
-				mt: 2,
-				mb: isMobile ? 8 : 0,
-				height: isMobile ? 'auto' : 'calc(100vh - 90px)',
+				mb: isMobile ? 8 : 2,
 			}}
 		>
 			<CssBaseline />
 			<Box
-				mt={5}
+				mt={2}
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',

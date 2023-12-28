@@ -28,7 +28,15 @@ export default function Challenge() {
 		return (
 			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<Box sx={{ width: '100%' }}>
+				<Box
+					sx={{
+						mt: 2,
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						height: 'calc(100vh - 90px)', // Header height
+					}}
+				>
 					<Box m={10}>
 						<LinearProgress />
 					</Box>
@@ -39,7 +47,7 @@ export default function Challenge() {
 		return (
 			<Container component='main' maxWidth='lg'>
 				<CssBaseline />
-				<Box mt={5} mb={5}>
+				<Box mt={2} mb={5}>
 					<ChallengePage challenge={singleChallengeData[0]} currentUser={currentUserData} />
 				</Box>
 			</Container>

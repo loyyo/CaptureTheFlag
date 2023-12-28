@@ -9,8 +9,8 @@
 	height: 100%;
 }
 
-.test-app {
-	min-height: 85vh;
+.main-body {
+	min-height: 90.48vh;
 }
 
 .messagesBox {
@@ -105,6 +105,10 @@
 	.header-text-light {
 		border-right: none;
 		border-bottom: none;
+	}
+
+	.main-body {
+		min-height: 80.48vh;
 	}
 }
 

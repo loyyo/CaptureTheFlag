@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import {
 	Container,
+	CssBaseline,
+	LinearProgress,
 	TextField,
 	Button,
 	Grid,
@@ -89,8 +91,29 @@ export default function AddChallenge() {
 		navigate('/challenges');
 	};
 
+	if (!currentUserData) {
+		return (
+			<Container component='main' maxWidth='lg'>
+				<CssBaseline />
+				<Box
+					sx={{
+						mt: 2,
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						height: 'calc(100vh - 90px)', // Header height
+					}}
+				>
+					<Box m={10}>
+						<LinearProgress />
+					</Box>
+				</Box>
+			</Container>
+		);
+	}
+
 	return (
-		<Container component='main' maxWidth='md'>
+		<Container component='main' maxWidth='md' sx={{ mb: isMobile ? 8 : 2 }}>
 			<Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<Paper
 					elevation={0}
@@ -116,7 +139,7 @@ export default function AddChallenge() {
 									name='challenge'
 									inputRef={challengeRef}
 									inputProps={{
-										maxLength: 25
+										maxLength: 25,
 									}}
 									sx={{
 										'& .MuiOutlinedInput-root': {
@@ -127,7 +150,7 @@ export default function AddChallenge() {
 											'&:hover fieldset': {
 												borderWidth: '3px',
 											},
-										}
+										},
 									}}
 								/>
 							</Grid>
@@ -143,7 +166,7 @@ export default function AddChallenge() {
 									rows={4}
 									inputRef={descriptionRef}
 									inputProps={{
-										maxLength: 300
+										maxLength: 300,
 									}}
 									sx={{
 										'& .MuiOutlinedInput-root': {
@@ -154,7 +177,7 @@ export default function AddChallenge() {
 											'&:hover fieldset': {
 												borderWidth: '3px',
 											},
-										}
+										},
 									}}
 								/>
 							</Grid>
@@ -169,7 +192,7 @@ export default function AddChallenge() {
 									value={correctAnswer}
 									onChange={(e) => setCorrectAnswer(e.target.value)}
 									inputProps={{
-										maxLength: 50
+										maxLength: 50,
 									}}
 									sx={{
 										'& .MuiOutlinedInput-root': {
@@ -180,7 +203,7 @@ export default function AddChallenge() {
 											'&:hover fieldset': {
 												borderWidth: '3px',
 											},
-										}
+										},
 									}}
 								/>
 							</Grid>
@@ -209,7 +232,7 @@ export default function AddChallenge() {
 											},
 											'& .MuiSelect-select': {
 												backgroundColor: 'transparent',
-											}
+											},
 										}}
 									>
 										<MenuItem value='easy'>Easy</MenuItem>
@@ -238,7 +261,7 @@ export default function AddChallenge() {
 									<Button
 										type='submit'
 										variant='contained'
-										color="primary"
+										color='primary'
 										sx={{ padding: '10px 20px' }}
 									>
 										Add Challenge

@@ -119,7 +119,12 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 										emptySymbol={
 											<span className='fa fa-star-o fa-2x' style={{ margin: '0 8px' }} />
 										}
-										fullSymbol={<span className='fa fa-star fa-2x' style={{ margin: '0 8px', color: theme.palette.primary.main }} />}
+										fullSymbol={
+											<span
+												className='fa fa-star fa-2x'
+												style={{ margin: '0 8px', color: theme.palette.primary.main }}
+											/>
+										}
 										fractions={100}
 										initialRating={getInitialRating(challenge)}
 										readonly
@@ -151,7 +156,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 											borderBottomRightRadius: 0,
 											'&:hover': {
 												border: 'none',
-											}
+											},
 										}}
 										onClick={() => navigate(`/challenges/${challenge.url}`)}
 									>
@@ -160,7 +165,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 									{currentUserData.userID === challenge.userID && (
 										<Button
 											variant='contained'
-											color="primary"
+											color='primary'
 											sx={{
 												width: '50%',
 												flexGrow: 1,
