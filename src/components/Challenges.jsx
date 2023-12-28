@@ -146,6 +146,12 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 											flexGrow: 1,
 											m: 0,
 											border: 'none',
+											borderTopLeftRadius: 0,
+											borderTopRightRadius: 0,
+											borderBottomRightRadius: 0,
+											'&:hover': {
+												border: 'none',
+											}
 										}}
 										onClick={() => navigate(`/challenges/${challenge.url}`)}
 									>
