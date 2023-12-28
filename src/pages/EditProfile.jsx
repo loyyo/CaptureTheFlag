@@ -128,7 +128,7 @@ export default function EditProfile() {
 			promises.push(updateBio(currentUser.email, bioRef.current.value));
 		}
 
-		if ((file && file.path !== currentUserData.avatar) || !file) {
+		if ((file && file.length !== 0 && file.path !== currentUserData.avatar) || file === null) {
 			promises.push(updateAvatar(currentUser.email, file));
 		}
 
