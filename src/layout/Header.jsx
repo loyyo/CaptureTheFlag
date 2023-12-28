@@ -93,7 +93,7 @@ const Header = () => {
 	const isActive = (path) => currentPage === path;
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
+		<Box sx={{ flexGrow: 1, minHeight: '7.66vh' }}>
 			<Box
 				sx={{
 					boxShadow: 'none',
