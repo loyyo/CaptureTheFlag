@@ -45,8 +45,8 @@ export default function ChatMessage({message, currentUserData, allUsersData}) {
                 )}
                 {messageClass === 'sent' && <Typography className='message'
                                                         sx={{
-                                                            backgroundColor: theme.palette.mode === 'dark' ? '#B8A3E4' : '#A3A7E4',
-                                                            color: theme.palette.mode === 'dark' ? '#40376F' : 'white'
+                                                            backgroundColor: theme.palette.mode === 'dark' ? '#40376F' : '#A3A7E4',
+                                                            color: theme.palette.mode === 'dark' ? 'white' : 'white'
                                                         }}>{message.text}</Typography>}
             </Box>
         </Box>

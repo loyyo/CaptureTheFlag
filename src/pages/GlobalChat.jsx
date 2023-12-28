@@ -173,6 +173,8 @@ export default function GlobalChat() {
                                         sx={{
                                             width: '80%',
                                             height: isMobile ? 'auto' : '120%',
+                                            backgroundColor: '#40376F',
+                                            color: 'white'
                                         }}
                                     >
                                         {isMobile ? <SendIcon/> : <>Send<SendIcon sx={{ml: 1}}/></>}
