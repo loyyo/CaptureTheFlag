@@ -42,7 +42,8 @@ export default function EditProfile() {
         updateBio,
         updateAvatar,
         currentPassword,
-        logout
+        logout,
+        getAllUsersData
     } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -65,8 +66,8 @@ export default function EditProfile() {
             return;
         }
 
-        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
-            setError("Username must be between 5 and 15 characters");
+        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 10) {
+            setError("Username must be between 5 and 10 characters");
             setLoading(false);
             return;
         }
@@ -152,6 +153,7 @@ export default function EditProfile() {
             })
             .finally(() => {
                 getProfile();
+                getAllUsersData();
                 setLoading(false);
             });
     }
