@@ -4,6 +4,7 @@ import {
 	Container,
 	Grid,
 	Box,
+	useMediaQuery,
 	Typography,
 	Paper,
 	Button,
@@ -14,6 +15,7 @@ import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function ErrorPage() {
 	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 
@@ -21,7 +23,7 @@ export default function ErrorPage() {
 		<Container maxWidth='lg'>
 			<CssBaseline />
 			<Box
-				mt={2}
+				mt={isMobile ? 1 : 2}
 				mb={5}
 				sx={{
 					display: 'flex',

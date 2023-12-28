@@ -51,9 +51,9 @@ export default function Leaderboard() {
 	return (
 		<Container maxWidth='lg'>
 			<CssBaseline />
-			<Paper elevation={0} sx={{ mt: 2, mb: isMobile ? 5 : 1, p: isMobile ? '10px 0' : 3 }}>
+			<Paper elevation={0} sx={{ mt: isMobile ? 1 : 2, mb: isMobile ? 8 : 2, p: isMobile ? 1 : 3 }}>
 				<Grid container direction='column'>
-					<Grid item xs={12}>
+					<Grid item xs={12} mt={2}>
 						<Typography variant='h4' align='center'>
 							Your Ranking
 						</Typography>
@@ -63,6 +63,8 @@ export default function Leaderboard() {
 						<Typography variant='h4' align='center' marginBottom={1}>
 							Leaderboard
 						</Typography>
+					</Grid>
+					<Grid item xs={12}>
 						<Table allUsersData={allUsersData} />
 					</Grid>
 				</Grid>

@@ -21,9 +21,9 @@ export default function Home() {
 			component='main'
 			maxWidth='md'
 			sx={{
-				mt: 2,
-				mb: isMobile ? 8 : 2,
-				height: isMobile ? 'auto' : 'calc(100vh - 40px)',
+				mt: 4,
+				mb: 2,
+				minHeight: '91.4vh',
 			}}
 		>
 			<CssBaseline />
@@ -34,7 +34,6 @@ export default function Home() {
 							display: 'flex',
 							flexDirection: 'column',
 							justifyContent: isMobile ? 'center' : 'flex-start',
-							height: isMobile ? 'calc(100vh - 90px)' : 'auto',
 							mt: isMobile ? 0 : 8,
 						}}
 					>

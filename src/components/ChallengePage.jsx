@@ -127,7 +127,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 			maxWidth='lg'
 			sx={{
 				mt: 2,
-				mb: isMobile ? 100 : 0,
+				mb: isMobile ? 8 : 0,
 				height: isMobile ? 'auto' : 'calc(100vh - 130px)',
 			}}
 		>

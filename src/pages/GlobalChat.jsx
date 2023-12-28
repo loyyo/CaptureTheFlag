@@ -117,10 +117,10 @@ export default function GlobalChat() {
 	return (
 		<StyledContainer maxWidth='lg'>
 			<CssBaseline />
-			<Paper sx={{ padding: theme.spacing(3, 3, 0), width: '100%', mt: 2, mb: 3 }}>
-				<Box mb={5}>
+			<Paper sx={{ padding: theme.spacing(2, 2, 0), width: '100%', mt: isMobile ? 1 : 2, mb: 3 }}>
+				<Box mb={8}>
 					<Grid container direction='column'>
-						<Grid item xs={12} sx={{ marginBottom: '20px' }}>
+						<Grid item xs={12} mb={isMobile ? 0.5 : 2}>
 							<Typography variant='h4' align='center'>
 								Global Chat
 							</Typography>

@@ -111,15 +111,15 @@ export default function UserProfile() {
 			component='main'
 			maxWidth='lg'
 			sx={{
-				mt: 2,
-				mb: isMobile ? 100 : 0,
+				mt: isMobile ? 1 : 2,
+				mb: isMobile ? 8 : 2,
 				height: isMobile ? 'auto' : 'calc(100vh - 90px)',
 			}}
 		>
 			<CssBaseline />
 			<Paper elevation={0} sx={{ padding: 2, borderRadius: '4px' }}>
 				{/* Nagłówek strony i przyciski zakładek */}
-				<Box p={2}>
+				<Box p={2} mt={-1}>
 					<Typography variant='h4' align='center'>
 						Profile
 					</Typography>
@@ -134,7 +134,15 @@ export default function UserProfile() {
 							}}
 							onClick={() => setActiveTab('informations')}
 						>
-							<Typography>Informations</Typography>
+							<Typography
+								sx={{
+									display: 'grid',
+									alignItems: 'center',
+									height: '100%',
+								}}
+							>
+								Informations
+							</Typography>
 							{isInformationsTabActive && (
 								<Box
 									sx={{
@@ -160,7 +168,15 @@ export default function UserProfile() {
 							}}
 							onClick={() => setActiveTab('challenges')}
 						>
-							<Typography>Your Challenges</Typography>
+							<Typography
+								sx={{
+									display: 'grid',
+									alignItems: 'center',
+									height: '100%',
+								}}
+							>
+								Your Challenges
+							</Typography>
 							{isChallengesTabActive && (
 								<Box
 									sx={{

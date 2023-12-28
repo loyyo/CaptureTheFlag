@@ -121,18 +121,8 @@ function App() {
 		},
 	});
 
-	const location = useLocation();
-	const [leaderboard, setLeaderboard] = useState(false);
-	useEffect(() => {
-		if (location.pathname === '/leaderboard') {
-			setLeaderboard(true);
-		} else {
-			setLeaderboard(false);
-		}
-	}, [location.pathname]);
-
 	return (
-		<div className={leaderboard ? 'App-leaderboard' : 'App'}>
+		<div className='App'>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<div

@@ -205,7 +205,7 @@ export default function EditProfile() {
 		>
 			<CssBaseline />
 			<Box
-				mt={2}
+				mt={isMobile ? 1 : 2}
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',

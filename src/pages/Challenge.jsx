@@ -1,12 +1,20 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CssBaseline, Container, Box, LinearProgress } from '@mui/material';
+import {
+	CssBaseline,
+	Container,
+	Box,
+	useMediaQuery,
+	useTheme,
+	LinearProgress,
+} from '@mui/material';
 import ChallengePage from '../components/ChallengePage.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function Challenge() {
 	const { challengeID } = useParams();
-
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const { getSingleChallengeData, singleChallengeData, getProfile, currentUserData } = useAuth();
 
 	useEffect(() => {
@@ -30,7 +38,7 @@ export default function Challenge() {
 				<CssBaseline />
 				<Box
 					sx={{
-						mt: 2,
+						mt: isMobile ? 1 : 2,
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',

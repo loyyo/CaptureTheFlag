@@ -55,8 +55,8 @@ export default function ForgotPassword() {
 			maxWidth='xs'
 			sx={{
 				mt: 2,
-				mb: isMobile ? 8 : 2,
-				height: isMobile ? 'auto' : 'calc(100vh - 90px)',
+				mb: 2,
+				minHeight: isMobile ? '86.8vh' : '90.4vh',
 			}}
 		>
 			<CssBaseline />
@@ -65,8 +65,6 @@ export default function ForgotPassword() {
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: isMobile ? 'center' : 'flex-start',
-					height: isMobile ? 'calc(100vh - 90px)' : 'auto',
-					mt: isMobile ? 0 : 8,
 				}}
 			>
 				<Paper elevation={3} sx={{ padding: theme.spacing(3), width: '100%', mt: 3, mb: 3 }}>

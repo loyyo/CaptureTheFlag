@@ -93,10 +93,34 @@ export default function StickyHeadTable({ allUsersData }) {
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 	const columns = [
-		{ id: 'rank', label: '#Rank', minWidth: isMobile ? 50 : 75, align: 'center' },
-		{ id: 'avatar', label: '', minWidth: isMobile ? 50 : 75, align: 'center' },
-		{ id: 'username', label: 'Username', minWidth: isMobile ? 100 : 175, align: 'left' },
-		{ id: 'points', label: 'Points', minWidth: isMobile ? 100 : 175, align: 'center' },
+		{
+			id: 'rank',
+			label: '#Rank',
+			minWidth: isMobile ? 0 : 75,
+			align: 'center',
+			maxWidth: isMobile ? 60 : '',
+		},
+		{
+			id: 'avatar',
+			label: '',
+			minWidth: isMobile ? 0 : 75,
+			align: 'center',
+			maxWidth: isMobile ? 60 : '',
+		},
+		{
+			id: 'username',
+			label: 'Username',
+			minWidth: isMobile ? 0 : 175,
+			align: 'left',
+			maxWidth: isMobile ? 60 : '',
+		},
+		{
+			id: 'points',
+			label: 'Points',
+			minWidth: isMobile ? 0 : 175,
+			align: 'center',
+			maxWidth: isMobile ? 60 : '',
+		},
 	];
 
 	const rows = allUsersData;
@@ -111,95 +135,98 @@ export default function StickyHeadTable({ allUsersData }) {
 	};
 
 	return (
-		<Paper elevation={0} sx={{ width: '100%', overflowX: 'auto', border: '2px solid #252028' }}>
-			{' '}
-			{/* Enable horizontal scrolling */}
-			<TableContainer sx={{ maxHeight: '56vh' }}>
-				<Table stickyHeader aria-label='sticky table'>
-					<TableHead>
-						<TableRow>
-							{columns.map((column) => (
-								<TableCell
-									key={column.id}
-									align={column.align}
-									style={{
-										minWidth: column.minWidth,
-										borderBottom: '2px solid #252028',
-										borderRadius: 0,
-									}}
-								>
-									{column.label}
-								</TableCell>
-							))}
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-							return (
-								<TableRow
-									hover
-									onClick={() => navigate(`/profiles/${row.userID}`)}
-									tabIndex={-1}
-									key={row.userID}
-								>
-									{columns.map((column) => {
-										const value = row[column.id];
-										if (column.id === 'rank') {
-											return (
-												<TableCell
-													key={column.id}
-													align={column.align}
-													sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
-												>
-													{index + 1}
-												</TableCell>
-											);
-										}
-										if (column.id === 'avatar') {
-											return (
-												<TableCell
-													key={column.id}
-													align={column.align}
-													sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
-												>
-													<Avatar alt='Avatar' src={value} variant='rounded' />
-												</TableCell>
-											);
-										} else {
-											return (
-												<TableCell
-													key={column.id}
-													align={column.align}
-													sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
-												>
-													{value}
-												</TableCell>
-											);
-										}
-									})}
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[10, 25, 50]}
-				component='div'
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-				colSpan={3}
-				slotProps={{
-					select: {
-						inputProps: { 'aria-label': 'rows per page' },
-						native: true,
-					},
-				}}
-				ActionsComponent={TablePaginationActions}
-			/>
+		<Paper elevation={0} sx={{ overflow: 'auto', border: '2px solid #252028' }}>
+			<Box sx={{ width: '100%', display: 'table', tableLayout: 'fixed' }}>
+				<TableContainer sx={{ maxHeight: isMobile ? '72vh' : '56vh' }}>
+					<Table stickyHeader aria-label='sticky table'>
+						<TableHead>
+							<TableRow>
+								{columns.map((column) => (
+									<TableCell
+										key={column.id}
+										align={column.align}
+										style={{
+											minWidth: column.minWidth,
+											maxWidth: column.maxWidth,
+											borderBottom: '2px solid #252028',
+											borderRadius: 0,
+										}}
+									>
+										{column.label}
+									</TableCell>
+								))}
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rows
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									return (
+										<TableRow
+											hover
+											onClick={() => navigate(`/profiles/${row.userID}`)}
+											tabIndex={-1}
+											key={row.userID}
+										>
+											{columns.map((column) => {
+												const value = row[column.id];
+												if (column.id === 'rank') {
+													return (
+														<TableCell
+															key={column.id}
+															align={column.align}
+															sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
+														>
+															{index + 1}
+														</TableCell>
+													);
+												}
+												if (column.id === 'avatar') {
+													return (
+														<TableCell
+															key={column.id}
+															align={column.align}
+															sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
+														>
+															<Avatar alt='Avatar' src={value} variant='rounded' />
+														</TableCell>
+													);
+												} else {
+													return (
+														<TableCell
+															key={column.id}
+															align={column.align}
+															sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
+														>
+															{value}
+														</TableCell>
+													);
+												}
+											})}
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<TablePagination
+					rowsPerPageOptions={[10, 25, 50]}
+					component='div'
+					count={rows.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+					colSpan={3}
+					slotProps={{
+						select: {
+							inputProps: { 'aria-label': 'rows per page' },
+							native: true,
+						},
+					}}
+					ActionsComponent={TablePaginationActions}
+				/>
+			</Box>
 		</Paper>
 	);
 }

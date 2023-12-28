@@ -114,7 +114,10 @@ export default function AddChallenge() {
 
 	return (
 		<Container component='main' maxWidth='md' sx={{ mb: isMobile ? 8 : 2 }}>
-			<Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+			<Box
+				mt={isMobile ? 1 : 2}
+				sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+			>
 				<Paper
 					elevation={0}
 					sx={{
@@ -125,11 +128,13 @@ export default function AddChallenge() {
 						alignItems: 'center',
 					}}
 				>
-					<Typography component='h1' variant='h4'>
-						Add New Challenge
-					</Typography>
-					<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+					<Box component='form' onSubmit={handleSubmit} mt={1}>
 						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<Typography variant='h4' align='center'>
+									Add New Challenge
+								</Typography>
+							</Grid>
 							<Grid item xs={12}>
 								<TextField
 									required

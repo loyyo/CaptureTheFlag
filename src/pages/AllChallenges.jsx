@@ -171,7 +171,7 @@ function AllChallenges() {
 					padding: isMobile ? '16px 20px' : '16px',
 					borderRadius: '4px',
 					mb: isMobile ? 8 : 2,
-					mt: 2,
+					mt: isMobile ? 1 : 2,
 				}}
 			>
 				<Box mt={1} mb={2}>
