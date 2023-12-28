@@ -21,6 +21,26 @@ export default function ChallengePage({challenge, currentUser}) {
     const {doChallenge, rateChallenge, getAllChallengesData, getSingleChallengeData, getProfile, getAllUsersData} = useAuth();
     const [openDialog, setOpenDialog] = useState(false);
 
+    const titleRef = useRef(null);
+
+    const [titleFontSize, setTitleFontSize] = useState('24px'); // Domyślna wielkość czcionki
+
+    useEffect(() => {
+        adjustTitleFontSize(); // Pierwsze wywołanie przy montowaniu
+        window.addEventListener('resize', adjustTitleFontSize); // Dodanie nasłuchiwania na zmianę rozmiaru okna
+
+        return () => window.removeEventListener('resize', adjustTitleFontSize); // Oczyszczenie nasłuchiwania
+    }, []);
+
+    const adjustTitleFontSize = () => {
+        if (titleRef.current) {
+            const containerWidth = titleRef.current.offsetWidth; // szerokość kontenera tytułu
+            const idealFontSize = containerWidth / 10; // przykładowy współczynnik skalowania
+
+            setTitleFontSize(idealFontSize > 24 ? 24 : idealFontSize); // Maksymalny rozmiar 24px
+        }
+    };
+
     const handleImageClick = () => {
         setOpenDialog(true);
     };
@@ -100,7 +120,7 @@ export default function ChallengePage({challenge, currentUser}) {
                 <Paper elevation={0} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
                     {/* Title */}
                     <Grid item xs={12}>
-                        <Typography variant='h4' align="center">
+                        <Typography ref={titleRef} variant='h4' align="center" style={{ fontSize: `${titleFontSize}px` }}>
                             {challenge.title}
                         </Typography>
                     </Grid>
@@ -153,7 +173,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                 <Box onClick={handleImageClick}
                                      sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: '2px solid #252028'}}>
                                     <img alt={`image-${challenge.url}`} src={challenge.image}
-                                         style={{maxWidth: '100%', maxHeight: '500px'}}/>
+                                         style={{maxWidth: '200px', maxHeight: '400px'}}/>
                                 </Box>
                             )}
                         </Paper>

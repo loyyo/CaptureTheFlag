@@ -47,6 +47,10 @@ export default function Profile() {
 
     useEffect(() => {
         const loadData = async () => {
+            if (allUsersData.length === 0) {
+                await getAllUsersData();
+            }
+
             if (!currentUserData) {
                 await getProfile();
             } else {
@@ -57,10 +61,6 @@ export default function Profile() {
                 await getAllChallengesData();
             } else {
                 setChallengesData(allChallengesData);
-            }
-
-            if (allUsersData.length === 0) {
-                await getAllUsersData();
             }
         };
 
