@@ -5,43 +5,46 @@ import {
 	Grid,
 	Box,
 	Typography,
-	Divider,
 	Paper,
 	Button,
+	useMediaQuery
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
 	const navigate = useNavigate();
 	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	return (
-		<Container maxWidth='md'>
+		<Container component="main" maxWidth="md" sx={{
+			mt: 2,
+			mb: isMobile ? 8 : 0,
+			height: isMobile ? 'auto' : 'calc(100vh - 40px)'
+		}}>
 			<CssBaseline />
 			<Grid container spacing={5}>
 				<Grid item xs={12}>
-					<Box
-						mt={5}
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
+					<Box sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: isMobile ? 'center' : 'flex-start',
+						height: isMobile ? 'calc(100vh - 90px)' : 'auto',
+						mt: isMobile ? 0 : 8
+					}}>
 						<Paper variant='outlined'>
 							<Box m={3}>
-								<Typography variant='h4' className='header-text'>
-									Welcome to Capture The Flag!
+								<Typography variant='h4' align="center">
+									Welcome to Brainplex
 								</Typography>
-								<Typography variant='h5' className='description'>
-									CaptureTheFlag is a platform that enables people to learn, practice, and compete
-									in the field of geography, specifically world&apos;s flags.
-								</Typography>
-								<Typography variant='h5' className='header-text-dark'>
-									JOIN AND CATCH&apos;EM ALL!
-								</Typography>
+
+								<Paper variant='outlined' sx={{ mt: 2, p: 2 }}>
+									<Typography variant='h5' align="center">
+										Brainplex is a platform that enables people to learn,
+										practice {!isMobile && <br/>} and compete in the various different fields.
+									</Typography>
+								</Paper>
 							</Box>
-							<Divider variant='middle' />
 							<Grid justifyContent='center' container spacing={3}>
 								<Grid item>
 									<Button
@@ -50,12 +53,12 @@ export default function Home() {
 										variant='contained'
 										color='primary'
 										size='large'
-										sx={{ margin: theme.spacing(2.5, 0, 2.5) }}
+										sx={{ margin: theme.spacing(2.5, 0, 2.5), color: 'white', }}
 										onClick={() => {
 											navigate('/register');
 										}}
 									>
-										SIGN UP
+										Sign up
 									</Button>
 								</Grid>
 								<Grid item>
@@ -66,7 +69,6 @@ export default function Home() {
 										size='large'
 										sx={{
 											margin: theme.spacing(2.5, 0, 2.5),
-											backgroundColor: theme.palette.primary.light,
 											color: 'white',
 											'&:hover': {
 												backgroundColor: theme.palette.primary.dark,

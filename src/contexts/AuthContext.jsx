@@ -45,8 +45,8 @@ function AuthProvider({children}) {
 
     const logout = useCallback(async () => {
         await auth.signOut();
-        setCurrentUserData([]);
-        setCurrentUser([]);
+        setCurrentUserData(null);
+        setCurrentUser(null);
         setAllChallengesData([]);
     }, []);
 
@@ -55,11 +55,40 @@ function AuthProvider({children}) {
     }, []);
 
     const updateEmail = useCallback(
-        async (email) => {
-            await currentUser.updateEmail(email);
+        async (newEmail) => {
+            if (!currentUser) {
+                console.error('No current user');
+                return;
+            }
+
+            try {
+                const oldUserDocRef = db.collection('users').doc(currentUser.email);
+                const oldUserDoc = await oldUserDocRef.get();
+
+                if (!oldUserDoc.exists) {
+                    console.error('Old user document does not exist');
+                    return;
+                }
+                const userData = oldUserDoc.data();
+
+                await currentUser.updateEmail(newEmail);
+
+                await db.collection('users').doc(newEmail).set({
+                    ...userData,
+                    email: newEmail
+                });
+
+                await oldUserDocRef.delete();
+
+                await getProfile();
+            } catch (error) {
+                console.error('Error updating email: ', error);
+                throw error;
+            }
         },
         [currentUser]
     );
+
 
     const updatePassword = useCallback(
         async (password) => {
@@ -75,7 +104,7 @@ function AuthProvider({children}) {
             await db.collection('users').doc(`${email}`).set({
                 avatar:
                     'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media',
-                bio: 'There is nothing to see here unfortunately :(',
+                bio: 'There is nothing to see here unfortunately',
                 challenges: {},
                 createdAt: new Date(),
                 email: email,
@@ -110,6 +139,21 @@ function AuthProvider({children}) {
         }
     }, [currentUser]);
 
+    const currentPassword = useCallback(async (password) => {
+        try {
+            const user = auth.currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(
+                user.email,
+                password
+            );
+            await user.reauthenticateWithCredential(credential);
+            return true;
+        } catch (error) {
+            console.error('Error during password verification: ', error);
+            return false;
+        }
+    }, []);
+
     const getAllUsersData = useCallback(async () => {
         let Data = [];
 
@@ -130,18 +174,30 @@ function AuthProvider({children}) {
     }, []);
 
     const getAllChallengesData = useCallback(async () => {
-        let Data = [];
+        let challengeData = [];
+        let userDataMap = {};
 
         try {
-            const querySnapshot = await db.collection('challenges').get();
-            querySnapshot.forEach((doc) => {
-                Data.push(doc.data());
+            const usersSnapshot = await db.collection('users').get();
+            usersSnapshot.forEach((doc) => {
+                let userData = doc.data();
+                userDataMap[userData.userID] = userData.username;
             });
-            setAllChallengesData(Data);
+
+            const challengeSnapshot = await db.collection('challenges').get();
+            challengeSnapshot.forEach((doc) => {
+                let challenge = doc.data();
+
+                challenge.username = userDataMap[challenge.userID] || 'Unknown';
+                challengeData.push(challenge);
+            });
+
+            setAllChallengesData(challengeData);
         } catch (error) {
             console.error('Error getting documents:', error);
         }
     }, []);
+
 
 
     const getSingleChallengeData = useCallback(
@@ -195,28 +251,35 @@ function AuthProvider({children}) {
     }, []);
 
     const updateAvatar = useCallback(async (email, file) => {
-        let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
-        let filetype = file.type.slice(6);
-        let fullfilename = `${filename}.${filetype}`;
+        let avatar;
 
-        let metadata = {
-            contentType: file.type,
-        };
+        if (file && file.length !== 0) {
+            let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
+            let filetype = file.type.slice(6);
+            let fullfilename = `${filename}.${filetype}`;
 
-        storageRef.child('avatars/' + fullfilename).put(file, metadata);
+            let metadata = {
+                contentType: file.type,
+            };
 
-        let avatar = `https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
+            await storageRef.child('avatars/' + fullfilename).put(file, metadata);
+            avatar = `https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
+        } else {
+            avatar = 'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media';
+        }
 
-        await db
-            .collection('users')
-            .doc(`${email}`)
-            .update({
-                avatar: avatar,
-            })
-            .catch((error) => {
-                console.error('Error updating document: ', error);
-            });
+        try {
+            await db
+                .collection('users')
+                .doc(`${email}`)
+                .update({
+                    avatar: avatar,
+                });
+        } catch (error) {
+            console.error('Error updating document: ', error);
+        }
     }, []);
+
 
     const doChallenge = useCallback(async (url, challengePoints, user, userPoints) => {
         let points = challengePoints + userPoints;
@@ -248,7 +311,7 @@ function AuthProvider({children}) {
         return userIndex + 1;
     };
 
-    const getChallengeStats = async (userID, email) => {
+    const getChallengeStats = useCallback(async (userID, email) => {
         const userDataSnapshot = await db.collection('users').doc(email).get();
         if (!userDataSnapshot.exists) {
             console.error('User data not found');
@@ -291,7 +354,7 @@ function AuthProvider({children}) {
         const ranking = calculateRanking(allUsersData, userID);
 
         return {...challengeStats, ranking};
-    };
+    }, [allUsersData]);
 
 
     const getUserProfile = useCallback(
@@ -403,7 +466,16 @@ function AuthProvider({children}) {
         } catch (error) {
             console.error('Error adding document: ', error);
         }
-    }, [storageRef, db]);
+    }, []);
+
+    const checkForDuplicateChallenge = useCallback(async (title) => {
+        const normalizedTitle = title.trim().toLowerCase();
+        const querySnapshot = await db.collection('challenges')
+            .where('title', '==', normalizedTitle)
+            .get();
+
+        return !querySnapshot.empty;
+    }, []);
 
     const updateChallenge = useCallback(async (challengeID, {title, description, difficulty, correctAnswer, image}) => {
         try {
@@ -454,15 +526,15 @@ function AuthProvider({children}) {
             };
 
             if (image !== null) {
-                updateData.image = imageUrl ? imageUrl : null;
                 updateData.fileName = image?.name || null
             }
+            updateData.image = imageUrl ? imageUrl : image;
 
             await db.collection('challenges').doc(challengeID).update(updateData);
         } catch (error) {
             console.error('Error updating document: ', error);
         }
-    }, [storageRef, db]);
+    }, []);
 
     const deleteChallenge = useCallback(async (challengeURL) => {
         try {
@@ -472,7 +544,7 @@ function AuthProvider({children}) {
         } catch (error) {
             console.error('Error deleting challenge: ', error);
         }
-    }, [db]);
+    }, []);
 
     const calculatePoints = (difficulty) => {
         switch (difficulty) {
@@ -551,7 +623,9 @@ function AuthProvider({children}) {
             updateChallenge,
             deleteChallenge,
             challengeStats,
-            getChallengeStats
+            getChallengeStats,
+            currentPassword,
+            checkForDuplicateChallenge
         }),
         [
             currentUser,
@@ -585,7 +659,9 @@ function AuthProvider({children}) {
             updateChallenge,
             deleteChallenge,
             challengeStats,
-            getChallengeStats
+            getChallengeStats,
+            currentPassword,
+            checkForDuplicateChallenge
         ]
     );
 
@@ -596,5 +672,4 @@ AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export {useAuth, AuthProvider};

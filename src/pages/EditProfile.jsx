@@ -1,5 +1,4 @@
-import React, {useRef, useCallback, useState, useEffect} from "react";
-import {useTheme} from "@mui/material/styles";
+import React, {useRef, useState, useEffect} from "react";
 import {
     CssBaseline,
     Container,
@@ -14,22 +13,23 @@ import {
     Alert,
     AlertTitle,
     Divider,
-    Paper
+    Paper,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
 import {useAuth} from "../contexts/AuthContext.jsx";
-import {Close as CloseIcon, Delete as DeleteIcon} from "@mui/icons-material";
-import {useDropzone} from "react-dropzone";
+import {Close as CloseIcon} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import Dropzone from '../components/Dropzone';
 
 export default function EditProfile() {
     const navigate = useNavigate();
-    const theme = useTheme();
 
     const emailRef = useRef();
     const bioRef = useRef();
     const usernameRef = useRef();
     const passwordRef = useRef();
+    const currentPasswordRef = useRef();
     const passwordConfirmationRef = useRef();
 
     const {
@@ -41,87 +41,123 @@ export default function EditProfile() {
         updateUsername,
         updateBio,
         updateAvatar,
+        currentPassword,
+        logout,
+        getAllUsersData
     } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [file, setFile] = useState([]);
     const [image, setImage] = useState();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
-            setError("Username must be between 5 and 15 characters");
+        setError("");
+        setSuccess(false);
+        setLoading(true);
+
+        if ((passwordRef.current.value || passwordConfirmationRef.current.value) && !currentPasswordRef.current.value) {
+            setError("Current password is required when changing the password.");
+            setLoading(false);
             return;
         }
 
-        if (!emailRef.current.value.includes("@") || !emailRef.current.value.endsWith(".com")) {
+        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 10) {
+            setError("Username must be between 5 and 10 characters");
+            setLoading(false);
+            return;
+        }
+
+        if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
             setError("Email address is not valid");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value && passwordRef.current.value.length < 6) {
             setError("Password must be at least 6 characters");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
             setError("Passwords do not match");
+            setLoading(false);
             return;
         }
 
         if (bioRef.current.value.length > 300) {
             setError("Biography must be less than 300 characters");
+            setLoading(false);
             return;
         }
 
-        const promises = [];
-        if (passwordRef.current.value) {
-            promises.push(updatePassword(passwordRef.current.value));
-        }
-        if (emailRef.current.value !== currentUser.email) {
-            promises.push(updateEmail(emailRef.current.value));
-        }
-        if (emailRef.current.value === currentUser.email) {
-            if (
-                usernameRef.current.value !== currentUserData.username &&
-                usernameRef.current.value.length < 16
-            ) {
-                usernameRef.current.value = usernameRef.current.value.slice(0, 15);
-                promises.push(updateUsername(emailRef.current.value, usernameRef.current.value));
-            }
-            if (bioRef.current.value !== currentUserData.bio && bioRef.current.value.length < 301) {
-                promises.push(updateBio(emailRef.current.value, bioRef.current.value));
-            }
-            if (file && file.path) {
-                promises.push(updateAvatar(emailRef.current.value, file));
+        if (currentPasswordRef.current.value) {
+            const isPasswordCorrect = await currentPassword(currentPasswordRef.current.value);
+            if (!isPasswordCorrect) {
+                setError("Current password is incorrect");
+                return;
             }
         }
 
-        setLoading(true);
-        setError("");
+        const promises = [];
+
+        if (emailRef.current.value !== currentUser.email) {
+            try {
+                await updateEmail(emailRef.current.value);
+                await getProfile();
+            } catch (error) {
+                if (error.code === 'auth/requires-recent-login') {
+                    setError("Please log in again to update your email.");
+                    setLoading(false);
+                    logout();
+                    localStorage.setItem('loginReason', 'requires-recent-login');
+                    // navigate("/login", { state: { reason: "requires-recent-login" } });
+                    navigate("/login");
+                    return;
+                } else {
+                    setError("Failed to update email. " + error.message);
+                    setLoading(false);
+                    return;
+                }
+            }
+        }
+
+        if (usernameRef.current.value !== currentUserData.username) {
+            promises.push(updateUsername(currentUser.email, usernameRef.current.value));
+        }
+
+        if (bioRef.current.value !== currentUserData.bio) {
+            promises.push(updateBio(currentUser.email, bioRef.current.value));
+        }
+
+        if (file && file.path !== currentUserData.avatar || !file) {
+            promises.push(updateAvatar(currentUser.email, file));
+        }
+
+        if (passwordRef.current.value) {
+            promises.push(updatePassword(passwordRef.current.value));
+        }
+
         Promise.all(promises)
             .then(() => {
-                if (promises.length !== 0) {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        navigate("/profile");
-                        navigate(0);
-                    }, 1000);
-                } else {
-                    setError(`You haven't changed any values`);
-                }
+                setSuccess(true);
+                navigate("/profile");
             })
-            .catch((e) => {
-                if (e instanceof TypeError || e instanceof RangeError || e instanceof EvalError) {
-                    setError("Failed to edit the account");
-                }
+            .catch((error) => {
+                setError("An error occurred while updating profile. " + error.message);
             })
             .finally(() => {
+                getProfile();
+                getAllUsersData();
                 setLoading(false);
             });
     }
+
 
     const handleCancel = () => {
         navigate("/profile");
@@ -160,7 +196,11 @@ export default function EditProfile() {
     }
 
     return (
-        <Container component="main" maxWidth="lg">
+        <Container component="main" maxWidth="lg" sx={{
+            mt: 2,
+            mb: isMobile ? 8 : 0,
+            height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+        }}>
             <CssBaseline/>
             <Box
                 mt={5}
@@ -173,7 +213,6 @@ export default function EditProfile() {
                 <Paper elevation={7} sx={{
                     padding: 2,
                     borderRadius: '4px',
-                    mt: 3,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center"
@@ -217,103 +256,351 @@ export default function EditProfile() {
                             </Box>
                         )}
                         <Grid container spacing={3} alignItems="stretch">
-                            {/* Left Column */}
-                            {/* Left Column */}
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                    inputRef={usernameRef}
-                                    defaultValue={currentUserData.username}
-                                    sx={{mb: 2}}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    inputRef={emailRef}
-                                    defaultValue={currentUser.email}
-                                    sx={{mb: 2}}
-                                />
-                                <Dropzone
-                                    image={image}
-                                    setImage={setImage}
-                                    file={file}
-                                    setFile={setFile}
-                                />
-                            </Grid>
+                            {isMobile ? (
+                                // Mobile View
+                                <>
+                                    {/* Username */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="username"
+                                            label="Username"
+                                            name="username"
+                                            autoComplete="username"
+                                            inputRef={usernameRef}
+                                            defaultValue={currentUserData.username}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
 
-                            {/* Vertical Divider */}
-                            <Grid item xs={12} md={1}
-                                  sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                <Divider orientation="vertical" sx={{height: "100%"}}/>
-                            </Grid>
+                                    {/* Email */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            inputRef={emailRef}
+                                            defaultValue={currentUser.email}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
 
-                            {/* Right Column */}
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="currentPassword"
-                                    label="Current Password"
-                                    type="password"
-                                    id="currentPassword"
-                                    autoComplete="current-password"
-                                    inputRef={passwordRef}
-                                    sx={{mb: 2}}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="password"
-                                    label="New Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                    inputRef={passwordRef}
-                                    sx={{mb: 2}}
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    name="passwordConfirmation"
-                                    label="Confirm New Password"
-                                    type="password"
-                                    id="passwordConfirmation"
-                                    autoComplete="new-password"
-                                    inputRef={passwordConfirmationRef}
-                                />
-                            </Grid>
+                                    {/* Avatar */}
+                                    <Grid item xs={12}>
+                                        <Dropzone
+                                            image={image}
+                                            setImage={setImage}
+                                            file={file}
+                                            setFile={setFile}
+                                        />
+                                    </Grid>
 
-                            {/* Biography */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    fullWidth
-                                    id="biography"
-                                    label="Biography"
-                                    name="biography"
-                                    multiline
-                                    rows={4}
-                                    inputRef={bioRef}
-                                    defaultValue={currentUserData.bio}
-                                />
-                            </Grid>
+                                    {/* Biography */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="biography"
+                                            label="Biography"
+                                            name="biography"
+                                            multiline
+                                            rows={4}
+                                            inputRef={bioRef}
+                                            defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+
+
+                                    <Grid item xs={12}>
+                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1, border: '1px solid #252028' }} />
+                                    </Grid>
+
+                                    {/* Password Fields */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="currentPassword"
+                                            label="Current Password"
+                                            type="password"
+                                            id="currentPassword"
+                                            autoComplete="current-password"
+                                            inputRef={currentPasswordRef}
+                                            helperText="*Required when changing the password"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="password"
+                                            label="New Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            inputRef={passwordRef}
+                                            helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="passwordConfirmation"
+                                            label="Confirm New Password"
+                                            type="password"
+                                            id="passwordConfirmation"
+                                            autoComplete="new-password"
+                                            inputRef={passwordConfirmationRef}
+                                            helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                </>
+                            ) : (
+                                // Desktop View
+                                <>
+                                    {/* Left Column: Username, Email, Avatar */}
+                                    <Grid item xs={12} md={5}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="username"
+                                            label="Username"
+                                            name="username"
+                                            autoComplete="username"
+                                            inputRef={usernameRef}
+                                            defaultValue={currentUserData.username}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            inputRef={emailRef}
+                                            defaultValue={currentUser.email}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                        <Dropzone
+                                            image={image}
+                                            setImage={setImage}
+                                            file={file}
+                                            setFile={setFile}
+                                        />
+                                    </Grid>
+
+                                    {/* Vertical Divider (Desktop) */}
+                                    <Grid item md={2} sx={{display: "flex", justifyContent: "center"}}>
+                                        <Divider orientation="vertical" sx={{height: "100%"}}/>
+                                    </Grid>
+
+                                    {/* Right Column: Password Fields, Biography */}
+                                    <Grid item xs={12} md={5}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="currentPassword"
+                                            label="Current Password"
+                                            type="password"
+                                            id="currentPassword"
+                                            autoComplete="current-password"
+                                            inputRef={currentPasswordRef}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                            helperText="*Required when changing the password"
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="password"
+                                            label="New Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            inputRef={passwordRef}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                            helperText="*Leave blank to keep the same"
+                                        />
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            name="passwordConfirmation"
+                                            label="Confirm New Password"
+                                            type="password"
+                                            id="passwordConfirmation"
+                                            autoComplete="new-password"
+                                            inputRef={passwordConfirmationRef}
+                                            helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            id="biography"
+                                            label="Biography"
+                                            name="biography"
+                                            multiline
+                                            rows={4}
+                                            inputRef={bioRef}
+                                            defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                </>
+                            )}
                         </Grid>
 
                         {/* Buttons */}
-                        <Box sx={{width: '100%', mt: 3, display: 'flex', justifyContent: 'center'}}>
-                            <Button onClick={handleCancel} variant="outlined" sx={{mr: 2}}>
+                        <Box sx={{
+                            width: '100%',
+                            mt: 3,
+                            display: 'flex',
+                            flexDirection: isMobile ? 'column' : 'row',
+                            justifyContent: 'center'
+                        }}>
+                            <Button onClick={handleCancel}
+                                    variant='outlined'
+                                    color='secondary'
+                                    sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" color="primary" disabled={loading}>
+                            <Button type="submit" variant="contained" disabled={loading}>
                                 Save Changes
                             </Button>
                         </Box>

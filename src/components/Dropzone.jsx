@@ -1,16 +1,24 @@
-import React, {useCallback} from "react";
-import {useDropzone} from "react-dropzone";
-import {Avatar, IconButton} from "@mui/material";
-import {Delete as DeleteIcon} from "@mui/icons-material";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { IconButton } from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import {useTheme} from "@mui/material/styles";
 
-const Dropzone = ({ image, setImage, file, setFile }) => {
+const Dropzone = ({ image, setImage, setFile }) => {
+	const theme = useTheme();
+
 	const onDrop = useCallback((acceptedFiles) => {
-		setImage(URL.createObjectURL(acceptedFiles[0]));
-		setFile(acceptedFiles[0]);
-	}, []);
+		if (acceptedFiles.length > 0 && acceptedFiles[0].type.startsWith('image/')) {
+			setImage(URL.createObjectURL(acceptedFiles[0]));
+			setFile(acceptedFiles[0]);
+		} else {
+			console.error('Only image files are accepted');
+		}
+	}, [setImage, setFile]);
 
 	const { getRootProps, getInputProps } = useDropzone({
-		accept: "image/jpeg, image/jpg, image/gif, image/png",
+		accept: "image/*",
 		maxFiles: 1,
 		maxSize: 5000000,
 		onDrop,
@@ -26,7 +34,8 @@ const Dropzone = ({ image, setImage, file, setFile }) => {
 		<div
 			{...getRootProps()}
 			style={{
-				border: "2px dashed #ccc",
+				border: "2px dashed #252028",
+				backgroundColor: theme.palette.mode === 'dark' ? '#252028' : '',
 				padding: "20px",
 				textAlign: "center",
 				position: "relative",
@@ -35,19 +44,24 @@ const Dropzone = ({ image, setImage, file, setFile }) => {
 			<input {...getInputProps()} />
 			{image ? (
 				<div>
-					<Avatar src={image} alt="Avatar" style={{ width: 200, height: 200 }} />
+					<img src={image} alt="Preview" style={{ width: 200, height: 200, objectFit: 'cover' }} />
 					<IconButton onClick={removeImage} style={{ position: "absolute", top: 0, right: 0 }}>
 						<DeleteIcon />
 					</IconButton>
 				</div>
 			) : (
 				<p>
-					Drag and drop an image here (or click) to update your avatar (resized to 200x200
-					automatically)
+					Drag and drop an image here (or click) to update your photo (resized to 200x200 automatically)
 				</p>
 			)}
 		</div>
 	);
+};
+
+Dropzone.propTypes = {
+	image: PropTypes.string,
+	setImage: PropTypes.func.isRequired,
+	setFile: PropTypes.func,
 };
 
 export default Dropzone;

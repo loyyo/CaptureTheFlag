@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Link, Box, Typography, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { Person as PersonIcon, Flag as FlagIcon, Equalizer as EqualizerIcon } from '@mui/icons-material';
+import { useState, useEffect, useMemo } from 'react';
+import { Box, Container, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import {
+	EmojiEvents as TrophyIcon,
+	Equalizer as EqualizerIcon,
+	Chat as ChatIcon,
+	AddCircleOutline as AddIcon,
+} from '@mui/icons-material'; // Import TrophyIcon
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useMediaQuery } from '@mui/material';
@@ -10,40 +15,44 @@ const Footer = () => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	const { currentUser } = useAuth();
-	const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
-	const navigationItems = [
-		{ label: 'Challenges', icon: FlagIcon, path: '/challenges' },
-		{ label: 'Leaderboard', icon: EqualizerIcon, path: '/leaderboard' },
-		{ label: 'Profile', icon: PersonIcon, path: '/profile' },
-	];
+	const navigationItems = useMemo(
+		() => [
+			{ label: 'Challenges', icon: TrophyIcon, path: '/challenges' }, // Updated to TrophyIcon
+			{ label: 'Create', icon: AddIcon, path: '/challenge/add' },
+			{ label: 'Leaderboard', icon: EqualizerIcon, path: '/leaderboard' },
+			{ label: 'Chat', icon: ChatIcon, path: '/chat' },
+		],
+		[]
+	);
 
 	useEffect(() => {
-		// Set the selected location based on the current pathname
-		const currentNavItem = navigationItems.find(item => item.path === pathname);
+		const currentNavItem = navigationItems.find((item) => item.path === pathname);
 		setSelectedLocation(currentNavItem ? currentNavItem.path : '');
-	}, [pathname]);
+	}, [pathname, navigationItems]);
 
 	const handleNavigationChange = (path) => {
 		navigate(path);
 	};
 
 	if (!currentUser || !isMobile) {
-		return;
+		return null;
 	}
 
 	return (
-		<Container maxWidth="lg">
-			<Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000 }}>
+		<Container maxWidth='lg' disableGutters>
+			<Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1000, padding: 0 }}>
 				<Box mt={3}>
-					<BottomNavigation value={selectedLocation} showLabels>
+					<BottomNavigation value={selectedLocation} showLabels sx={{ width: '100%', padding: 0 }}>
 						{navigationItems.map(({ label, icon: Icon, path }) => (
 							<BottomNavigationAction
 								key={label}
 								label={label}
-								icon={<Icon stroke="#c6c6c6" strokeWidth={1} />}
+								icon={<Icon stroke='#c6c6c6' strokeWidth={1} />}
 								value={path}
 								onClick={() => handleNavigationChange(path)}
+								sx={{ width: '25%', padding: 0 }}
 							/>
 						))}
 					</BottomNavigation>

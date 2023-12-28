@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {
     FormControl,
     Container,
@@ -18,11 +18,13 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    Paper
+    Paper,
+    useMediaQuery
 } from '@mui/material';
 import {useAuth} from '../contexts/AuthContext.jsx';
 import {useParams, useNavigate} from 'react-router-dom';
 import Dropzone from '../components/Dropzone';
+import {useTheme} from "@mui/material/styles";
 
 export default function EditChallenge() {
     const {
@@ -32,7 +34,8 @@ export default function EditChallenge() {
         singleChallengeData,
         getProfile,
         currentUserData,
-        getAllChallengesData
+        getAllChallengesData,
+        checkForDuplicateChallenge
     } = useAuth();
     const {challengeURL} = useParams();
     const navigate = useNavigate();
@@ -49,6 +52,9 @@ export default function EditChallenge() {
     const [correctAnswer, setCorrectAnswer] = useState('');
     const [image, setImage] = useState();
     const [file, setFile] = useState(null);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         if (!currentUserData) {
@@ -83,7 +89,7 @@ export default function EditChallenge() {
             setImage(challengeData.image);
             setFile(challengeData.image);
         }
-    }, [singleChallengeData, challengeURL]);
+    }, [singleChallengeData, challengeURL, currentUserData, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -152,9 +158,12 @@ export default function EditChallenge() {
         );
     } else {
         return (
-            <Container component="main" maxWidth="md">
+            <Container component="main" maxWidth="md" sx={{
+                mb: isMobile ? 30 : 0,
+                height: isMobile ? 'auto' : 'calc(100vh - 90px)'
+            }}>
                 <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Paper elevation={7} sx={{
+                    <Paper elevation={0} sx={{
                         padding: 2,
                         borderRadius: '4px',
                         mt: 3,
@@ -162,7 +171,7 @@ export default function EditChallenge() {
                         flexDirection: "column",
                         alignItems: "center"
                     }}>
-                        <Typography component="h1" variant="h5">Edit Challenge</Typography>
+                        <Typography component="h1" variant="h4">Edit Challenge</Typography>
                         <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -176,10 +185,24 @@ export default function EditChallenge() {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
+                                        inputProps={{
+                                            maxLength: 25
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
+                                        }}
                                     />
                                 </Grid>
 
-                                <Grid item xs={7}>
+                                <Grid item xs={12} sm={7} order={isMobile ? 2 : 1}>
                                     <TextField
                                         required
                                         fullWidth
@@ -189,18 +212,33 @@ export default function EditChallenge() {
                                         multiline
                                         rows={4}
                                         inputRef={descriptionRef}
+                                        inputProps={{
+                                            maxLength: 300
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item xs={5}>
-                                    <Box sx={{minHeight: '100%', display: 'flex', alignItems: 'center'}}>
+
+                                <Grid item xs={12} sm={5} order={isMobile ? 5 : 2}>
+                                    <Box>
                                         <Dropzone image={image} setImage={setImage} file={file} setFile={setFile}/>
                                     </Box>
                                 </Grid>
 
-                                <Grid item xs={5}>
+                                <Grid item xs={12} sm={5} order={isMobile ? 4 : 3}>
                                     <FormControl fullWidth>
                                         <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
                                         <Select
@@ -209,6 +247,23 @@ export default function EditChallenge() {
                                             value={difficulty}
                                             label="Difficulty"
                                             onChange={(e) => setDifficulty(e.target.value)}
+                                            sx={{
+                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '3px',
+                                                },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '& .MuiSelect-select': {
+                                                    backgroundColor: 'transparent',
+                                                }
+                                            }}
                                         >
                                             <MenuItem value="easy">Easy</MenuItem>
                                             <MenuItem value="medium">Medium</MenuItem>
@@ -216,7 +271,7 @@ export default function EditChallenge() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={7}>
+                                <Grid item xs={12} sm={7} order={isMobile ? 3 : 4}>
                                     <TextField
                                         required
                                         fullWidth
@@ -225,21 +280,35 @@ export default function EditChallenge() {
                                         name="correctAnswer"
                                         value={correctAnswer}
                                         onChange={(e) => setCorrectAnswer(e.target.value)}
+                                        inputProps={{
+                                            maxLength: 50
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
                                         }}
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={12} order={isMobile ? 6 : 5} sx={{mt: 2}}>
                                     <Grid container spacing={2} justifyContent="center">
                                         <Grid item>
                                             <Button
-                                                variant="contained"
-                                                color="secondary"
+                                                variant='outlined'
+                                                color='secondary'
                                                 onClick={handleDelete}
                                                 disabled={loading}
-                                                sx={{mb: 2, width: 100}}
+                                                sx={{mb: 1, width: 100}}
                                             >
                                                 DELETE
                                             </Button>
@@ -249,7 +318,7 @@ export default function EditChallenge() {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
-                                                sx={{mb: 2, width: 200}}
+                                                sx={{mb: 1, width: 150}}
                                                 disabled={loading}
                                             >
                                                 SAVE
