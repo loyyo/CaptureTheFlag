@@ -9,12 +9,16 @@ const Dropzone = ({ image, setImage, setFile }) => {
 	const theme = useTheme();
 
 	const onDrop = useCallback((acceptedFiles) => {
-		setImage(URL.createObjectURL(acceptedFiles[0]));
-		setFile(acceptedFiles[0]);
+		if (acceptedFiles.length > 0 && acceptedFiles[0].type.startsWith('image/')) {
+			setImage(URL.createObjectURL(acceptedFiles[0]));
+			setFile(acceptedFiles[0]);
+		} else {
+			console.error('Only image files are accepted');
+		}
 	}, [setImage, setFile]);
 
 	const { getRootProps, getInputProps } = useDropzone({
-		accept: "image/jpeg, image/jpg, image/gif, image/png",
+		accept: "image/*",
 		maxFiles: 1,
 		maxSize: 5000000,
 		onDrop,

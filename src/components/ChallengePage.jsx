@@ -18,7 +18,7 @@ export default function ChallengePage({challenge, currentUser}) {
     const isAuthor = currentUser.userID === challenge.userID;
 
     const navigate = useNavigate();
-    const {doChallenge, rateChallenge, getAllChallengesData, getSingleChallengeData, getProfile} = useAuth();
+    const {doChallenge, rateChallenge, getAllChallengesData, getSingleChallengeData, getProfile, getAllUsersData} = useAuth();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleImageClick = () => {
@@ -47,6 +47,7 @@ export default function ChallengePage({challenge, currentUser}) {
                     currentUser.points
                 );
                 getProfile();
+                getAllUsersData();
                 setSuccess(true);
             } catch {
                 setError(true);
