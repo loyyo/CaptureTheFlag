@@ -126,6 +126,21 @@ function AllChallenges() {
 		return selectedRatingFilter ? `${selectedRatingFilter}+ Stars` : 'Rating';
 	};
 
+	const handleSortSelection = (sortOption) => {
+		setSelectedSort(sortOption);
+		handleClosePopover(setSortMenuAnchorEl);
+	};
+
+	const handleDifficultySelection = (difficultyOption) => {
+		setSelectedDifficultyFilter(difficultyOption);
+		handleClosePopover(setDifficultyFilterMenuAnchorEl);
+	};
+
+	const handleRatingSelection = (ratingOption) => {
+		setSelectedRatingFilter(ratingOption);
+		handleClosePopover(setRatingFilterMenuAnchorEl);
+	};
+
 	if (!currentUserData || allChallengesData.length === 0) {
 		return (
 			<Container component='main' maxWidth='lg'>
@@ -213,11 +228,9 @@ function AllChallenges() {
 											}
 										}}
 									>
-										<MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-										<MenuItem onClick={() => setSelectedSort('alphabetical')}>
-											Alphabetical
-										</MenuItem>
-										<MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('dateCreated')}>Date Created</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('alphabetical')}>Alphabetical</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('popularity')}>Popularity</MenuItem>
 									</Popover>
 								</Grid>
 
@@ -245,12 +258,10 @@ function AllChallenges() {
 										}}
 									>
 										{/* Popover content for difficulty */}
-										<MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>
-											Medium
-										</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('')}>All</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('easy')}>Easy</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('medium')}>Medium</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('hard')}>Hard</MenuItem>
 									</Popover>
 								</Grid>
 
@@ -278,12 +289,12 @@ function AllChallenges() {
 										}}
 									>
 										{/* Popover content for rating */}
-										<MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(1)}>1+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(2)}>2+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(3)}>3+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(4)}>4+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(5)}>5 Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(0)}>All</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(1)}>1+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(2)}>2+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(3)}>3+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(4)}>4+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(5)}>5 Stars</MenuItem>
 									</Popover>
 								</Grid>
 							</Grid>
@@ -325,11 +336,9 @@ function AllChallenges() {
 											},
 										}}
 									>
-										<MenuItem onClick={() => setSelectedSort('dateCreated')}>Date Created</MenuItem>
-										<MenuItem onClick={() => setSelectedSort('alphabetical')}>
-											Alphabetical
-										</MenuItem>
-										<MenuItem onClick={() => setSelectedSort('popularity')}>Popularity</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('dateCreated')}>Date Created</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('alphabetical')}>Alphabetical</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('popularity')}>Popularity</MenuItem>
 									</Popover>
 								</Grid>
 								<Grid item xs={12} md={4}>
@@ -366,12 +375,10 @@ function AllChallenges() {
 											},
 										}}
 									>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('')}>All</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('easy')}>Easy</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('medium')}>
-											Medium
-										</MenuItem>
-										<MenuItem onClick={() => setSelectedDifficultyFilter('hard')}>Hard</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('')}>All</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('easy')}>Easy</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('medium')}>Medium</MenuItem>
+										<MenuItem onClick={() => handleDifficultySelection('hard')}>Hard</MenuItem>
 									</Popover>
 								</Grid>
 								<Grid item xs={12} md={4}>
@@ -408,12 +415,12 @@ function AllChallenges() {
 											},
 										}}
 									>
-										<MenuItem onClick={() => setSelectedRatingFilter(0)}>All</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(1)}>1+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(2)}>2+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(3)}>3+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(4)}>4+ Stars</MenuItem>
-										<MenuItem onClick={() => setSelectedRatingFilter(5)}>5 Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(0)}>All</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(1)}>1+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(2)}>2+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(3)}>3+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(4)}>4+ Stars</MenuItem>
+										<MenuItem onClick={() => handleRatingSelection(5)}>5 Stars</MenuItem>
 									</Popover>
 								</Grid>
 							</Grid>
