@@ -125,19 +125,73 @@ function AuthProvider({children}) {
         [createProfile]
     );
 
+    const getChallengeStats = useCallback(async (userID, email) => {
+        const userDataSnapshot = await db.collection('users').doc(email).get();
+        if (!userDataSnapshot.exists) {
+            console.error('User data not found');
+            return null;
+        }
+        const userData = userDataSnapshot.data();
+        const userChallenges = userData.challenges || {};
+
+        const challengesSnapshot = await db.collection('challenges').get();
+        const challenges = challengesSnapshot.docs.map(doc => doc.data());
+
+        const usersSnapshot = await db.collection('users').get();
+        const usersData = usersSnapshot.docs.map(doc => doc.data());
+
+        let challengeStats = {
+            solvedChallenges: 0,
+            solvedEasyChallenges: 0,
+            solvedMediumChallenges: 0,
+            solvedHardChallenges: 0,
+            totalEasyChallenges: 0,
+            totalMediumChallenges: 0,
+            totalHardChallenges: 0,
+            totalChallenges: 0
+        };
+
+        challengeStats = challenges.reduce((stats, challenge) => {
+            const {difficulty, url} = challenge;
+
+            stats.totalChallenges++;
+            stats[`total${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
+
+            if (userChallenges[url]) {
+                stats.solvedChallenges++;
+                stats[`solved${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
+            }
+
+            return stats;
+        }, challengeStats);
+
+        const ranking = calculateRanking(allUsersData, userID);
+
+        return {...challengeStats, ranking};
+    }, [allUsersData]);
+
     const getProfile = useCallback(async () => {
         try {
             const doc = await db.collection('users').doc(currentUser.email).get();
             if (doc.exists) {
-                let Data = doc.data();
-                setCurrentUserData(Data);
+                let userData = doc.data();
+
+                if (userData.userID) {
+                    const stats = await getChallengeStats(userData.userID, userData.email);
+                    if (stats) {
+                        userData = {...userData, ...stats};
+                    }
+                }
+
+                setCurrentUserData(userData);
             } else {
                 console.error('No such document!');
             }
         } catch (error) {
             console.error('Error getting document:', error);
         }
-    }, [currentUser]);
+    }, [currentUser, getChallengeStats]);
+
 
     const currentPassword = useCallback(async (password) => {
         try {
@@ -310,52 +364,6 @@ function AuthProvider({children}) {
         const userIndex = sortedUsersData.findIndex(user => user.userID === currentUserId);
         return userIndex + 1;
     };
-
-    const getChallengeStats = useCallback(async (userID, email) => {
-        const userDataSnapshot = await db.collection('users').doc(email).get();
-        if (!userDataSnapshot.exists) {
-            console.error('User data not found');
-            return null;
-        }
-        const userData = userDataSnapshot.data();
-        const userChallenges = userData.challenges || {};
-
-        const challengesSnapshot = await db.collection('challenges').get();
-        const challenges = challengesSnapshot.docs.map(doc => doc.data());
-
-        const usersSnapshot = await db.collection('users').get();
-        const usersData = usersSnapshot.docs.map(doc => doc.data());
-
-        let challengeStats = {
-            solvedChallenges: 0,
-            solvedEasyChallenges: 0,
-            solvedMediumChallenges: 0,
-            solvedHardChallenges: 0,
-            totalEasyChallenges: 0,
-            totalMediumChallenges: 0,
-            totalHardChallenges: 0,
-            totalChallenges: 0
-        };
-
-        challengeStats = challenges.reduce((stats, challenge) => {
-            const {difficulty, url} = challenge;
-
-            stats.totalChallenges++;
-            stats[`total${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
-
-            if (userChallenges[url]) {
-                stats.solvedChallenges++;
-                stats[`solved${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}Challenges`]++;
-            }
-
-            return stats;
-        }, challengeStats);
-
-        const ranking = calculateRanking(allUsersData, userID);
-
-        return {...challengeStats, ranking};
-    }, [allUsersData]);
-
 
     const getUserProfile = useCallback(
         async (user) => {

@@ -62,13 +62,6 @@ export default function Profile() {
             if (allUsersData.length === 0) {
                 await getAllUsersData();
             }
-
-            if (currentUserData && currentUserData.userID) {
-                const stats = await getChallengeStats(currentUserData.userID, currentUserData.email);
-                if (stats) {
-                    setUserData((prevState) => ({...prevState, ...stats}));
-                }
-            }
         };
 
         loadData().then(() => setUsersDataLoaded(true));
@@ -81,6 +74,7 @@ export default function Profile() {
         getAllUsersData,
         getChallengeStats,
     ]);
+
     if (!usersDataLoaded) {
         return (
             <Container component='main' maxWidth='lg'>
@@ -221,11 +215,11 @@ export default function Profile() {
                                                 sx={{width: '100px', height: '100px', mr: 2}}
                                             />
                                             <Box>
-                                                <Typography variant='h5'>{userData.username}</Typography>
+                                                <Typography variant='h5'>{userData?.username}</Typography>
                                                 <Typography variant='body1'>
-                                                    Rank: {userData.ranking === 0 ? '---' : userData.ranking}
+                                                    Rank: {userData?.ranking === 0 ? '---' : userData?.ranking}
                                                 </Typography>
-                                                <Typography variant='body1'>Points: {userData.points}</Typography>
+                                                <Typography variant='body1'>Points: {userData?.points}</Typography>
                                             </Box>
                                         </Box>
                                     </Paper>
@@ -241,7 +235,7 @@ export default function Profile() {
                                             border: '2px solid #252028',
                                         }}
                                     >
-                                        <Typography variant='body1'>{userData.bio}</Typography>
+                                        <Typography variant='body1'>{userData?.bio}</Typography>
                                     </Paper>
 
                                     <Button
@@ -288,7 +282,7 @@ export default function Profile() {
                                                 />
                                                 <CircularProgress
                                                     variant="determinate"
-                                                    value={calculatePercentage(userData.solvedChallenges, userData.totalChallenges)}
+                                                    value={calculatePercentage(userData?.solvedChallenges, userData?.totalChallenges)}
                                                     size={140}
                                                     thickness={4}
                                                     sx={{position: 'absolute', color: theme.palette.primary.main}}
@@ -310,7 +304,7 @@ export default function Profile() {
                                                             fontWeight: 'bold',
                                                         }}
                                                     >
-                                                        {userData.solvedChallenges}
+                                                        {userData?.solvedChallenges}
                                                         <div style={{fontSize: '12px'}}>Solved</div>
                                                     </Typography>
                                                 </Box>
@@ -333,15 +327,15 @@ export default function Profile() {
                                                 >
                                                     <Typography variant='body1'>{`Easy`}</Typography>
                                                     <Typography
-                                                        variant='body1'>{`${userData.solvedEasyChallenges}/${userData.totalEasyChallenges}`}</Typography>
+                                                        variant='body1'>{`${userData?.solvedEasyChallenges}/${userData?.totalEasyChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
                                                     <div
                                                         className='progress-fill'
                                                         style={{
                                                             width: `${calculatePercentage(
-                                                                userData.solvedEasyChallenges,
-                                                                userData.totalEasyChallenges
+                                                                userData?.solvedEasyChallenges,
+                                                                userData?.totalEasyChallenges
                                                             )}%`,
                                                             backgroundColor: theme.palette.primary.main,
                                                         }}
@@ -361,15 +355,15 @@ export default function Profile() {
                                                 >
                                                     <Typography variant='body1'>{`Medium`}</Typography>
                                                     <Typography
-                                                        variant='body1'>{`${userData.solvedMediumChallenges}/${userData.totalMediumChallenges}`}</Typography>
+                                                        variant='body1'>{`${userData?.solvedMediumChallenges}/${userData?.totalMediumChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
                                                     <div
                                                         className='progress-fill'
                                                         style={{
                                                             width: `${calculatePercentage(
-                                                                userData.solvedMediumChallenges,
-                                                                userData.totalMediumChallenges
+                                                                userData?.solvedMediumChallenges,
+                                                                userData?.totalMediumChallenges
                                                             )}%`,
                                                             backgroundColor: theme.palette.primary.main,
                                                         }}
@@ -389,15 +383,15 @@ export default function Profile() {
                                                 >
                                                     <Typography variant='body1'>{`Hard`}</Typography>
                                                     <Typography
-                                                        variant='body1'>{`${userData.solvedHardChallenges}/${userData.totalHardChallenges}`}</Typography>
+                                                        variant='body1'>{`${userData?.solvedHardChallenges}/${userData?.totalHardChallenges}`}</Typography>
                                                 </Box>
                                                 <div className='progress-bar'>
                                                     <div
                                                         className='progress-fill'
                                                         style={{
                                                             width: `${calculatePercentage(
-                                                                userData.solvedHardChallenges,
-                                                                userData.totalHardChallenges
+                                                                userData?.solvedHardChallenges,
+                                                                userData?.totalHardChallenges
                                                             )}%`,
                                                             backgroundColor: theme.palette.primary.main,
                                                         }}
