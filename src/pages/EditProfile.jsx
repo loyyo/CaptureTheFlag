@@ -41,7 +41,9 @@ export default function EditProfile() {
         updateUsername,
         updateBio,
         updateAvatar,
-        currentPassword
+        currentPassword,
+        logout,
+        getAllUsersData
     } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -54,33 +56,43 @@ export default function EditProfile() {
     async function handleSubmit(e) {
         e.preventDefault();
 
+        setError("");
+        setSuccess(false);
+        setLoading(true);
+
         if ((passwordRef.current.value || passwordConfirmationRef.current.value) && !currentPasswordRef.current.value) {
             setError("Current password is required when changing the password.");
+            setLoading(false);
             return;
         }
 
-        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
-            setError("Username must be between 5 and 15 characters");
+        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 10) {
+            setError("Username must be between 5 and 10 characters");
+            setLoading(false);
             return;
         }
 
-        if (!emailRef.current.value.includes("@") || !emailRef.current.value.endsWith(".com")) {
+        if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
             setError("Email address is not valid");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value && passwordRef.current.value.length < 6) {
             setError("Password must be at least 6 characters");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
             setError("Passwords do not match");
+            setLoading(false);
             return;
         }
 
         if (bioRef.current.value.length > 300) {
             setError("Biography must be less than 300 characters");
+            setLoading(false);
             return;
         }
 
@@ -93,51 +105,59 @@ export default function EditProfile() {
         }
 
         const promises = [];
-        if (passwordRef.current.value) {
-            promises.push(updatePassword(passwordRef.current.value));
-        }
+
         if (emailRef.current.value !== currentUser.email) {
-            promises.push(updateEmail(emailRef.current.value));
-        }
-        if (emailRef.current.value === currentUser.email) {
-            if (
-                usernameRef.current.value !== currentUserData.username &&
-                usernameRef.current.value.length < 16
-            ) {
-                usernameRef.current.value = usernameRef.current.value.slice(0, 15);
-                promises.push(updateUsername(emailRef.current.value, usernameRef.current.value));
-            }
-            if (bioRef.current.value !== currentUserData.bio && bioRef.current.value.length < 301) {
-                promises.push(updateBio(emailRef.current.value, bioRef.current.value));
-            }
-            if (file && file.path) {
-                promises.push(updateAvatar(emailRef.current.value, file));
+            try {
+                await updateEmail(emailRef.current.value);
+                await getProfile();
+            } catch (error) {
+                if (error.code === 'auth/requires-recent-login') {
+                    setError("Please log in again to update your email.");
+                    setLoading(false);
+                    logout();
+                    localStorage.setItem('loginReason', 'requires-recent-login');
+                    // navigate("/login", { state: { reason: "requires-recent-login" } });
+                    navigate("/login");
+                    return;
+                } else {
+                    setError("Failed to update email. " + error.message);
+                    setLoading(false);
+                    return;
+                }
             }
         }
 
-        setLoading(true);
-        setError("");
+        if (usernameRef.current.value !== currentUserData.username) {
+            promises.push(updateUsername(currentUser.email, usernameRef.current.value));
+        }
+
+        if (bioRef.current.value !== currentUserData.bio) {
+            promises.push(updateBio(currentUser.email, bioRef.current.value));
+        }
+
+        if (file && file.path !== currentUserData.avatar || !file) {
+            promises.push(updateAvatar(currentUser.email, file));
+        }
+
+        if (passwordRef.current.value) {
+            promises.push(updatePassword(passwordRef.current.value));
+        }
+
         Promise.all(promises)
             .then(() => {
-                if (promises.length !== 0) {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        navigate("/profile");
-                        navigate(0);
-                    }, 1000);
-                } else {
-                    setError(`You haven't changed any values`);
-                }
+                setSuccess(true);
+                navigate("/profile");
             })
-            .catch((e) => {
-                if (e instanceof TypeError || e instanceof RangeError || e instanceof EvalError) {
-                    setError("Failed to edit the account");
-                }
+            .catch((error) => {
+                setError("An error occurred while updating profile. " + error.message);
             })
             .finally(() => {
+                getProfile();
+                getAllUsersData();
                 setLoading(false);
             });
     }
+
 
     const handleCancel = () => {
         navigate("/profile");
@@ -250,6 +270,17 @@ export default function EditProfile() {
                                             autoComplete="username"
                                             inputRef={usernameRef}
                                             defaultValue={currentUserData.username}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
@@ -264,6 +295,17 @@ export default function EditProfile() {
                                             autoComplete="email"
                                             inputRef={emailRef}
                                             defaultValue={currentUser.email}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
@@ -289,12 +331,23 @@ export default function EditProfile() {
                                             rows={4}
                                             inputRef={bioRef}
                                             defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
 
 
                                     <Grid item xs={12}>
-                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1 }} />
+                                        <Divider orientation="horizontal" sx={{ width: "100%", my: 1, border: '1px solid #252028' }} />
                                     </Grid>
 
                                     {/* Password Fields */}
@@ -309,6 +362,17 @@ export default function EditProfile() {
                                             autoComplete="current-password"
                                             inputRef={currentPasswordRef}
                                             helperText="*Required when changing the password"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -322,6 +386,17 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -335,6 +410,18 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordConfirmationRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                 </>
@@ -352,7 +439,18 @@ export default function EditProfile() {
                                             autoComplete="username"
                                             inputRef={usernameRef}
                                             defaultValue={currentUserData.username}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                         <TextField
                                             variant="outlined"
@@ -363,7 +461,18 @@ export default function EditProfile() {
                                             autoComplete="email"
                                             inputRef={emailRef}
                                             defaultValue={currentUser.email}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                         <Dropzone
                                             image={image}
@@ -389,7 +498,18 @@ export default function EditProfile() {
                                             id="currentPassword"
                                             autoComplete="current-password"
                                             inputRef={currentPasswordRef}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                             helperText="*Required when changing the password"
                                         />
                                         <TextField
@@ -401,7 +521,18 @@ export default function EditProfile() {
                                             id="password"
                                             autoComplete="new-password"
                                             inputRef={passwordRef}
-                                            sx={{mb: 2}}
+                                            sx={{
+                                                mb: 2,
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                             helperText="*Leave blank to keep the same"
                                         />
                                         <TextField
@@ -414,6 +545,17 @@ export default function EditProfile() {
                                             autoComplete="new-password"
                                             inputRef={passwordConfirmationRef}
                                             helperText="*Leave blank to keep the same"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -427,6 +569,17 @@ export default function EditProfile() {
                                             rows={4}
                                             inputRef={bioRef}
                                             defaultValue={currentUserData.bio}
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: '#252028',
+                                                        borderWidth: '2px',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderWidth: '3px',
+                                                    },
+                                                }
+                                            }}
                                         />
                                     </Grid>
                                 </>
@@ -441,12 +594,13 @@ export default function EditProfile() {
                             flexDirection: isMobile ? 'column' : 'row',
                             justifyContent: 'center'
                         }}>
-                            <Button onClick={handleCancel} variant="outlined"
+                            <Button onClick={handleCancel}
+                                    variant='outlined'
+                                    color='secondary'
                                     sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained"
-                                    sx={{color: 'white'}} disabled={loading}>
+                            <Button type="submit" variant="contained" disabled={loading}>
                                 Save Changes
                             </Button>
                         </Box>

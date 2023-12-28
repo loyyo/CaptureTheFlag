@@ -5,7 +5,6 @@ import {
 	Grid,
 	Box,
 	Typography,
-	Divider,
 	Paper,
 	Button,
 	useMediaQuery
@@ -46,7 +45,6 @@ export default function Home() {
 									</Typography>
 								</Paper>
 							</Box>
-							<Divider variant='middle' />
 							<Grid justifyContent='center' container spacing={3}>
 								<Grid item>
 									<Button
@@ -60,7 +58,7 @@ export default function Home() {
 											navigate('/register');
 										}}
 									>
-										SIGN UP
+										Sign up
 									</Button>
 								</Grid>
 								<Grid item>

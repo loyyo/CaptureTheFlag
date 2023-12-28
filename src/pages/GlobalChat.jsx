@@ -23,7 +23,8 @@ const classes = {
 const StyledContainer = styled(Container)(({theme}) => ({
     [`& .${classes.input}`]: {
         '&::placeholder': {
-            textAlign: 'center',
+            textAlign: 'left',
+            opacity: 1,
         },
         color: '',
     },
@@ -113,7 +114,7 @@ export default function GlobalChat() {
     return (
         <StyledContainer maxWidth='lg' sx={{height: 'calc(100vh - 90px)'}}>
             <CssBaseline/>
-            <Paper elevation={3} sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
+            <Paper sx={{padding: theme.spacing(3, 3, 0), width: '100%', mt: 3, mb: 3}}>
                 <Box mb={5}>
                     <Grid container direction='column'>
                         <Grid item xs={12} sx={{marginBottom: '20px'}}>
@@ -122,7 +123,7 @@ export default function GlobalChat() {
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square elevation={3}>
+                            <Paper square sx={{border: '2px solid #252028'}}>
                                 <Box p={1} className='messagesBox'>
                                     {globalMessages?.map((msg) => (
                                         <ChatMessage
@@ -136,47 +137,51 @@ export default function GlobalChat() {
                                 </Box>
                             </Paper>
                         </Grid>
-                        {currentUserData.points > 0 && (
-                            <Box>
-                                <Grid item container xs={12}>
-                                    <Grid item xs={8} sm={10}>
-                                        <Box p={2}>
-                                            <TextField
-                                                error={error}
-                                                helperText={error ? 'Użyj mniej niż 1000 znaków!' : ''}
-                                                inputRef={messageRef}
-                                                placeholder='Type your message here'
-                                                variant='outlined'
-                                                fullWidth
-                                                className={classes.input}
-                                                InputProps={{classes: {input: classes.input}}}
-                                                onKeyUp={kliknietyEnter}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4} sm={2}>
-                                        <Box p={1} m={2}>
-                                            <Button
-                                                type='button'
-                                                fullWidth
-                                                variant='contained'
-                                                size='large'
-                                                disabled={loading}
-                                                sx={{color: 'white'}}
-                                                onClick={submitMessage}
-                                            >
-                                                {isMobile ? <SendIcon /> : <>Send<SendIcon sx={{ml: 1}}/></>}
-                                            </Button>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                        )}
-                        {currentUserData.points === 0 && (
-                            <Typography variant='h5' className='header-text-dark'>
-                                Chat will be available after capturing your first flag (｡◕‿◕｡)
-                            </Typography>
-                        )}
+                        <Grid item container xs={12} sx={{padding: isMobile ? 1 : 2}}>
+                            <Grid item xs={8} sm={10}>
+                                <Box p={1}>
+                                    <TextField
+                                        error={error}
+                                        helperText={error ? 'Użyj mniej niż 1000 znaków!' : ''}
+                                        inputRef={messageRef}
+                                        placeholder='Type your message'
+                                        variant='outlined'
+                                        fullWidth
+                                        className={classes.input}
+                                        InputProps={{classes: {input: classes.input}}}
+                                        onKeyUp={kliknietyEnter}
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid item xs={4} sm={2}>
+                                <Box
+                                    p={1}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        height: '100%'
+                                    }}
+                                >
+                                    <Button
+                                        type='button'
+                                        fullWidth
+                                        variant='contained'
+                                        size='large'
+                                        disabled={loading}
+                                        onClick={submitMessage}
+                                        sx={{
+                                            width: '80%',
+                                            height: isMobile ? 'auto' : '120%',
+                                            backgroundColor: '#40376F',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        {isMobile ? <SendIcon/> : <>Send<SendIcon sx={{ml: 1}}/></>}
+                                    </Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Box>
             </Paper>

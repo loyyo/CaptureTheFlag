@@ -5,7 +5,6 @@ import {
     Grid,
     CssBaseline,
     Button,
-    Avatar,
     Collapse,
     Container,
     Typography,
@@ -44,8 +43,8 @@ export default function SignUp() {
             return setError('Passwords do not match');
         }
 
-        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
-            return setError('Username must be between 5 and 15 characters');
+        if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 10) {
+            return setError('Username must be between 5 and 10 characters');
         }
 
         if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
@@ -180,7 +179,7 @@ export default function SignUp() {
                                     fullWidth
                                     variant='contained'
                                     color='primary'
-                                    sx={{margin: theme.spacing(3, 0, 2), color: 'white'}}
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
                                     disabled={loading}
                                 >
                                     Sign Up

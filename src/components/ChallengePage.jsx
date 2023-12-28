@@ -1,34 +1,12 @@
 import {useState, useRef, useEffect} from 'react';
-import {createTheme, ThemeProvider, styled, useTheme} from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import {Grid, Box, Typography, Button, TextField, Paper, Divider, Dialog, IconButton, Container} from '@mui/material';
 import {useMediaQuery} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
-import {green} from '@mui/material/colors';
 import PropTypes from 'prop-types';
 import Rating from 'react-rating';
-
-const PREFIX = 'ChallengePage';
-const classes = {
-    input: `${PREFIX}-input`,
-};
-const StyledGrid = styled(Grid)(({theme}) => ({
-    [`& .${classes.input}`]: {
-        '&::placeholder': {
-            color: 'white',
-            textAlign: 'center',
-        },
-        color: 'white',
-        background: theme.palette.primary.light,
-    },
-}));
-
-const successTheme = createTheme({
-    palette: {
-        error: green,
-    },
-});
 
 export default function ChallengePage({challenge, currentUser}) {
     const [error, setError] = useState(false);
@@ -40,7 +18,7 @@ export default function ChallengePage({challenge, currentUser}) {
     const isAuthor = currentUser.userID === challenge.userID;
 
     const navigate = useNavigate();
-    const {doChallenge, rateChallenge} = useAuth();
+    const {doChallenge, rateChallenge, getAllChallengesData, getSingleChallengeData, getProfile, getAllUsersData} = useAuth();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleImageClick = () => {
@@ -50,7 +28,6 @@ export default function ChallengePage({challenge, currentUser}) {
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
-
 
     const checkKey = async () => {
         if (loading) {
@@ -69,22 +46,14 @@ export default function ChallengePage({challenge, currentUser}) {
                     currentUser.email,
                     currentUser.points
                 );
+                getProfile();
+                getAllUsersData();
                 setSuccess(true);
-                setTimeout(() => {
-                    // navigate('/challenges');
-                    navigate(0);
-                }, 2000);
             } catch {
                 setError(true);
                 setSuccess(false);
             }
             setLoading(false);
-        }
-    };
-
-    const kliknietyEnter = (e) => {
-        if (e.key === 'Enter') {
-            checkKey();
         }
     };
 
@@ -104,8 +73,10 @@ export default function ChallengePage({challenge, currentUser}) {
     const handleRating = async (value) => {
         try {
             await rateChallenge(value, challenge.url, currentUser.userID);
+            getAllChallengesData();
+            getSingleChallengeData(challenge.url);
+            getAllChallengesData();
             navigate('/challenges');
-            navigate(0);
         } catch {
             console.error('Something bad happened :(');
         }
@@ -119,13 +90,6 @@ export default function ChallengePage({challenge, currentUser}) {
         }
     }, [error]);
 
-    const paperStyle = {
-        backgroundColor: 'light',
-        borderRadius: '4px',
-        padding: 2,
-        margin: 1,
-    };
-
     return (
         <Container component="main" maxWidth="lg" sx={{
             mt: 2,
@@ -133,7 +97,7 @@ export default function ChallengePage({challenge, currentUser}) {
             height: isMobile ? 'auto' : 'calc(100vh - 130px)'
         }}>
             <Grid container direction='column'>
-                <Paper elevation={3} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
+                <Paper elevation={0} sx={{backgroundColor: 'light', borderRadius: '4px', padding: 2}}>
                     {/* Title */}
                     <Grid item xs={12}>
                         <Typography variant='h4' align="center">
@@ -143,9 +107,9 @@ export default function ChallengePage({challenge, currentUser}) {
 
                     {/* Combined Section: Description, Difficulty, Points, Rating, Image */}
                     <Grid item xs={12}>
-                        <Paper sx={{backgroundColor: 'light', borderRadius: '4px', margin: 1}}>
+                        <Paper variant='outlined' sx={{backgroundColor: 'light', borderRadius: '4px', margin: 1, border: '2px solid #252028'}}>
                             {/* Description */}
-                            <Typography variant='h5' align="left" sx={{borderRadius: 0, borderBottom: `1px solid ${theme.palette.divider}`, width: '100%', padding: 1}}>
+                            <Typography variant='h5' align="left" sx={{borderRadius: 0, borderBottom: '2px solid #252028', width: '100%', padding: 1}}>
                                 {challenge.description}
                             </Typography>
 
@@ -160,7 +124,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                     </Typography>
                                     <Rating
                                         emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        fullSymbol={<span className='fa fa-star fa-2x' style={{color: theme.palette.primary.main}} />}
                                         fractions={100}
                                         initialRating={getInitialRating(challenge)}
                                         readonly
@@ -176,7 +140,7 @@ export default function ChallengePage({challenge, currentUser}) {
                                     </Typography>
                                     <Rating
                                         emptySymbol='fa fa-star-o fa-2x'
-                                        fullSymbol='fa fa-star fa-2x'
+                                        fullSymbol={<span className='fa fa-star fa-2x' style={{color: theme.palette.primary.main}} />}
                                         fractions={100}
                                         initialRating={getInitialRating(challenge)}
                                         readonly
@@ -187,7 +151,7 @@ export default function ChallengePage({challenge, currentUser}) {
                             {/* Image */}
                             {challenge.image && (
                                 <Box onClick={handleImageClick}
-                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: `1px solid ${theme.palette.divider}`}}>
+                                     sx={{cursor: 'pointer', display: 'flex', justifyContent: 'center', borderRadius: 0, borderTop: '2px solid #252028'}}>
                                     <img alt={`image-${challenge.url}`} src={challenge.image}
                                          style={{maxWidth: '100%', maxHeight: '500px'}}/>
                                 </Box>
@@ -247,19 +211,22 @@ export default function ChallengePage({challenge, currentUser}) {
                                             </Typography>
                                         </Grid>
                                     )}
-                                    <Grid item xs={12} lg={2}>
-                                        <Button
-                                            type='button'
-                                            variant='contained'
-                                            color='primary'
-                                            disabled={loading || success}
-                                            onClick={checkKey}
-                                            sx={{padding: 1.75, color: 'white', fontSize: '1.25rem'}}
-                                            fullWidth
-                                        >
-                                            Submit
-                                        </Button>
-                                    </Grid>
+                                    {!success && (
+                                        <Grid item xs={12} lg={2}>
+                                            <Button
+                                                type='button'
+                                                variant='contained'
+                                                color='primary'
+                                                disabled={loading || success}
+                                                onClick={checkKey}
+                                                sx={{padding: 1.75, color: 'white', fontSize: '1.25rem'}}
+                                                fullWidth
+                                            >
+                                                Submit
+                                            </Button>
+                                        </Grid>
+                                    )}
+
                                 </Grid>
 
                             )}
@@ -282,10 +249,10 @@ export default function ChallengePage({challenge, currentUser}) {
                                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" m={1}>
                                     <Rating
                                         emptySymbol={
-                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px'}}/>
+                                            <span className="fa fa-star-o fa-2x" style={{margin: '0 8px', }}/>
                                         }
                                         fullSymbol={
-                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px'}}/>
+                                            <span className="fa fa-star fa-2x" style={{margin: '0 8px', color: theme.palette.primary.main}}/>
                                         }
                                         fractions={2}
                                         initialRating={

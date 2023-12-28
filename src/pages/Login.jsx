@@ -1,10 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTheme} from '@mui/material/styles';
 import {
     TextField,
     CssBaseline,
     Button,
-    Avatar,
     Grid,
     Typography,
     Container,
@@ -17,6 +16,7 @@ import {
 } from '@mui/material';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext.jsx';
+import {useLocation} from 'react-router-dom';
 
 export default function SignIn() {
     const navigate = useNavigate();
@@ -30,6 +30,9 @@ export default function SignIn() {
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const location = useLocation();
+    const [signInError, setSignInError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,7 +49,16 @@ export default function SignIn() {
         setLoading(false);
     };
 
+    useEffect(() => {
+        const loginReason = localStorage.getItem('loginReason');
+        if (loginReason === "requires-recent-login") {
+            setSignInError('For security reasons, please sign in again.');
+        }
+        localStorage.removeItem('loginReason');
+    }, [location]);
+
     return (
+
         <Container component="main" maxWidth="xs" sx={{
             mt: 2,
             mb: isMobile ? 8 : 0,
@@ -65,6 +77,13 @@ export default function SignIn() {
                         <Typography component='h1' variant='h4'>
                             Sign in
                         </Typography>
+                        {signInError && (
+                            <Box mt={2} mb={1}>
+                                <Alert variant='outlined' severity='info'>
+                                    {signInError}
+                                </Alert>
+                            </Box>
+                        )}
                         <Box mt={1} sx={{width: '100%'}}>
                             <form onSubmit={handleSubmit}>
                                 {error && (
@@ -104,7 +123,7 @@ export default function SignIn() {
                                     fullWidth
                                     variant='contained'
                                     color='primary'
-                                    sx={{margin: theme.spacing(3, 0, 2), color: 'white'}}
+                                    sx={{margin: theme.spacing(3, 0, 2)}}
                                     disabled={loading}
                                 >
                                     Sign In
@@ -115,9 +134,9 @@ export default function SignIn() {
                                             Forgot password?
                                         </Link>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item xs align="right">
                                         <Link underline='hover' component={RouterLink} to='/register'>
-                                            Don&apos;t have an account? Sign Up
+                                            Don't have an account? Sign Up
                                         </Link>
                                     </Grid>
                                 </Grid>

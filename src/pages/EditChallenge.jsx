@@ -163,7 +163,7 @@ export default function EditChallenge() {
                 height: isMobile ? 'auto' : 'calc(100vh - 90px)'
             }}>
                 <Box sx={{mt: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Paper elevation={7} sx={{
+                    <Paper elevation={0} sx={{
                         padding: 2,
                         borderRadius: '4px',
                         mt: 3,
@@ -185,6 +185,20 @@ export default function EditChallenge() {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
+                                        inputProps={{
+                                            maxLength: 25
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
+                                        }}
                                     />
                                 </Grid>
 
@@ -198,8 +212,22 @@ export default function EditChallenge() {
                                         multiline
                                         rows={4}
                                         inputRef={descriptionRef}
+                                        inputProps={{
+                                            maxLength: 300
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
                                         }}
                                     />
                                 </Grid>
@@ -219,6 +247,23 @@ export default function EditChallenge() {
                                             value={difficulty}
                                             label="Difficulty"
                                             onChange={(e) => setDifficulty(e.target.value)}
+                                            sx={{
+                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '3px',
+                                                },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '& .MuiSelect-select': {
+                                                    backgroundColor: 'transparent',
+                                                }
+                                            }}
                                         >
                                             <MenuItem value="easy">Easy</MenuItem>
                                             <MenuItem value="medium">Medium</MenuItem>
@@ -226,7 +271,6 @@ export default function EditChallenge() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-
                                 <Grid item xs={12} sm={7} order={isMobile ? 3 : 4}>
                                     <TextField
                                         required
@@ -236,21 +280,35 @@ export default function EditChallenge() {
                                         name="correctAnswer"
                                         value={correctAnswer}
                                         onChange={(e) => setCorrectAnswer(e.target.value)}
+                                        inputProps={{
+                                            maxLength: 50
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                    borderColor: '#252028',
+                                                    borderWidth: '2px',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderWidth: '3px',
+                                                },
+                                            }
                                         }}
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} order={isMobile ? 6 : 5}>
+                                <Grid item xs={12} order={isMobile ? 6 : 5} sx={{mt: 2}}>
                                     <Grid container spacing={2} justifyContent="center">
                                         <Grid item>
                                             <Button
-                                                variant="contained"
-                                                color="secondary"
+                                                variant='outlined'
+                                                color='secondary'
                                                 onClick={handleDelete}
                                                 disabled={loading}
-                                                sx={{mb: 2, width: 100}}
+                                                sx={{mb: 1, width: 100}}
                                             >
                                                 DELETE
                                             </Button>
@@ -260,7 +318,7 @@ export default function EditChallenge() {
                                                 type="submit"
                                                 variant="contained"
                                                 color="primary"
-                                                sx={{mb: 2, width: 200, color: 'white'}}
+                                                sx={{mb: 1, width: 150}}
                                                 disabled={loading}
                                             >
                                                 SAVE

@@ -45,8 +45,8 @@ function AuthProvider({children}) {
 
     const logout = useCallback(async () => {
         await auth.signOut();
-        setCurrentUserData([]);
-        setCurrentUser([]);
+        setCurrentUserData(null);
+        setCurrentUser(null);
         setAllChallengesData([]);
     }, []);
 
@@ -55,11 +55,40 @@ function AuthProvider({children}) {
     }, []);
 
     const updateEmail = useCallback(
-        async (email) => {
-            await currentUser.updateEmail(email);
+        async (newEmail) => {
+            if (!currentUser) {
+                console.error('No current user');
+                return;
+            }
+
+            try {
+                const oldUserDocRef = db.collection('users').doc(currentUser.email);
+                const oldUserDoc = await oldUserDocRef.get();
+
+                if (!oldUserDoc.exists) {
+                    console.error('Old user document does not exist');
+                    return;
+                }
+                const userData = oldUserDoc.data();
+
+                await currentUser.updateEmail(newEmail);
+
+                await db.collection('users').doc(newEmail).set({
+                    ...userData,
+                    email: newEmail
+                });
+
+                await oldUserDocRef.delete();
+
+                await getProfile();
+            } catch (error) {
+                console.error('Error updating email: ', error);
+                throw error;
+            }
         },
         [currentUser]
     );
+
 
     const updatePassword = useCallback(
         async (password) => {
@@ -75,7 +104,7 @@ function AuthProvider({children}) {
             await db.collection('users').doc(`${email}`).set({
                 avatar:
                     'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media',
-                bio: 'There is nothing to see here unfortunately :(',
+                bio: 'There is nothing to see here unfortunately',
                 challenges: {},
                 createdAt: new Date(),
                 email: email,
@@ -222,28 +251,35 @@ function AuthProvider({children}) {
     }, []);
 
     const updateAvatar = useCallback(async (email, file) => {
-        let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
-        let filetype = file.type.slice(6);
-        let fullfilename = `${filename}.${filetype}`;
+        let avatar;
 
-        let metadata = {
-            contentType: file.type,
-        };
+        if (file && file.length !== 0) {
+            let filename = cryptoRandomString({length: 28, type: 'alphanumeric'});
+            let filetype = file.type.slice(6);
+            let fullfilename = `${filename}.${filetype}`;
 
-        storageRef.child('avatars/' + fullfilename).put(file, metadata);
+            let metadata = {
+                contentType: file.type,
+            };
 
-        let avatar = `https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
+            await storageRef.child('avatars/' + fullfilename).put(file, metadata);
+            avatar = `https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F${fullfilename}?alt=media`;
+        } else {
+            avatar = 'https://firebasestorage.googleapis.com/v0/b/capturetheflag-mw.appspot.com/o/avatars%2F0wli9hCJ8mTJbvj.png?alt=media';
+        }
 
-        await db
-            .collection('users')
-            .doc(`${email}`)
-            .update({
-                avatar: avatar,
-            })
-            .catch((error) => {
-                console.error('Error updating document: ', error);
-            });
+        try {
+            await db
+                .collection('users')
+                .doc(`${email}`)
+                .update({
+                    avatar: avatar,
+                });
+        } catch (error) {
+            console.error('Error updating document: ', error);
+        }
     }, []);
+
 
     const doChallenge = useCallback(async (url, challengePoints, user, userPoints) => {
         let points = challengePoints + userPoints;
@@ -490,9 +526,9 @@ function AuthProvider({children}) {
             };
 
             if (image !== null) {
-                updateData.image = imageUrl ? imageUrl : null;
                 updateData.fileName = image?.name || null
             }
+            updateData.image = imageUrl ? imageUrl : image;
 
             await db.collection('challenges').doc(challengeID).update(updateData);
         } catch (error) {
