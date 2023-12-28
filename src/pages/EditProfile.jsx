@@ -41,7 +41,8 @@ export default function EditProfile() {
         updateUsername,
         updateBio,
         updateAvatar,
-        currentPassword
+        currentPassword,
+        logout
     } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -54,33 +55,43 @@ export default function EditProfile() {
     async function handleSubmit(e) {
         e.preventDefault();
 
+        setError("");
+        setSuccess(false);
+        setLoading(true);
+
         if ((passwordRef.current.value || passwordConfirmationRef.current.value) && !currentPasswordRef.current.value) {
             setError("Current password is required when changing the password.");
+            setLoading(false);
             return;
         }
 
         if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 15) {
             setError("Username must be between 5 and 15 characters");
+            setLoading(false);
             return;
         }
 
-        if (!emailRef.current.value.includes("@") || !emailRef.current.value.endsWith(".com")) {
+        if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
             setError("Email address is not valid");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value && passwordRef.current.value.length < 6) {
             setError("Password must be at least 6 characters");
+            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
             setError("Passwords do not match");
+            setLoading(false);
             return;
         }
 
         if (bioRef.current.value.length > 300) {
             setError("Biography must be less than 300 characters");
+            setLoading(false);
             return;
         }
 
@@ -93,51 +104,58 @@ export default function EditProfile() {
         }
 
         const promises = [];
-        if (passwordRef.current.value) {
-            promises.push(updatePassword(passwordRef.current.value));
-        }
+
         if (emailRef.current.value !== currentUser.email) {
-            promises.push(updateEmail(emailRef.current.value));
-        }
-        if (emailRef.current.value === currentUser.email) {
-            if (
-                usernameRef.current.value !== currentUserData.username &&
-                usernameRef.current.value.length < 16
-            ) {
-                usernameRef.current.value = usernameRef.current.value.slice(0, 15);
-                promises.push(updateUsername(emailRef.current.value, usernameRef.current.value));
-            }
-            if (bioRef.current.value !== currentUserData.bio && bioRef.current.value.length < 301) {
-                promises.push(updateBio(emailRef.current.value, bioRef.current.value));
-            }
-            if (file && file.path) {
-                promises.push(updateAvatar(emailRef.current.value, file));
+            try {
+                await updateEmail(emailRef.current.value);
+                await getProfile();
+            } catch (error) {
+                if (error.code === 'auth/requires-recent-login') {
+                    setError("Please log in again to update your email.");
+                    setLoading(false);
+                    logout();
+                    localStorage.setItem('loginReason', 'requires-recent-login');
+                    // navigate("/login", { state: { reason: "requires-recent-login" } });
+                    navigate("/login");
+                    return;
+                } else {
+                    setError("Failed to update email. " + error.message);
+                    setLoading(false);
+                    return;
+                }
             }
         }
 
-        setLoading(true);
-        setError("");
+        if (usernameRef.current.value !== currentUserData.username) {
+            promises.push(updateUsername(currentUser.email, usernameRef.current.value));
+        }
+
+        if (bioRef.current.value !== currentUserData.bio) {
+            promises.push(updateBio(currentUser.email, bioRef.current.value));
+        }
+
+        if (file && file.path !== currentUserData.avatar || !file) {
+            promises.push(updateAvatar(currentUser.email, file));
+        }
+
+        if (passwordRef.current.value) {
+            promises.push(updatePassword(passwordRef.current.value));
+        }
+
         Promise.all(promises)
             .then(() => {
-                if (promises.length !== 0) {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        navigate("/profile");
-                    }, 1000);
-                } else {
-                    setError(`You haven't changed any values`);
-                }
+                setSuccess(true);
+                navigate("/profile");
             })
-            .catch((e) => {
-                if (e instanceof TypeError || e instanceof RangeError || e instanceof EvalError) {
-                    setError("Failed to edit the account");
-                }
+            .catch((error) => {
+                setError("An error occurred while updating profile. " + error.message);
             })
             .finally(() => {
                 getProfile();
                 setLoading(false);
             });
     }
+
 
     const handleCancel = () => {
         navigate("/profile");
