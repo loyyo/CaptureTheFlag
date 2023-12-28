@@ -142,6 +142,9 @@ export default function AddChallenge() {
 									multiline
 									rows={4}
 									inputRef={descriptionRef}
+									inputProps={{
+										maxLength: 300
+									}}
 									sx={{
 										'& .MuiOutlinedInput-root': {
 											'& fieldset': {
@@ -165,6 +168,9 @@ export default function AddChallenge() {
 									name='correctAnswer'
 									value={correctAnswer}
 									onChange={(e) => setCorrectAnswer(e.target.value)}
+									inputProps={{
+										maxLength: 50
+									}}
 									sx={{
 										'& .MuiOutlinedInput-root': {
 											'& fieldset': {

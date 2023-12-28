@@ -526,9 +526,9 @@ function AuthProvider({children}) {
             };
 
             if (image !== null) {
-                updateData.image = imageUrl ? imageUrl : null;
                 updateData.fileName = image?.name || null
             }
+            updateData.image = imageUrl ? imageUrl : image;
 
             await db.collection('challenges').doc(challengeID).update(updateData);
         } catch (error) {

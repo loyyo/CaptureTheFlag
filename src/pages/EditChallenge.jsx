@@ -212,6 +212,9 @@ export default function EditChallenge() {
                                         multiline
                                         rows={4}
                                         inputRef={descriptionRef}
+                                        inputProps={{
+                                            maxLength: 300
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -277,6 +280,9 @@ export default function EditChallenge() {
                                         name="correctAnswer"
                                         value={correctAnswer}
                                         onChange={(e) => setCorrectAnswer(e.target.value)}
+                                        inputProps={{
+                                            maxLength: 50
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
