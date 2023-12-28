@@ -46,7 +46,6 @@ export default function EditProfile() {
         getAllUsersData
     } = useAuth();
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [file, setFile] = useState([]);
     const [image, setImage] = useState();
@@ -58,41 +57,34 @@ export default function EditProfile() {
 
         setError("");
         setSuccess(false);
-        setLoading(true);
 
         if ((passwordRef.current.value || passwordConfirmationRef.current.value) && !currentPasswordRef.current.value) {
             setError("Current password is required when changing the password.");
-            setLoading(false);
             return;
         }
 
         if (usernameRef.current.value.length < 5 || usernameRef.current.value.length > 10) {
             setError("Username must be between 5 and 10 characters");
-            setLoading(false);
             return;
         }
 
         if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
             setError("Email address is not valid");
-            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value && passwordRef.current.value.length < 6) {
             setError("Password must be at least 6 characters");
-            setLoading(false);
             return;
         }
 
         if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
             setError("Passwords do not match");
-            setLoading(false);
             return;
         }
 
         if (bioRef.current.value.length > 300) {
             setError("Biography must be less than 300 characters");
-            setLoading(false);
             return;
         }
 
@@ -113,7 +105,6 @@ export default function EditProfile() {
             } catch (error) {
                 if (error.code === 'auth/requires-recent-login') {
                     setError("Please log in again to update your email.");
-                    setLoading(false);
                     logout();
                     localStorage.setItem('loginReason', 'requires-recent-login');
                     // navigate("/login", { state: { reason: "requires-recent-login" } });
@@ -121,7 +112,6 @@ export default function EditProfile() {
                     return;
                 } else {
                     setError("Failed to update email. " + error.message);
-                    setLoading(false);
                     return;
                 }
             }
@@ -154,7 +144,6 @@ export default function EditProfile() {
             .finally(() => {
                 getProfile();
                 getAllUsersData();
-                setLoading(false);
             });
     }
 
@@ -600,7 +589,7 @@ export default function EditProfile() {
                                     sx={{mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 2}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" disabled={loading}>
+                            <Button type="submit" variant="contained">
                                 Save Changes
                             </Button>
                         </Box>
