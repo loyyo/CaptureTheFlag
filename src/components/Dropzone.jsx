@@ -18,9 +18,13 @@ const Dropzone = ({ image, setImage, setFile }) => {
 	}, [setImage, setFile]);
 
 	const { getRootProps, getInputProps } = useDropzone({
-		accept: "image/*",
-		maxFiles: 1,
-		maxSize: 5000000,
+		accept: {
+			'image/jpeg': [],
+			'image/png': [],
+			'image/webp': [],
+			'image/heic': [],
+			'image/jfif': [],
+		},
 		onDrop,
 	});
 
