@@ -182,6 +182,7 @@ function AllChallenges() {
 						</Grid>
 						<Grid item xs={12}>
 							<Autocomplete
+								value={selectedTitle}
 								options={challengeTitles}
 								open={false}
 								sx={{ border: '2px solid #252028' }}
@@ -200,6 +201,9 @@ function AllChallenges() {
 								)}
 								onInputChange={(event, newInputValue) => {
 									setSelectedTitle(newInputValue);
+								}}
+								onChange={(event, newValue) => {
+									setSelectedTitle(newValue);
 								}}
 							/>
 						</Grid>
