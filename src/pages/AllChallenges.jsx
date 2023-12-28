@@ -147,6 +147,7 @@ function AllChallenges() {
 				<CssBaseline />
 				<Box
 					sx={{
+						mt: 2,
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',
@@ -162,7 +163,7 @@ function AllChallenges() {
 	}
 
 	return (
-		<Container maxWidth='lg' sx={{ minHeight: '93.15vh' }}>
+		<Container maxWidth='lg'>
 			<CssBaseline />
 			<Paper
 				elevation={0}
@@ -173,7 +174,7 @@ function AllChallenges() {
 					mt: 2,
 				}}
 			>
-				<Box mt={1} mb={5}>
+				<Box mt={1} mb={2}>
 					<Grid item xs={12} container spacing={2}>
 						<Grid item xs={12}>
 							<Typography variant='h4' align='center'>
@@ -189,7 +190,7 @@ function AllChallenges() {
 								renderInput={(params) => (
 									<TextField
 										{...params}
-										placeholder='Search Challenges by Title'
+										placeholder={isMobile ? 'Search Challenges' : 'Search Challenges by Title'}
 										variant='outlined'
 										fullWidth
 										InputProps={{
@@ -228,13 +229,21 @@ function AllChallenges() {
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
 										PaperProps={{
 											style: {
-												width: sortButtonRef.current ? sortButtonRef.current.offsetWidth : undefined
-											}
+												width: sortButtonRef.current
+													? sortButtonRef.current.offsetWidth
+													: undefined,
+											},
 										}}
 									>
-										<MenuItem onClick={() => handleSortSelection('dateCreated')}>Date Created</MenuItem>
-										<MenuItem onClick={() => handleSortSelection('alphabetical')}>Alphabetical</MenuItem>
-										<MenuItem onClick={() => handleSortSelection('popularity')}>Popularity</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('dateCreated')}>
+											Date Created
+										</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('alphabetical')}>
+											Alphabetical
+										</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('popularity')}>
+											Popularity
+										</MenuItem>
 									</Popover>
 								</Grid>
 
@@ -257,8 +266,10 @@ function AllChallenges() {
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
 										PaperProps={{
 											style: {
-												width: difficultyButtonRef.current ? difficultyButtonRef.current.offsetWidth : undefined
-											}
+												width: difficultyButtonRef.current
+													? difficultyButtonRef.current.offsetWidth
+													: undefined,
+											},
 										}}
 									>
 										{/* Popover content for difficulty */}
@@ -288,8 +299,10 @@ function AllChallenges() {
 										transformOrigin={{ vertical: 'top', horizontal: 'left' }}
 										PaperProps={{
 											style: {
-												width: difficultyButtonRef.current ? difficultyButtonRef.current.offsetWidth : undefined
-											}
+												width: difficultyButtonRef.current
+													? difficultyButtonRef.current.offsetWidth
+													: undefined,
+											},
 										}}
 									>
 										{/* Popover content for rating */}
@@ -340,9 +353,15 @@ function AllChallenges() {
 											},
 										}}
 									>
-										<MenuItem onClick={() => handleSortSelection('dateCreated')}>Date Created</MenuItem>
-										<MenuItem onClick={() => handleSortSelection('alphabetical')}>Alphabetical</MenuItem>
-										<MenuItem onClick={() => handleSortSelection('popularity')}>Popularity</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('dateCreated')}>
+											Date Created
+										</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('alphabetical')}>
+											Alphabetical
+										</MenuItem>
+										<MenuItem onClick={() => handleSortSelection('popularity')}>
+											Popularity
+										</MenuItem>
 									</Popover>
 								</Grid>
 								<Grid item xs={12} md={4}>

@@ -114,7 +114,7 @@ export default function StickyHeadTable({ allUsersData }) {
 		<Paper elevation={0} sx={{ width: '100%', overflowX: 'auto', border: '2px solid #252028' }}>
 			{' '}
 			{/* Enable horizontal scrolling */}
-			<TableContainer sx={{ maxHeight: 500 }}>
+			<TableContainer sx={{ maxHeight: '56vh' }}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow>

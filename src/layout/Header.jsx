@@ -10,9 +10,7 @@ import {
 	Menu,
 	Box,
 } from '@mui/material';
-import {
-	AccountCircle,
-} from '@mui/icons-material';
+import { AccountCircle } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -28,13 +26,13 @@ const Header = () => {
 
 	const isMenuOpen = Boolean(anchorEl);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-        } catch (error) {
-            console.error('Failed to log out:', error);
-        }
-    };
+	const handleLogout = async () => {
+		try {
+			await logout();
+		} catch (error) {
+			console.error('Failed to log out:', error);
+		}
+	};
 
 	const navigateTo = (path) => {
 		handleCloseMenu();
