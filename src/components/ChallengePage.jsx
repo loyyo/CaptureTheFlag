@@ -77,8 +77,8 @@ export default function ChallengePage({ challenge, currentUser }) {
 				setError(false);
 				setLoading(true);
 				await doChallenge(challenge.url, challenge.points, currentUser.email, currentUser.points);
-				getProfile();
 				getAllUsersData();
+				getProfile();
 				setSuccess(true);
 			} catch {
 				setError(true);
