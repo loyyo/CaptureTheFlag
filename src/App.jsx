@@ -25,9 +25,7 @@ import { useAuth } from './contexts/AuthContext.jsx';
 
 function App() {
 	const { darkMode } = useAuth();
-	const prefersDarkMode = useMediaQuery(
-		darkMode === 'true' ? '(prefers-color-scheme: dark)' : '(prefers-color-scheme: light)'
-	);
+	const prefersDarkMode = darkMode === 'true';
 	const theme = createTheme({
 		palette: {
 			mode: prefersDarkMode ? 'dark' : 'light',

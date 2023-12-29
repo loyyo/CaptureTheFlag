@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Home() {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 	return (
 		<Container

@@ -599,14 +599,14 @@ function AuthProvider({ children }) {
 
 	useEffect(() => {
 		if (
-			window.matchMedia('(prefers-color-scheme: dark)') &&
+			window.matchMedia('(prefers-color-scheme: dark)').matches &&
 			localStorage.getItem('darkMode') !== 'false' &&
 			localStorage.getItem('darkMode') !== 'true'
 		) {
 			localStorage.setItem('darkMode', 'true');
 			setDarkMode('true');
 		} else if (
-			window.matchMedia('(prefers-color-scheme: light)') &&
+			window.matchMedia('(prefers-color-scheme: light)').matches &&
 			localStorage.getItem('darkMode') !== 'false' &&
 			localStorage.getItem('darkMode') !== 'true'
 		) {

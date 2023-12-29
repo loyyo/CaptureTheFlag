@@ -19,7 +19,7 @@ import { useLocation } from 'react-router-dom';
 const Header = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 	const location = useLocation(); // Get the current location
@@ -104,92 +104,101 @@ const Header = () => {
 			>
 				<Toolbar>
 					{/* Brainplex Logo/Button */}
-					<Button onClick={() => navigateTo('/challenges')}>
-						<Grid container alignItems={'center'} direction={'row'}>
-							<img src='../../favicon.ico' alt='brainplex-logo' width={'25%'} />
-							<Typography
-								variant='subtitle2'
-								sx={{
-									color: 'white',
-									fontSize: '1.25rem',
-									'&:hover': { textDecoration: 'none' },
-								}}
-							>
-								Brainplex
-							</Typography>
+					<Grid container display={'flex'} justifyContent={'space-between'}>
+						<Grid item order={1}>
+							<Button onClick={() => navigateTo('/challenges')}>
+								<Grid container alignItems={'center'} direction={'row'}>
+									<img src='../../favicon.ico' alt='brainplex-logo' width={'35%'} />
+									<Typography
+										variant='subtitle2'
+										color={'white'}
+										fontSize={'1.25rem'}
+										sx={{
+											'&:hover': { textDecoration: 'none' },
+											maxWidth: '1.25rem',
+										}}
+									>
+										Brainplex
+									</Typography>
+								</Grid>
+							</Button>
 						</Grid>
-					</Button>
 
-					{/* Center Links for Desktop View */}
-					{!isMobile && currentUser && (
-						<Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-							<Button
-								onClick={() => navigateTo('/challenges')}
-								sx={{
-									...(isActive('/challenges') ? activeButtonStyle : { color: 'white' }),
-									mx: 2,
-									fontSize: '1.15rem',
-								}}
-							>
-								Challenges
-							</Button>
-							<Button
-								onClick={() => navigateTo('/challenge/add')}
-								sx={{
-									...(isActive('/challenge/add') ? activeButtonStyle : { color: 'white' }),
-									mx: 2,
-									fontSize: '1.15rem',
-								}}
-							>
-								Create
-							</Button>
-							<Button
-								onClick={() => navigateTo('/leaderboard')}
-								sx={{
-									...(isActive('/leaderboard') ? activeButtonStyle : { color: 'white' }),
-									mx: 2,
-									fontSize: '1.15rem',
-								}}
-							>
-								Leaderboard
-							</Button>
-							<Button
-								onClick={() => navigateTo('/chat')}
-								sx={{
-									...(isActive('/chat') ? activeButtonStyle : { color: 'white' }),
-									mx: 2,
-									fontSize: '1.15rem',
-								}}
-							>
-								Chat
-							</Button>
-						</Box>
-					)}
+						<Grid item ml={-12} order={2}>
+							{/* Center Links for Desktop View */}
+							{!isMobile && currentUser && (
+								<Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+									<Button
+										onClick={() => navigateTo('/challenges')}
+										sx={{
+											...(isActive('/challenges') ? activeButtonStyle : { color: 'white' }),
+											mx: 2,
+											fontSize: '1.15rem',
+										}}
+									>
+										Challenges
+									</Button>
+									<Button
+										onClick={() => navigateTo('/challenge/add')}
+										sx={{
+											...(isActive('/challenge/add') ? activeButtonStyle : { color: 'white' }),
+											mx: 2,
+											fontSize: '1.15rem',
+										}}
+									>
+										Create
+									</Button>
+									<Button
+										onClick={() => navigateTo('/leaderboard')}
+										sx={{
+											...(isActive('/leaderboard') ? activeButtonStyle : { color: 'white' }),
+											mx: 2,
+											fontSize: '1.15rem',
+										}}
+									>
+										Leaderboard
+									</Button>
+									<Button
+										onClick={() => navigateTo('/chat')}
+										sx={{
+											...(isActive('/chat') ? activeButtonStyle : { color: 'white' }),
+											mx: 2,
+											fontSize: '1.15rem',
+										}}
+									>
+										Chat
+									</Button>
+								</Box>
+							)}
+						</Grid>
 
-					{/* Profile Icon/Button, always on the right */}
-					<Box sx={{ marginLeft: 'auto' }}>
-						<IconButton
-							aria-label='account of current user'
-							aria-controls='menu-appbar'
-							aria-haspopup='true'
-							onClick={handleOpenMenu}
-							color='inherit'
-						>
-							<AccountCircle sx={{ color: 'white', fontSize: '2rem' }} />
-						</IconButton>
-					</Box>
+						<Grid item order={3}>
+							{/* Profile Icon/Button, always on the right */}
+							<Box sx={{ marginLeft: 'auto' }}>
+								<IconButton
+									aria-label='account of current user'
+									aria-controls='menu-appbar'
+									aria-haspopup='true'
+									onClick={handleOpenMenu}
+									color='inherit'
+								>
+									<AccountCircle sx={{ color: 'white', fontSize: '2rem' }} />
+								</IconButton>
+							</Box>
 
-					<Menu
-						id='menu-appbar'
-						anchorEl={anchorEl}
-						anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-						keepMounted
-						transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-						open={isMenuOpen}
-						onClose={handleCloseMenu}
-					>
-						{renderMenuItems()}
-					</Menu>
+							<Menu
+								id='menu-appbar'
+								anchorEl={anchorEl}
+								anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+								keepMounted
+								transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+								open={isMenuOpen}
+								onClose={handleCloseMenu}
+							>
+								{renderMenuItems()}
+							</Menu>
+						</Grid>
+					</Grid>
 				</Toolbar>
 			</Box>
 		</Box>

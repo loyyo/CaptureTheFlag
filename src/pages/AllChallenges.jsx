@@ -31,7 +31,7 @@ function AllChallenges() {
 
 	const { getAllChallengesData, allChallengesData, getProfile, currentUserData } = useAuth();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md')); // useMediaQuery hook called at the top level
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // useMediaQuery hook called at the top level
 
 	const sortButtonRef = useRef(null);
 	const difficultyButtonRef = useRef(null);

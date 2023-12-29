@@ -15,7 +15,7 @@ import { useAuth } from '../contexts/AuthContext.jsx';
 
 export default function ErrorPage() {
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 
