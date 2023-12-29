@@ -39,6 +39,7 @@ export default function AddChallenge() {
 	const [image, setImage] = useState();
 	const [file, setFile] = useState();
 	const [difficulty, setDifficulty] = useState('easy');
+	const [isTitleValid, setIsTitleValid] = useState(true);
 
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -51,6 +52,23 @@ export default function AddChallenge() {
 		}, 100);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	const validateTitle = (title) => {
+		const regex = /^[a-zA-Z0-9 _-]+$/;
+		return regex.test(title);
+	};
+
+
+	const handleChangeTitle = (e) => {
+		const title = e.target.value;
+		if (!validateTitle(title)) {
+			setError('Title contains invalid characters.');
+			setIsTitleValid(false);
+		} else {
+			setError('');
+			setIsTitleValid(true);
+		}
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -142,6 +160,7 @@ export default function AddChallenge() {
 									id='challenge'
 									label='Challenge Name'
 									name='challenge'
+									onChange={handleChangeTitle}
 									inputRef={challengeRef}
 									inputProps={{
 										maxLength: 25,
@@ -267,6 +286,7 @@ export default function AddChallenge() {
 										type='submit'
 										variant='contained'
 										color='primary'
+										disabled={!isTitleValid}
 										sx={{ padding: '10px 20px' }}
 									>
 										Add Challenge
