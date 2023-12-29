@@ -34,6 +34,7 @@ export default function Profile() {
 
 	const [activeTab, setActiveTab] = useState('informations');
 
+	const [ranking, setRanking] = useState(0);
 	const [userData, setUserData] = useState(null);
 	const [challengesData, setChallengesData] = useState([]);
 	const userCreatedChallenges = allChallengesData.filter(
@@ -62,6 +63,13 @@ export default function Profile() {
 				await getAllChallengesData();
 			} else {
 				setChallengesData(allChallengesData);
+			}
+
+			if (currentUserData && currentUserData.userID) {
+				const stats = await getChallengeStats(currentUserData.userID, currentUserData.email);
+				if (stats) {
+					setRanking(stats.ranking);
+				}
 			}
 		};
 
@@ -243,7 +251,7 @@ export default function Profile() {
 											<Box>
 												<Typography variant='h5'>{userData?.username}</Typography>
 												<Typography variant='body1'>
-													Rank: {userData?.ranking === 0 ? '---' : userData?.ranking}
+													Rank: {ranking === 0 ? '---' : ranking}
 												</Typography>
 												<Typography variant='body1'>Points: {userData?.points}</Typography>
 											</Box>

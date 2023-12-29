@@ -49,8 +49,6 @@ export default function UserProfile() {
 	useEffect(() => {
 		if (!currentUserData) {
 			getProfile();
-		} else {
-			setUserData(currentUserData);
 		}
 
 		const fetchUserData = async () => {
@@ -90,6 +88,7 @@ export default function UserProfile() {
 				<CssBaseline />
 				<Box
 					sx={{
+						mt: 2,
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',

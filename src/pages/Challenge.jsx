@@ -38,7 +38,7 @@ export default function Challenge() {
 				<CssBaseline />
 				<Box
 					sx={{
-						mt: isMobile ? 1 : 2,
+						mt: 2,
 						display: 'flex',
 						flexDirection: 'column',
 						justifyContent: 'center',
