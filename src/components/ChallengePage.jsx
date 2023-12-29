@@ -25,7 +25,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 	const [success, setSuccess] = useState(false);
 	const keyRef = useRef();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const isAuthor = currentUser.userID === challenge.userID;
 
 	const navigate = useNavigate();

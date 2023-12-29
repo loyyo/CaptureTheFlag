@@ -19,7 +19,7 @@ import { useLocation } from 'react-router-dom';
 const Header = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { darkMode, switchDarkMode, currentUser, logout } = useAuth();
 	const location = useLocation(); // Get the current location
@@ -124,7 +124,7 @@ const Header = () => {
 							</Button>
 						</Grid>
 
-						<Grid item ml={-12} order={2}>
+						<Grid item ml={-11} order={2}>
 							{/* Center Links for Desktop View */}
 							{!isMobile && currentUser && (
 								<Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>

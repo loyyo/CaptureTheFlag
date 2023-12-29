@@ -90,7 +90,7 @@ export default function StickyHeadTable({ allUsersData }) {
 	const navigate = useNavigate();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const columns = [
 		{

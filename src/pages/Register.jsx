@@ -23,7 +23,7 @@ import { useAuth } from '../contexts/AuthContext.jsx';
 export default function SignUp() {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const usernameRef = useRef();
 	const emailRef = useRef();

@@ -36,7 +36,7 @@ export default function GlobalChat() {
 	const theme = useTheme();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const {
 		getAllUsersData,

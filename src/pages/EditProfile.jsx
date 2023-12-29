@@ -51,7 +51,7 @@ export default function EditProfile() {
 	const [file, setFile] = useState([]);
 	const [image, setImage] = useState();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	async function handleSubmit(e) {
 		e.preventDefault();

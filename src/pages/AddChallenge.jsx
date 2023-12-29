@@ -42,7 +42,7 @@ export default function AddChallenge() {
 	const [isTitleValid, setIsTitleValid] = useState(true);
 
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -57,7 +57,6 @@ export default function AddChallenge() {
 		const regex = /^[a-zA-Z0-9 _-]+$/;
 		return regex.test(title);
 	};
-
 
 	const handleChangeTitle = (e) => {
 		const title = e.target.value;

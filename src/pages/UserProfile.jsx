@@ -35,7 +35,7 @@ export default function UserProfile() {
 	const [activeTab, setActiveTab] = useState('informations');
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const [userData, setUserData] = useState(null);
 	const userCreatedChallenges = thisUserData

@@ -22,7 +22,7 @@ import { useTheme } from '@mui/material/styles';
 
 export default function ForgotPassword() {
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	const navigate = useNavigate();
 
 	const emailRef = useRef();

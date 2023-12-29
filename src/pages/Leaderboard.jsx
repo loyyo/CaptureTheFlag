@@ -16,7 +16,7 @@ import YourRank from '../components/YourRank.jsx';
 
 export default function Leaderboard() {
 	const { getAllUsersData, allUsersData, currentUserData, getProfile } = useAuth();
-	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
 	useEffect(() => {
 		if (allUsersData.length === 0) {

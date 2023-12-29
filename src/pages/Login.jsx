@@ -21,7 +21,7 @@ import { useLocation } from 'react-router-dom';
 export default function SignIn() {
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 	const emailRef = useRef();
 	const passwordRef = useRef();
