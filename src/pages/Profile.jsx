@@ -34,7 +34,7 @@ export default function Profile() {
 
 	const [activeTab, setActiveTab] = useState('informations');
 
-	const [ranking, setRanking] = useState(0);
+	const [stats, setStats] = useState(0);
 	const [userData, setUserData] = useState(null);
 	const [challengesData, setChallengesData] = useState([]);
 	const userCreatedChallenges = allChallengesData.filter(
@@ -46,6 +46,15 @@ export default function Profile() {
 	const isInformationsTabActive = activeTab === 'informations';
 	const isChallengesTabActive = activeTab === 'challenges';
 	const hasUserCreatedChallenges = userCreatedChallenges.length > 0;
+	const easyCreatedChallenges = userCreatedChallenges.filter(
+		(challenge) => challenge.difficulty === 'easy'
+	).length;
+	const mediumCreatedChallenges = userCreatedChallenges.filter(
+		(challenge) => challenge.difficulty === 'medium'
+	).length;
+	const hardCreatedChallenges = userCreatedChallenges.filter(
+		(challenge) => challenge.difficulty === 'hard'
+	).length;
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -68,7 +77,7 @@ export default function Profile() {
 			if (currentUserData && currentUserData.userID) {
 				const stats = await getChallengeStats(currentUserData.userID, currentUserData.email);
 				if (stats) {
-					setRanking(stats.ranking);
+					setStats(stats);
 				}
 			}
 		};
@@ -251,7 +260,7 @@ export default function Profile() {
 											<Box>
 												<Typography variant='h5'>{userData?.username}</Typography>
 												<Typography variant='body1'>
-													Rank: {ranking === 0 ? '---' : ranking}
+													Rank: {stats.ranking === 0 ? '---' : stats.ranking}
 												</Typography>
 												<Typography variant='body1'>Points: {userData?.points}</Typography>
 											</Box>
@@ -318,8 +327,8 @@ export default function Profile() {
 												<CircularProgress
 													variant='determinate'
 													value={calculatePercentage(
-														userData?.solvedChallenges,
-														userData?.totalChallenges
+														stats.solvedChallenges,
+														stats.totalChallenges - userCreatedChallenges.length
 													)}
 													size={140}
 													thickness={4}
@@ -342,7 +351,7 @@ export default function Profile() {
 															fontWeight: 'bold',
 														}}
 													>
-														{userData?.solvedChallenges}
+														{stats.solvedChallenges}
 														<div style={{ fontSize: '12px' }}>Solved</div>
 													</Typography>
 												</Box>
@@ -369,15 +378,17 @@ export default function Profile() {
 													}}
 												>
 													<Typography variant='body1'>{`Easy`}</Typography>
-													<Typography variant='body1'>{`${userData?.solvedEasyChallenges}/${userData?.totalEasyChallenges}`}</Typography>
+													<Typography variant='body1'>{`${stats.solvedEasyChallenges}/${
+														stats.totalEasyChallenges - easyCreatedChallenges
+													}`}</Typography>
 												</Box>
 												<div className='progress-bar'>
 													<div
 														className='progress-fill'
 														style={{
 															width: `${calculatePercentage(
-																userData?.solvedEasyChallenges,
-																userData?.totalEasyChallenges
+																stats.solvedEasyChallenges,
+																stats.totalEasyChallenges - easyCreatedChallenges
 															)}%`,
 															backgroundColor: theme.palette.primary.main,
 														}}
@@ -396,15 +407,17 @@ export default function Profile() {
 													}}
 												>
 													<Typography variant='body1'>{`Medium`}</Typography>
-													<Typography variant='body1'>{`${userData?.solvedMediumChallenges}/${userData?.totalMediumChallenges}`}</Typography>
+													<Typography variant='body1'>{`${stats.solvedMediumChallenges}/${
+														stats.totalMediumChallenges - mediumCreatedChallenges
+													}`}</Typography>
 												</Box>
 												<div className='progress-bar'>
 													<div
 														className='progress-fill'
 														style={{
 															width: `${calculatePercentage(
-																userData?.solvedMediumChallenges,
-																userData?.totalMediumChallenges
+																stats.solvedMediumChallenges,
+																stats.totalMediumChallenges - mediumCreatedChallenges
 															)}%`,
 															backgroundColor: theme.palette.primary.main,
 														}}
@@ -423,15 +436,17 @@ export default function Profile() {
 													}}
 												>
 													<Typography variant='body1'>{`Hard`}</Typography>
-													<Typography variant='body1'>{`${userData?.solvedHardChallenges}/${userData?.totalHardChallenges}`}</Typography>
+													<Typography variant='body1'>{`${stats.solvedHardChallenges}/${
+														stats.totalHardChallenges - hardCreatedChallenges
+													}`}</Typography>
 												</Box>
 												<div className='progress-bar'>
 													<div
 														className='progress-fill'
 														style={{
 															width: `${calculatePercentage(
-																userData?.solvedHardChallenges,
-																userData?.totalHardChallenges
+																stats.solvedHardChallenges,
+																stats.totalHardChallenges - hardCreatedChallenges
 															)}%`,
 															backgroundColor: theme.palette.primary.main,
 														}}

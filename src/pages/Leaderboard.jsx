@@ -25,7 +25,7 @@ export default function Leaderboard() {
 		if (!currentUserData) {
 			getProfile();
 		}
-	});
+	}, [currentUserData, allUsersData, getAllUsersData, getProfile]);
 
 	if (!currentUserData || allUsersData.length === 0) {
 		return (
