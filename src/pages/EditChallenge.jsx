@@ -55,6 +55,23 @@ export default function EditChallenge() {
 
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const [isTitleValid, setIsTitleValid] = useState(true);
+
+	const validateTitle = (title) => {
+		const regex = /^[a-zA-Z0-9 _-]+$/;
+		return regex.test(title);
+	};
+
+	const handleChangeTitle = (e) => {
+		const title = e.target.value;
+		if (!validateTitle(title)) {
+			setError('Title contains invalid characters.');
+			setIsTitleValid(false);
+		} else {
+			setError('');
+			setIsTitleValid(true);
+		}
+	};
 
 	useEffect(() => {
 		if (!currentUserData) {
@@ -191,6 +208,7 @@ export default function EditChallenge() {
 										label='Challenge Name'
 										name='challenge'
 										inputRef={challengeRef}
+										onChange={handleChangeTitle}
 										InputLabelProps={{
 											shrink: true,
 										}}
@@ -327,8 +345,8 @@ export default function EditChallenge() {
 												type='submit'
 												variant='contained'
 												color='primary'
+												disabled={!isTitleValid || loading}
 												sx={{ mb: 1, width: 150 }}
-												disabled={loading}
 											>
 												SAVE
 											</Button>
