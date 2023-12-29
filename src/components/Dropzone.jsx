@@ -46,6 +46,7 @@ const Dropzone = ({ image, setImage, setFile }) => {
 				padding: '20px',
 				textAlign: 'center',
 				position: 'relative',
+				width: '100%',
 			}}
 		>
 			<input {...getInputProps()} />

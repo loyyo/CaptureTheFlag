@@ -186,7 +186,7 @@ export default function AddChallenge() {
 									label='Description'
 									name='description'
 									multiline
-									rows={4}
+									rows={image !== null ? 10 : 4}
 									inputRef={descriptionRef}
 									inputProps={{
 										maxLength: 300,
@@ -266,7 +266,14 @@ export default function AddChallenge() {
 							</Grid>
 
 							<Grid item xs={12} sm={5} order={isMobile ? 5 : 2}>
-								<Box sx={{ minHeight: '100%', display: 'flex', alignItems: 'center' }}>
+								<Box
+									sx={{
+										minHeight: '100%',
+										minWidth: '100%',
+										display: 'flex',
+										alignItems: 'center',
+									}}
+								>
 									<Dropzone image={image} setImage={setImage} file={file} setFile={setFile} />
 								</Box>
 							</Grid>

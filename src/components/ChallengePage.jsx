@@ -77,8 +77,8 @@ export default function ChallengePage({ challenge, currentUser }) {
 				setError(false);
 				setLoading(true);
 				await doChallenge(challenge.url, challenge.points, currentUser.email, currentUser.points);
-				getAllUsersData();
-				getProfile();
+				await getAllUsersData();
+				await getProfile();
 				setSuccess(true);
 			} catch {
 				setError(true);
@@ -247,6 +247,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 							{/* Image */}
 							{challenge.image && (
 								<Box
+									p={1}
 									onClick={handleImageClick}
 									sx={{
 										cursor: 'pointer',
@@ -324,7 +325,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 									) : (
 										<Grid item xs={12}>
 											<Typography variant='h6' align='center'>
-												Congratulations! Your page will refresh in a few seconds...
+												Congratulations! This is the correct answer!
 											</Typography>
 										</Grid>
 									)}
