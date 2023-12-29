@@ -54,44 +54,6 @@ function AuthProvider({ children }) {
 		await auth.sendPasswordResetEmail(email);
 	}, []);
 
-	const updateEmail = useCallback(
-		async (newEmail) => {
-			if (!currentUser) {
-				console.error('No current user');
-				return;
-			}
-
-			try {
-				const oldUserDocRef = db.collection('users').doc(currentUser.email);
-				const oldUserDoc = await oldUserDocRef.get();
-
-				if (!oldUserDoc.exists) {
-					console.error('Old user document does not exist');
-					return;
-				}
-				const userData = oldUserDoc.data();
-
-				await currentUser.updateEmail(newEmail);
-
-				await db
-					.collection('users')
-					.doc(newEmail)
-					.set({
-						...userData,
-						email: newEmail,
-					});
-
-				await oldUserDocRef.delete();
-
-				await getProfile();
-			} catch (error) {
-				console.error('Error updating email: ', error);
-				throw error;
-			}
-		},
-		[currentUser, getProfile]
-	);
-
 	const updatePassword = useCallback(
 		async (password) => {
 			await currentUser.updatePassword(password);
@@ -196,6 +158,44 @@ function AuthProvider({ children }) {
 			console.error('Error getting document:', error);
 		}
 	}, [currentUser, getChallengeStats]);
+
+	const updateEmail = useCallback(
+		async (newEmail) => {
+			if (!currentUser) {
+				console.error('No current user');
+				return;
+			}
+
+			try {
+				const oldUserDocRef = db.collection('users').doc(currentUser.email);
+				const oldUserDoc = await oldUserDocRef.get();
+
+				if (!oldUserDoc.exists) {
+					console.error('Old user document does not exist');
+					return;
+				}
+				const userData = oldUserDoc.data();
+
+				await currentUser.updateEmail(newEmail);
+
+				await db
+					.collection('users')
+					.doc(newEmail)
+					.set({
+						...userData,
+						email: newEmail,
+					});
+
+				await oldUserDocRef.delete();
+
+				await getProfile();
+			} catch (error) {
+				console.error('Error updating email: ', error);
+				throw error;
+			}
+		},
+		[currentUser, getProfile]
+	);
 
 	const currentPassword = useCallback(async (password) => {
 		try {
