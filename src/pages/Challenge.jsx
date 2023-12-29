@@ -14,7 +14,7 @@ import { useAuth } from '../contexts/AuthContext.jsx';
 export default function Challenge() {
 	const { challengeID } = useParams();
 	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	const { getSingleChallengeData, singleChallengeData, getProfile, currentUserData } = useAuth();
 
 	useEffect(() => {

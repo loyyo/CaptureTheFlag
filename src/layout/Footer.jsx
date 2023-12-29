@@ -15,7 +15,7 @@ const Footer = () => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	const { currentUser } = useAuth();
-	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
 	const navigationItems = useMemo(
 		() => [
