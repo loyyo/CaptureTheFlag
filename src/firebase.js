@@ -4,12 +4,12 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 
 const app = firebase.initializeApp({
-	apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
-	authDomain: import.meta.env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN,
-	projectId: import.meta.env.VITE_REACT_APP_FIREBASE_PROJECT_ID,
-	storageBucket: import.meta.env.VITE_REACT_APP_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: import.meta.env.VITE_REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-	appId: import.meta.env.VITE_REACT_APP_FIREBASE_APP_ID,
+	apiKey: 'AIzaSyCP5lViOfuN6JjURzK4riWrSSjS96VYP1U',
+	authDomain: 'capturetheflag-mw.firebaseapp.com',
+	projectId: 'capturetheflag-mw',
+	storageBucket: 'capturetheflag-mw.appspot.com',
+	messagingSenderId: '613284057612',
+	appId: '1:613284057612:web:7702f5c4bde3bfdad71429',
 });
 
 export const auth = app.auth();

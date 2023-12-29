@@ -177,7 +177,7 @@ export default function StickyHeadTable({ allUsersData }) {
 															align={column.align}
 															sx={{ borderBottom: '2px solid #252028', borderRadius: 0 }}
 														>
-															{index + 1}
+															{index + 1 + page * rowsPerPage}
 														</TableCell>
 													);
 												}
