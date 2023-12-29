@@ -89,7 +89,7 @@ function AuthProvider({ children }) {
 				throw error;
 			}
 		},
-		[currentUser]
+		[currentUser, getProfile]
 	);
 
 	const updatePassword = useCallback(
