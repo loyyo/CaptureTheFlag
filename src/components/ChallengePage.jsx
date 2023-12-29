@@ -184,12 +184,25 @@ export default function ChallengePage({ challenge, currentUser }) {
 									</Typography>
 									<Typography variant='h6'>Points: {challenge.points}</Typography>
 									<Rating
-										emptySymbol='fa fa-star-o fa-2x'
+										emptySymbol={
+											<span className='fa fa-star-o fa-2x' style={{ margin: '0 4px' }} />
+										}
 										fullSymbol={
-											<span
-												className='fa fa-star fa-2x'
-												style={{ color: theme.palette.primary.main }}
-											/>
+											<span style={{ position: 'relative' }}>
+												<span
+													className='fa fa-star-o fa-2x'
+													style={{ margin: '0 4px', position: 'absolute', zIndex: '2' }}
+												/>
+												<span
+													className='fa fa-star fa-2x'
+													style={{
+														margin: '0 4px',
+														color: theme.palette.primary.main,
+														position: 'relative',
+														zIndex: '1',
+													}}
+												/>
+											</span>
 										}
 										fractions={100}
 										initialRating={getInitialRating(challenge)}
@@ -197,19 +210,32 @@ export default function ChallengePage({ challenge, currentUser }) {
 									/>
 								</Box>
 							) : (
-								<Box display='flex' justifyContent='space-evenly' sx={{ padding: 1 }}>
+								<Box display='flex' justifyContent='space-evenly' p={1}>
 									<Typography variant='h6'>
 										Difficulty:{' '}
 										{challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
 									</Typography>
 									<Typography variant='h6'>Points: {challenge.points}</Typography>
 									<Rating
-										emptySymbol='fa fa-star-o fa-2x'
+										emptySymbol={
+											<span className='fa fa-star-o fa-2x' style={{ margin: '0 4px' }} />
+										}
 										fullSymbol={
-											<span
-												className='fa fa-star fa-2x'
-												style={{ color: theme.palette.primary.main }}
-											/>
+											<span style={{ position: 'relative' }}>
+												<span
+													className='fa fa-star-o fa-2x'
+													style={{ margin: '0 4px', position: 'absolute', zIndex: '2' }}
+												/>
+												<span
+													className='fa fa-star fa-2x'
+													style={{
+														margin: '0 4px',
+														color: theme.palette.primary.main,
+														position: 'relative',
+														zIndex: '1',
+													}}
+												/>
+											</span>
 										}
 										fractions={100}
 										initialRating={getInitialRating(challenge)}
@@ -231,7 +257,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 									}}
 								>
 									<img
-										alt={`image-${challenge.url}`}
+										alt={`${challenge.url}`}
 										src={challenge.image}
 										style={{ maxWidth: '200px', maxHeight: '400px' }}
 									/>
@@ -240,7 +266,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 						</Paper>
 					</Grid>
 
-					<Dialog open={openDialog} onClose={handleCloseDialog} maxWidth='lg'>
+					<Dialog open={openDialog} onClose={handleCloseDialog} maxWidth='sm'>
 						<IconButton
 							onClick={handleCloseDialog}
 							sx={{
@@ -252,7 +278,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 						>
 							<CloseIcon />
 						</IconButton>
-						<img src={challenge.image} alt={`image-${challenge.url}`} style={{ width: '100%' }} />
+						<img src={challenge.image} alt={`${challenge.url}`} style={{ width: '100%' }} />
 					</Dialog>
 
 					{!isAuthor && (
@@ -273,7 +299,14 @@ export default function ChallengePage({ challenge, currentUser }) {
 									</Typography>
 								</Grid>
 							) : (
-								<Grid item xs={12} container spacing={2} alignItems='center' p={3}>
+								<Grid
+									item
+									xs={12}
+									container
+									spacing={isMobile ? 1 : 3}
+									alignItems='center'
+									p={isMobile ? 1.5 : 2}
+								>
 									{!success ? (
 										<Grid item xs={12} lg={10}>
 											<TextField
@@ -303,7 +336,7 @@ export default function ChallengePage({ challenge, currentUser }) {
 												color='primary'
 												disabled={loading || success}
 												onClick={checkKey}
-												sx={{ padding: 1.75, color: 'white', fontSize: '1.25rem' }}
+												sx={{ padding: 1.25, color: 'white', fontSize: '1.25rem' }}
 												fullWidth
 											>
 												Submit
@@ -337,10 +370,21 @@ export default function ChallengePage({ challenge, currentUser }) {
 								<Rating
 									emptySymbol={<span className='fa fa-star-o fa-2x' style={{ margin: '0 8px' }} />}
 									fullSymbol={
-										<span
-											className='fa fa-star fa-2x'
-											style={{ margin: '0 8px', color: theme.palette.primary.main }}
-										/>
+										<span style={{ position: 'relative' }}>
+											<span
+												className='fa fa-star-o fa-2x'
+												style={{ margin: '0 8px', position: 'absolute', zIndex: '2' }}
+											/>
+											<span
+												className='fa fa-star fa-2x'
+												style={{
+													margin: '0 8px',
+													color: theme.palette.primary.main,
+													position: 'relative',
+													zIndex: '1',
+												}}
+											/>
+										</span>
 									}
 									fractions={2}
 									initialRating={

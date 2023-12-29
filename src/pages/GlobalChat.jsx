@@ -117,7 +117,10 @@ export default function GlobalChat() {
 	return (
 		<StyledContainer maxWidth='lg'>
 			<CssBaseline />
-			<Paper sx={{ padding: theme.spacing(2, 2, 0), width: '100%', mt: isMobile ? 1 : 2, mb: 3 }}>
+			<Paper
+				elevation={0}
+				sx={{ padding: theme.spacing(2, 2, 0), width: '100%', mt: isMobile ? 1 : 2, mb: 3 }}
+			>
 				<Box mb={8}>
 					<Grid container direction='column'>
 						<Grid item xs={12} mb={isMobile ? 0.5 : 2}>
@@ -142,7 +145,7 @@ export default function GlobalChat() {
 						</Grid>
 						<Grid item container xs={12} sx={{ padding: 0, paddingBottom: 1, paddingTop: 1 }}>
 							<Grid item xs={9} sm={10}>
-								<Box pt={1} pb={1} pr={1}>
+								<Box pt={1} pb={1} pr={1} pl={isMobile ? 0.5 : 4}>
 									<TextField
 										error={error}
 										helperText={error ? 'Użyj mniej niż 1000 znaków!' : ''}

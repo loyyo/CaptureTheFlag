@@ -45,6 +45,7 @@ export default function EditProfile() {
 		logout,
 		getAllUsersData,
 	} = useAuth();
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState(false);
 	const [file, setFile] = useState([]);
@@ -57,37 +58,44 @@ export default function EditProfile() {
 
 		setError('');
 		setSuccess(false);
+		setLoading(true);
 
 		if (
 			(passwordRef.current.value || passwordConfirmationRef.current.value) &&
 			!currentPasswordRef.current.value
 		) {
 			setError('Current password is required when changing the password.');
+			setLoading(false);
 			return;
 		}
 
 		if (usernameRef.current.value.length < 3 || usernameRef.current.value.length > 10) {
 			setError('Username must be between 5 and 10 characters');
+			setLoading(false);
 			return;
 		}
 
 		if (!emailRef.current.value.includes('@') || !emailRef.current.value.includes('.')) {
 			setError('Email address is not valid');
+			setLoading(false);
 			return;
 		}
 
 		if (passwordRef.current.value && passwordRef.current.value.length < 6) {
 			setError('Password must be at least 6 characters');
+			setLoading(false);
 			return;
 		}
 
 		if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
 			setError('Passwords do not match');
+			setLoading(false);
 			return;
 		}
 
 		if (bioRef.current.value.length > 300) {
 			setError('Biography must be less than 300 characters');
+			setLoading(false);
 			return;
 		}
 
@@ -95,6 +103,7 @@ export default function EditProfile() {
 			const isPasswordCorrect = await currentPassword(currentPasswordRef.current.value);
 			if (!isPasswordCorrect) {
 				setError('Current password is incorrect');
+				setLoading(false);
 				return;
 			}
 		}
@@ -108,6 +117,7 @@ export default function EditProfile() {
 			} catch (error) {
 				if (error.code === 'auth/requires-recent-login') {
 					setError('Please log in again to update your email.');
+					setLoading(false);
 					logout();
 					localStorage.setItem('loginReason', 'requires-recent-login');
 					// navigate("/login", { state: { reason: "requires-recent-login" } });
@@ -115,6 +125,7 @@ export default function EditProfile() {
 					return;
 				} else {
 					setError('Failed to update email. ' + error.message);
+					setLoading(false);
 					return;
 				}
 			}
@@ -139,10 +150,12 @@ export default function EditProfile() {
 		Promise.all(promises)
 			.then(() => {
 				setSuccess(true);
+				setLoading(false);
 				navigate('/profile');
 			})
 			.catch((error) => {
 				setError('An error occurred while updating profile. ' + error.message);
+				setLoading(false);
 			})
 			.finally(() => {
 				getProfile();
@@ -213,7 +226,7 @@ export default function EditProfile() {
 				}}
 			>
 				<Paper
-					elevation={7}
+					elevation={0}
 					sx={{
 						padding: 2,
 						borderRadius: '4px',
@@ -226,7 +239,11 @@ export default function EditProfile() {
 						Edit Profile
 					</Typography>
 
-					<Box component='form' onSubmit={handleSubmit} sx={{ width: '100%', mt: 3 }}>
+					<Box
+						component='form'
+						onSubmit={handleSubmit}
+						sx={{ width: '100%', mt: isMobile ? 1 : 3 }}
+					>
 						{error && (
 							<Box mt={-1} mb={2}>
 								<Alert variant='outlined' severity='error'>
@@ -260,7 +277,7 @@ export default function EditProfile() {
 								</Collapse>
 							</Box>
 						)}
-						<Grid container rowSpacing={3} alignItems='stretch'>
+						<Grid container rowSpacing={2} alignItems='stretch'>
 							{isMobile ? (
 								// Mobile View
 								<>
@@ -346,10 +363,7 @@ export default function EditProfile() {
 									</Grid>
 
 									<Grid item xs={12}>
-										<Divider
-											orientation='horizontal'
-											sx={{ width: '100%', my: 1, border: '1px solid #252028' }}
-										/>
+										<Divider orientation='horizontal' sx={{ width: '100%', my: 0.5 }} />
 									</Grid>
 
 									{/* Password Fields */}
@@ -587,7 +601,7 @@ export default function EditProfile() {
 						<Box
 							sx={{
 								width: '100%',
-								mt: 3,
+								mt: isMobile ? 0 : 2.5,
 								display: 'flex',
 								flexDirection: isMobile ? 'column' : 'row',
 								justifyContent: 'center',
@@ -601,7 +615,7 @@ export default function EditProfile() {
 							>
 								Cancel
 							</Button>
-							<Button type='submit' variant='contained'>
+							<Button type='submit' variant='contained' disabled={loading}>
 								Save Changes
 							</Button>
 						</Box>

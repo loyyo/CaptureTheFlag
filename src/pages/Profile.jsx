@@ -251,6 +251,7 @@ export default function Profile() {
 											width: '95%',
 											bgcolor: theme.palette.background.paper,
 											border: '2px solid #252028',
+											overflowWrap: 'break-word',
 										}}
 									>
 										<Typography variant='body1'>{userData?.bio}</Typography>

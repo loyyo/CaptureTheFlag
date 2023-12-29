@@ -92,6 +92,13 @@ function App() {
 					},
 				},
 			},
+			MuiLink: {
+				styleOverrides: {
+					root: {
+						color: prefersDarkMode ? '#B8A3E4' : '#A3A7E4',
+					},
+				},
+			},
 			MuiTextField: {
 				styleOverrides: {
 					root: {

@@ -37,7 +37,7 @@ export default function Home() {
 							mt: isMobile ? 0 : 8,
 						}}
 					>
-						<Paper variant='outlined'>
+						<Paper elevation={0}>
 							<Box m={3}>
 								<Typography variant='h4' align='center'>
 									Welcome to Brainplex

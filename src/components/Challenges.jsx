@@ -39,7 +39,7 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 	};
 
 	return (
-		<Grid container justifyContent='center'>
+		<Grid container justifyContent='left'>
 			{allChallengesData.map((challenge) => (
 				<Grid item xs={12} sm={6} md={4} key={challenge.url}>
 					<Box m={1}>
@@ -120,10 +120,21 @@ export default function Challenges({ allChallengesData, currentUserData }) {
 											<span className='fa fa-star-o fa-2x' style={{ margin: '0 8px' }} />
 										}
 										fullSymbol={
-											<span
-												className='fa fa-star fa-2x'
-												style={{ margin: '0 8px', color: theme.palette.primary.main }}
-											/>
+											<span style={{ position: 'relative' }}>
+												<span
+													className='fa fa-star-o fa-2x'
+													style={{ margin: '0 8px', position: 'absolute', zIndex: '2' }}
+												/>
+												<span
+													className='fa fa-star fa-2x'
+													style={{
+														margin: '0 8px',
+														color: theme.palette.primary.main,
+														position: 'relative',
+														zIndex: '1',
+													}}
+												/>
+											</span>
 										}
 										fractions={100}
 										initialRating={getInitialRating(challenge)}

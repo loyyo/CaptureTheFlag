@@ -53,7 +53,7 @@ export default function Leaderboard() {
 			<CssBaseline />
 			<Paper elevation={0} sx={{ mt: isMobile ? 1 : 2, mb: isMobile ? 8 : 2, p: isMobile ? 1 : 3 }}>
 				<Grid container direction='column'>
-					<Grid item xs={12} mt={2}>
+					<Grid item xs={12} mt={isMobile ? 2 : 0}>
 						<Typography variant='h4' align='center'>
 							Your Ranking
 						</Typography>

@@ -86,7 +86,7 @@ export default function SignUp() {
 					justifyContent: isMobile ? 'center' : 'flex-start',
 				}}
 			>
-				<Paper elevation={3} sx={{ padding: theme.spacing(3), width: '100%', mt: 3, mb: 3 }}>
+				<Paper elevation={0} sx={{ padding: theme.spacing(3), width: '100%', mt: 3, mb: 3 }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						<Typography component='h1' variant='h4'>
 							Sign up
@@ -183,7 +183,7 @@ export default function SignUp() {
 									fullWidth
 									variant='contained'
 									color='primary'
-									sx={{ margin: theme.spacing(3, 0, 2) }}
+									sx={{ mt: 2, mb: 2 }}
 									disabled={loading}
 								>
 									Sign Up

@@ -7,6 +7,7 @@ import {
 	AppBar,
 	Toolbar,
 	MenuItem,
+	Grid,
 	Menu,
 	Box,
 } from '@mui/material';
@@ -48,7 +49,7 @@ const Header = () => {
 		borderBottomRightRadius: 0,
 		borderBottom: '2px solid #252028',
 		'&:hover': {
-			backgroundColor: theme.palette.action.hover,
+			backgroundColor: 'white',
 		},
 	};
 
@@ -104,12 +105,19 @@ const Header = () => {
 				<Toolbar>
 					{/* Brainplex Logo/Button */}
 					<Button onClick={() => navigateTo('/challenges')}>
-						<Typography
-							variant='subtitle2'
-							sx={{ color: 'white', fontSize: '1.25rem', '&:hover': { textDecoration: 'none' } }}
-						>
-							Brainplex
-						</Typography>
+						<Grid container alignItems={'center'} direction={'row'}>
+							<img src='../../favicon.ico' alt='brainplex-logo' width={'25%'} />
+							<Typography
+								variant='subtitle2'
+								sx={{
+									color: 'white',
+									fontSize: '1.25rem',
+									'&:hover': { textDecoration: 'none' },
+								}}
+							>
+								Brainplex
+							</Typography>
+						</Grid>
 					</Button>
 
 					{/* Center Links for Desktop View */}

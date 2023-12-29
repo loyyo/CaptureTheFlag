@@ -67,7 +67,7 @@ export default function ForgotPassword() {
 					justifyContent: isMobile ? 'center' : 'flex-start',
 				}}
 			>
-				<Paper elevation={3} sx={{ padding: theme.spacing(3), width: '100%', mt: 3, mb: 3 }}>
+				<Paper elevation={0} sx={{ padding: theme.spacing(3), width: '100%', mt: 3, mb: 3 }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						<Typography component='h1' variant='h4'>
 							Password Reset
@@ -124,18 +124,18 @@ export default function ForgotPassword() {
 									fullWidth
 									variant='contained'
 									color='primary'
-									sx={{ margin: theme.spacing(3, 0, 2) }}
+									sx={{ mt: 1, mb: 2 }}
 									disabled={loading}
 								>
 									Reset Password
 								</Button>
 								<Grid container>
-									<Grid item xs>
+									<Grid item xs display={'grid'} alignItems={'center'}>
 										<Link underline='hover' component={RouterLink} to='/login'>
 											Sign In
 										</Link>
 									</Grid>
-									<Grid item>
+									<Grid item xs={isMobile} align='right'>
 										<Link underline='hover' component={RouterLink} to='/register'>
 											Don&apos;t have an account? Sign Up
 										</Link>
