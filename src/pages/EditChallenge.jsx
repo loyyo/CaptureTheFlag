@@ -50,7 +50,7 @@ export default function EditChallenge() {
 	const descriptionRef = useRef();
 	const [difficulty, setDifficulty] = useState('easy');
 	const [correctAnswer, setCorrectAnswer] = useState('');
-	const [image, setImage] = useState();
+	const [image, setImage] = useState(null);
 	const [file, setFile] = useState(null);
 
 	const theme = useTheme();

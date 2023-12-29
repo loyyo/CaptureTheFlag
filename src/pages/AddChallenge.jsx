@@ -36,7 +36,7 @@ export default function AddChallenge() {
 	const challengeRef = useRef();
 	const descriptionRef = useRef();
 	const [correctAnswer, setCorrectAnswer] = useState('');
-	const [image, setImage] = useState();
+	const [image, setImage] = useState(null);
 	const [file, setFile] = useState();
 	const [difficulty, setDifficulty] = useState('easy');
 	const [isTitleValid, setIsTitleValid] = useState(true);
